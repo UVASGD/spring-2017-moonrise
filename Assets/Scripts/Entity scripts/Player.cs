@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
+using System.Xml.Linq;
+using System.Linq;
 using UnityEngine.UI;
 using System;
 
 namespace Completed
 {
 
-	public class Player : Character
+	public class Player : Character, SerialOb
     {
         public int wallDamage = 1;
         public int pointsPerGold = 10;
@@ -363,8 +366,33 @@ namespace Completed
             }
             else if (other.tag == "Item")
             {
-				AlterGold (pointsPerGold);
-				other.gameObject.SetActive(false);
+				int chance = UnityEngine.Random.Range (0, 2);
+				String message = "";
+				switch (other.name) {
+				case "Gold1":
+					GameManager.instance.print("Picked up "+pointsPerGold+" gold");
+					GameManager.instance.playerGoldPoints += pointsPerGold;
+					goldText = "Gold: " + GameManager.instance.playerGoldPoints;
+					message = "+" + pointsPerGold + " Gold";
+					UpdateText ();
+					other.gameObject.SetActive(false);
+					break;
+				case "HealthPack":
+					LoseHp (-20);
+					message = "+" + 20 + " Health";
+					print(message);
+					//UpdateText ();
+					other.gameObject.SetActive(false);
+					break;
+				default:
+					GameManager.instance.print("Picked up "+pointsPerGold+" gold");
+					GameManager.instance.playerGoldPoints += pointsPerGold;
+					goldText = "Gold: " + GameManager.instance.playerGoldPoints;
+					message = "+" + pointsPerGold + " Gold";
+					UpdateText ();
+					other.gameObject.SetActive(false);
+					break;
+				}
             }
         }
 
@@ -393,7 +421,17 @@ namespace Completed
 		public override void LoseHp(int loss)
 		{
 			this.CurrentHP -= loss;
-			String message = "-" + loss + " HP";
+			if (this.currentHP < 0) {
+				this.currentHP = 0;
+			} else if (this.currentHP > 100) {
+				this.currentHP = 100;
+			}
+			/*String message;
+			if (loss > 0) {
+				message = "-" + loss + " HP";
+			} else {
+				message = "+" + loss + " HP";
+			}*/
 			hpText = "HP: " + this.CurrentHP;
 			UpdateText ();
 			CheckIfGameOver();
@@ -484,6 +522,31 @@ namespace Completed
 			UpdateText ();
 			UpdateSprite ();
 		}
+
+		#region serialization
+		//Serialization methods
+		public override XElement serialize(){
+			XElement node = new XElement("player",
+				new XElement("locationX",this.transform.localPosition.x),
+				new XElement("locationY",this.transform.localPosition.y),
+				new XElement("werewolf",GameManager.instance.isWerewolf),
+				base.serialize());
+			return node;
+		}
+
+		public override bool deserialize(XElement s){
+			//LocationX, locationY, werewolf status, character object
+			List<XElement> info = s.Elements().ToList<XElement>();
+			Vector3 v = new Vector3(0,0,0);
+			v.x = (float)Convert.ToDouble(info[0].Value);
+			v.y = (float)Convert.ToDouble(info[1].Value);
+			this.transform.localPosition = v;
+			GameManager.instance.isWerewolf = Convert.ToBoolean(info[2].Value);
+			base.deserialize(new XElement(info[3]));
+			return true;
+		}
+
+		#endregion
 	}
 
 	public enum Orientation

@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using ItemSpace;
 using UnityEditor;
 using UnityEngine;
-using System.Collections.Generic;
+using System.Xml.Linq;
+using System.Linq;
 
 namespace Completed
 {
-	public class Character : MovingObject
+	public class Character : MovingObject, SerialOb
 	{
 		//leveled up with magic character points
 		protected int baseHP;
@@ -78,6 +81,7 @@ namespace Completed
 			if (accuracyValue - blockValue > UnityEngine.Random.Range (0.0f, 100.0f)) {
 				int damage = (int)(this.RangedDamage + this.MeleeDamage/2 / 1.5) * (UnityEngine.Random.Range (weaponMin, weaponMax+1));
 				target.LoseHp(damage);
+				GameManager.instance.player.UpdateText ();
 				return damage;
 			}
 			return 0;
@@ -101,7 +105,8 @@ namespace Completed
 
 			if (accuracyValue - blockValue > UnityEngine.Random.Range (0.0f, 100.0f)) {
 				int damage = (int)(this.RangedDamage/2 + this.MeleeDamage / 1.5) * (UnityEngine.Random.Range (weaponMin, weaponMax+1));
-				((Player)target).LoseHp(damage);
+				target.LoseHp(damage);
+				GameManager.instance.player.UpdateText ();
 				return damage;
 			}
 			return 0;
@@ -282,6 +287,39 @@ namespace Completed
 				inventory = value;
 			}
 		}
+		#endregion
+
+		#region serialization
+		virtual public XElement serialize(){
+			XElement node = new XElement("character",
+				new XElement("rDamage", rangedDamage),
+				new XElement("rAccuracy", rangedAccuracy),
+				new XElement("rBlock", rangedBlock),
+				new XElement("mDamage", meleeDamage),
+				new XElement("mAccuracy", meleeAccuracy),
+				new XElement("mBlock", meleeBlock),
+				new XElement("bHP", baseHP),
+				new XElement("bSpeed", baseSpeed),
+				new XElement("curHP", currentHP));
+			return node;
+		}
+
+		virtual public bool deserialize(XElement s){
+			//attack, accuracy, hp, dodge, block, range, speed, current HP
+			List<XElement> info = s.Descendants().ToList();
+			rangedDamage = Convert.ToDouble(info[0].Value);
+			rangedAccuracy = Convert.ToDouble(info[1].Value);
+			rangedBlock = Convert.ToDouble(info[2].Value);
+			meleeDamage = Convert.ToDouble(info[3].Value);
+			meleeAccuracy = Convert.ToDouble(info[4].Value);
+			meleeBlock = Convert.ToDouble(info[5].Value);
+			baseHP = Convert.ToInt32(info[6].Value);
+			baseSpeed = Convert.ToDouble(info[7].Value);
+			currentHP = Convert.ToInt32(info[8].Value);
+
+			return true;
+		}
+
 		#endregion
 
 		protected override void OnCantMove(Transform transform)
