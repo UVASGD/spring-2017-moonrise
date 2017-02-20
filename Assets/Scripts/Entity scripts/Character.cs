@@ -71,15 +71,28 @@ namespace Completed
 			//Weapon weap = (Weapon)(equippedItems.Get (ItemClass.Weapon));
 
 			// Placeholder weapon values
+
+			Weapon myWeapon = (Weapon)(this.EquippedItems.Get(ItemClass.Weapon));
+
 			int weaponMin = 3;
-			int weaponMax = 5;
+			int weaponMax = 6;
+
+			if (myWeapon != null) {
+				weaponMin = myWeapon.AttackMinMax [0];
+				weaponMax = myWeapon.AttackMinMax [1];
+			} else {
+				weaponMin = 3;
+				weaponMax = 6;
+			}
+
+			Debug.Log (weaponMin + " " + weaponMax);
 
 			// If distance is 1, use melee values instead of ranged values
 			double accuracyValue = distance <= 1 ? (this.RangedAccuracy / 2 + this.MeleeAccuracy) / 1.5 : (this.RangedAccuracy + this.MeleeAccuracy/2) / 1.5;
 			double blockValue = distance <= 1 ? (target.RangedBlock / 2 + target.MeleeBlock) / 1.5 : (target.RangedBlock + this.MeleeBlock/2) / 1.5;
 
 			if (accuracyValue - blockValue > UnityEngine.Random.Range (0.0f, 100.0f)) {
-				int damage = (int)(this.RangedDamage + this.MeleeDamage/2 / 1.5) * (UnityEngine.Random.Range (weaponMin, weaponMax+1));
+				int damage = (int)((this.RangedDamage + this.MeleeDamage/2) / 1.5) * (UnityEngine.Random.Range (weaponMin, weaponMax+1));
 				target.LoseHp(damage);
 				GameManager.instance.player.UpdateText ();
 				return damage;
@@ -104,9 +117,10 @@ namespace Completed
 			double blockValue = target.RangedBlock / 2 + target.MeleeBlock;
 
 			if (accuracyValue - blockValue > UnityEngine.Random.Range (0.0f, 100.0f)) {
-				int damage = (int)(this.RangedDamage/2 + this.MeleeDamage / 1.5) * (UnityEngine.Random.Range (weaponMin, weaponMax+1));
+				int damage = (int)((this.RangedDamage/2 + this.MeleeDamage) / 1.5) * (UnityEngine.Random.Range (weaponMin, weaponMax+1));
 				target.LoseHp(damage);
 				GameManager.instance.player.UpdateText ();
+
 				return damage;
 			}
 			return 0;
