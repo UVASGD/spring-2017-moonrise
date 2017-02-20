@@ -62,7 +62,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 0.2, y: 0.2}
+  m_Size: {x: 0.9, y: 0.9}
 --- !u!114 &11459282
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -76,13 +76,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0.75
   AP: 0
-  moveTime: 0.1
+  moveTime: 0
   blockingLayer:
     serializedVersion: 2
     m_Bits: 256
+  orientation: 0
   playerDamage: 2
   indicator: {fileID: 1000013966800682, guid: 38d7c28b8e2bad64cbe045e0164934db, type: 2}
   sightRange: 5
+  looterFront: {fileID: 21300000, guid: 0feece4e8dcb45840a8593963756555f, type: 3}
+  looterBack: {fileID: 21300000, guid: 510ebccd9a058cd44a0f283f71b0127a, type: 3}
+  looterLeft: {fileID: 21300000, guid: 7bb49624eca304444b42f92ad52fb70e, type: 3}
+  looterRight: {fileID: 21300000, guid: 8b529ca3fd76dc741a7922e084e2ecc5, type: 3}
 --- !u!212 &21249280
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -113,7 +118,7 @@ SpriteRenderer:
   m_SortingLayerID: 1923248533
   m_SortingOrder: 0
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0.6691177, g: 0.15251946, b: 0.15251946, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
 --- !u!1001 &100100000

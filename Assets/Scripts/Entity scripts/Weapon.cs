@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace ItemSpace
 {
@@ -16,20 +17,41 @@ namespace ItemSpace
 		private int attackBonus, hpBonus;
 		private double attackMult, speedMult;
 
+		private static List<int> weightProbs = new List<int> (new[] {
+			30, 40, 30
+		}),
+		lightPrefixProbs = new List<int> (new [] {
+			30, 12, 8, 2, 0, 0, 0, 0, 0, 0, 12, 8, 2, 12, 8, 2, 0, 0, 0, 3, 1
+		}),
+		mediumPrefixProbs = new List<int> (new [] {
+			30, 0, 0, 0, 12, 8, 2, 0, 0, 0, 12, 8, 2, 0, 0, 0, 12, 8, 2, 3, 1
+		}),
+		heavyPrefixProbs = new List<int> (new [] {
+			30, 0, 0, 0, 0, 0, 0, 12, 8, 2, 12, 8, 2, 0, 0, 0, 12, 8, 2, 3, 1
+		}),
+		infixProbs = new List<int> (new [] {
+			30, 25, 20, 10, 8, 4, 2, 1
+		}),
+		lightSuffixProbs = new List<int> (new [] {
+			30, 12, 8, 3, 12, 8, 3, 0, 0, 0, 12, 8, 3, 0, 0, 0, 1	
+		}),
+		mediumSuffixProbs = new List<int> (new [] {
+			30, 9, 0, 0, 0, 0, 0, 20, 8, 2, 20, 8, 2, 0, 0, 0, 1	
+		}),
+		heavySuffixProbs = new List<int> (new [] {
+			30, 0, 0, 0, 0, 0, 0, 12, 8, 3, 12, 8, 3, 12, 8, 3, 1	
+		});
+
 		private static List<WeaponPrefix> prefixApostrophes = new List<WeaponPrefix>( new[] {
 			WeaponPrefix.Soldier, WeaponPrefix.Knight, WeaponPrefix.Captain, 
 			WeaponPrefix.Ogre, WeaponPrefix.Titan, WeaponPrefix.Dragon, 
-			WeaponPrefix.Medic, WeaponPrefix.Doctor, WeaponPrefix.Surgeon
+			WeaponPrefix.Medic, WeaponPrefix.Doctor, WeaponPrefix.Surgeon,
+			WeaponPrefix.Duke, WeaponPrefix.Lord, WeaponPrefix.King
 		});
 
 		private static List<WeaponSuffix> suffixNoThes = new List<WeaponSuffix>( new[] {
 			WeaponSuffix.Sight, WeaponSuffix.Strength, WeaponSuffix.Might, WeaponSuffix.Power, WeaponSuffix.Destruction
 		});
-
-		public Weapon() : this(WeaponType.Crossbow, WeaponWeight.Medium, WeaponPrefix.Great, WeaponInfix.Silver, WeaponSuffix.Assassin)
-		{
-			
-		}
 
 		public Weapon(WeaponType type, WeaponWeight weight, WeaponPrefix prefix, WeaponInfix infix, WeaponSuffix suffix)
 		{
@@ -120,27 +142,80 @@ namespace ItemSpace
 				break;
 			}
 
+			name = CreateName (type, weight, prefix, infix, suffix);
+		}
+
+		public static string CreateName(WeaponType type, WeaponWeight weight, WeaponPrefix prefix, WeaponInfix infix, WeaponSuffix suffix) {
 			string weightStr, prefixStr, infixStr, typeStr, suffixStr;
 
-			weightStr = weight.ToString ();
+			if (weight == WeaponWeight.Medium)
+				weightStr = "";
+			else
+				weightStr = weight.ToString () + " ";
 
-			prefixStr = prefix.ToString ();
-			if (prefixApostrophes.Contains (prefix))
-				prefixStr += "'s";
+			if (prefix == WeaponPrefix.None)
+				prefixStr = "";
+			else {
+				prefixStr = prefix.ToString ();
+				if (prefixApostrophes.Contains (prefix))
+					prefixStr += "'s ";
+				else
+					prefixStr += " ";
+			}
 
-			infixStr = infix.ToString ();
+			if (infix == WeaponInfix.None)
+				infixStr = "";
+			else
+				infixStr = infix.ToString () + " ";
 
 			typeStr = type.ToString ();
 
-			suffixStr = suffix.ToString ();
-			if (suffix == WeaponSuffix.Sight)
-				suffixStr = "True " + suffixStr;
-			if (!suffixNoThes.Contains (suffix))
-				suffixStr = "of the " + suffixStr;
+			if (suffix == WeaponSuffix.None)
+				suffixStr = "";
+			else {
+				suffixStr = suffix.ToString ();
+				if (suffix == WeaponSuffix.Sight)
+					suffixStr = "True " + suffixStr;
+				if (suffixNoThes.Contains (suffix))
+					suffixStr = " of " + suffixStr;
+				else
+					suffixStr = " of the " + suffixStr;
 
-			name = String.Join (" ", new[] {
-				weightStr, prefixStr, infixStr, typeStr, suffixStr
-			});
+			}
+
+			return weightStr + prefixStr + infixStr + typeStr + suffixStr;
+		}
+
+		public static new Item RandomItem() {
+			WeaponType type = WeaponType.Crossbow;
+			WeaponWeight weight = (WeaponWeight)RandomEnum (weightProbs);
+			List<int> prefixProbs, suffixProbs;
+			if (weight == WeaponWeight.Light) {
+				prefixProbs = lightPrefixProbs;
+				suffixProbs = lightSuffixProbs;
+			} else if (weight == WeaponWeight.Medium) {
+				prefixProbs = mediumPrefixProbs;
+				suffixProbs = mediumSuffixProbs;
+			} else {
+				prefixProbs = heavyPrefixProbs;
+				suffixProbs = heavySuffixProbs;
+			}
+			WeaponPrefix prefix = (WeaponPrefix)RandomEnum (prefixProbs);
+			WeaponInfix infix = (WeaponInfix)RandomEnum (infixProbs);
+			WeaponSuffix suffix = (WeaponSuffix)RandomEnum (suffixProbs);
+
+			return new Weapon (type, weight, prefix, infix, suffix);
+		}
+
+		private static int RandomEnum(List<int> probs) {
+			int rand = UnityEngine.Random.Range (0, 100);
+			for(int i = 0; i < probs.Count; i++) {
+				if (rand < probs [i])
+					return i;
+				else
+					rand -= probs [i];
+			}
+			return -1; // this point should not be reached
 		}
 
 		public int AttackBonus {
@@ -167,6 +242,9 @@ namespace ItemSpace
 			}
 		}
 	}
+
+	// by default, enums have int values and start at 0; 
+	// some code in this file relies on this default behavior
 
 	public enum WeaponType
 	{
@@ -226,6 +304,9 @@ namespace ItemSpace
 		Rogue,
 		Assassin,
 		Shadow,
+		Seer,
+		Thief,
+		Sniper,
 		Eagle,
 		Hawk,
 		Sight,

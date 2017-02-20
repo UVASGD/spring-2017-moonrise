@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 namespace Completed
 {
@@ -21,6 +22,11 @@ namespace Completed
         private bool skipMove, visible;
 		private List<Vector2> path;
 
+		public Sprite looterFront;
+		public Sprite looterBack;
+		public Sprite looterLeft;
+		public Sprite looterRight;
+
 
 		//Contains enemy's hitbox
 		private BoxCollider2D hitbox;
@@ -31,6 +37,7 @@ namespace Completed
 
             animator = GetComponent<Animator>();
 			hitbox = GetComponent<BoxCollider2D>();
+			orientation = Orientation.South;
 
             target = GameObject.FindGameObjectWithTag("Player").transform;
 			player = target.GetComponent<Player>();
@@ -40,7 +47,24 @@ namespace Completed
             base.Start();
 
 			path = new List<Vector2>();
+			UpdateSprite ();
+
+			currentHP = 20;
         }
+
+		protected override void UpdateSprite()
+		{
+			Sprite sprite;
+			if (orientation == Orientation.North)
+				sprite = looterBack;
+			else if (orientation == Orientation.East)
+				sprite = looterRight;
+			else if (orientation == Orientation.South)
+				sprite = looterFront;
+			else
+				sprite = looterLeft;
+			this.gameObject.GetComponent<SpriteRenderer> ().sprite = sprite;
+		}
 
 		/// <summary>
 		/// Reduces enemy's HP when clicked and in range
@@ -48,29 +72,29 @@ namespace Completed
 		void OnMouseDown() {
 			if (GameManager.instance.playersTurn) {
 				GameManager.instance.clearLog();
+				float distance = Mathf.Sqrt (Mathf.Pow (target.position.x - this.transform.position.x, 2) + Mathf.Pow (target.position.y - this.transform.position.y, 2));
 				if(!GameManager.instance.isWerewolf){
 					// Ranged attack (hoo-man)
-					if (Mathf.Sqrt (Mathf.Pow (target.position.x - this.transform.position.x, 2) + Mathf.Pow (target.position.y - this.transform.position.y, 2)) <= player.TotalRange) {
+					if (distance <= player.Range) {
 						GameManager.instance.enemyClicked = true;
 						int damage = player.RangedAttack (this);
-						if(damage > 0)
-							GameManager.instance.print ("Ranged damage: " + damage);
+						if(damage > 0){
+							GameManager.instance.print ("Ranged damage: " + damage + ". HP remaining: "+currentHP);
+						}
 						else
 							GameManager.instance.print ("You miss!");
-							
-						LoseHp (damage);
 					} else {
 						GameManager.instance.print("Enemy out of range");
 					}
-				}
-				else{
+				} else {
 					// Melee attack (werewolf who is both were and a wolf)
-					if (Mathf.Sqrt (Mathf.Pow (target.position.x - this.transform.position.x, 2) + Mathf.Pow (target.position.y - this.transform.position.y, 2)) <= 1) {
+					if (distance <= 1) {
 						GameManager.instance.enemyClicked = true;
 						int damage = player.MeleeAttack (this);
-						LoseHp (damage);
-						if(damage > 0	)
+						//LoseHp (damage);
+						if(damage > 0	){
 							GameManager.instance.print ("Melee damage: " + damage);
+						}
 						else
 							GameManager.instance.print ("You miss!");
 					} else {
@@ -100,7 +124,7 @@ namespace Completed
 			hitbox.enabled = false;
 			hit = Physics2D.Linecast(new Vector2(transform.position.x,transform.position.y),new Vector2(target.position.x,target.position.y), blockingLayer);
 			hitbox.enabled = true;
-			float range = sightRange-player.sneak;
+			float range = sightRange-player.baseSneak;
 			if(hit.transform == target && hit.distance <= range){
 				targetLoc = new Vector2(target.position.x,target.position.y);
 				if(path.Count == 0)
@@ -123,67 +147,82 @@ namespace Completed
 			int xDir = 0;
 			int yDir = 0;
 
-			//Attempt to pursue target
-			if(path.Count > 0){
-				yDir = 0;
-				xDir = 0;
-				//Debug.Log(path[0]+" "+path[path.Count-1]);
-				while(Mathf.Abs(yDir)+Mathf.Abs(xDir) < float.Epsilon){
-					yDir = (int)(path[path.Count-1].y-transform.position.y);
-					xDir = (int)(path[path.Count-1].x-transform.position.x);
-					if(Mathf.Abs(yDir)+Mathf.Abs(xDir) < float.Epsilon){
-						path.RemoveAt(path.Count-1);
-
-						if(path.Count == 0){
-							Debug.Log("\"Target Lost.\" - "+this.name.ToString());
-							break;
-						}
+			//Attempt to attack target
+			float distance = Mathf.Sqrt (Mathf.Pow (target.position.x - this.transform.position.x, 2) + Mathf.Pow (target.position.y - this.transform.position.y, 2));
+			if (distance <= this.Range && hit.transform == target) {
+				int damage;
+				if (distance <= 1) {
+					damage = this.MeleeAttack (player);
+					if (damage > 0) {
+						GameManager.instance.print ("The enemy strikes you for " + damage + " damage!");
+					} else {
+						GameManager.instance.print ("The enemy tries to attack but misses!");
+					}
+				} else {
+					damage = this.RangedAttack (player);
+					if (damage > 0) {
+						GameManager.instance.print ("The enemy shoots you for " + damage + " damage!");
+					} else {
+						GameManager.instance.print ("The enemy tries to attack but misses!");
 					}
 				}
-				/*if (Mathf.Abs(targetLoc.y - transform.position.y) > float.Epsilon)
-					yDir = targetLoc.y > transform.position.y ? 1 : -1;
+				//player.LoseHp(playerDamage);
+			} else{
 
-				else if (Mathf.Abs(targetLoc.x - transform.position.x) > float.Epsilon)
-					xDir = targetLoc.x > transform.position.x ? 1 : -1;
-				else
-					targetLoc = new Vector2();*/ 	
-				
-			}
-			//If no target is known, move randomly
-			else{
-				int moveType = Mathf.FloorToInt(Random.Range(0,5));
-				switch(moveType){
-				case 0:
-					break;
-				case 1:
-					xDir = 1;
-					break;
-				case 2:
-					xDir = -1;
-					break;
-				case 3:
-					yDir = 1;
-					break;
-				case 4:
-					yDir = -1;
-					break;
+				//If cannot attack target, attempt to pursue target
+				if(path.Count > 0){
+					yDir = 0;
+					xDir = 0;
+					//Debug.Log(path[0]+" "+path[path.Count-1]);
+					while(Mathf.Abs(yDir)+Mathf.Abs(xDir) < float.Epsilon){
+						yDir = (int)(path[path.Count-1].y-transform.position.y);
+						xDir = (int)(path[path.Count-1].x-transform.position.x);
+						
+						if(Mathf.Abs(yDir)+Mathf.Abs(xDir) < float.Epsilon){
+							path.RemoveAt(path.Count-1);
+
+							if(path.Count == 0){
+								Debug.Log("\"Target Lost.\" - "+this.name.ToString());
+								break;
+							}
+						}
+					}
+					/*if (Mathf.Abs(targetLoc.y - transform.position.y) > float.Epsilon)
+						yDir = targetLoc.y > transform.position.y ? 1 : -1;
+
+					else if (Mathf.Abs(targetLoc.x - transform.position.x) > float.Epsilon)
+						xDir = targetLoc.x > transform.position.x ? 1 : -1;
+					else
+						targetLoc = new Vector2();*/ 	
+					
 				}
-			}
+				//If no target is known, move randomly
+				else{
+					int moveType = Mathf.FloorToInt(Random.Range(0,5));
+					switch(moveType){
+					case 0:
+						break;
+					case 1:
+						xDir = 1;
+						break;
+					case 2:
+						xDir = -1;
+						break;
+					case 3:
+						yDir = 1;
+						break;
+					case 4:
+						yDir = -1;
+						break;
+					}
+				}
 
-			AttemptMove<Player>(xDir, yDir);
+				AttemptMove(xDir, yDir);
+			}
 			AP--;
 			
 			//Return true if the enemy can move again
 			return (AP >= 1);
-        }
-
-
-        protected override void OnCantMove<T>(T component)
-        {
-            Player hitPlayer = component as Player;
-
-            hitPlayer.LoseHp(playerDamage);
-			GameManager.instance.print("The enemy strikes you!");
         }
 
 		protected override void OnFinishMove ()

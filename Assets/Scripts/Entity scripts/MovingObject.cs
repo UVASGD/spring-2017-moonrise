@@ -17,6 +17,8 @@ namespace Completed
         private Rigidbody2D rb2D;			
         private float inverseMoveTime;		// 1/moveTime, used to calculate the distance per frame for movement
 
+		public Orientation orientation;
+
         // Use this for initialization
         protected virtual void Start()
         {
@@ -51,7 +53,7 @@ namespace Completed
 
             while (sqrRemainingDistance > float.Epsilon)
             {
-                Vector3 newPosition = Vector3.MoveTowards(rb2D.position, end, inverseMoveTime * Time.deltaTime);
+				Vector3 newPosition = end;//Vector3.MoveTowards(rb2D.position, end, inverseMoveTime * Time.deltaTime);
                 rb2D.MovePosition(newPosition);
                 sqrRemainingDistance = (transform.position - end).sqrMagnitude;
                 yield return null;
@@ -61,27 +63,24 @@ namespace Completed
         }
 
 		//Similar to move, but if a move fails due to a unit, strike the unit.
-        protected virtual void AttemptMove<T>(int xDir, int yDir) where T : Component
+        protected virtual void AttemptMove(int xDir, int yDir)
         {
-            RaycastHit2D hit;
-            bool canMove = Move(xDir, yDir, out hit);
+			RaycastHit2D hit;
+			bool canMove = Move(xDir, yDir, out hit);
+			if (xDir > 0)
+				orientation = Orientation.East;
+			else if (xDir < 0)
+				orientation = Orientation.West;
+			else if (yDir > 0)
+				orientation = Orientation.North;
+			else
+				orientation = Orientation.South;
+			UpdateSprite ();
 
-            if (hit.transform == null)
-            {
-                return;
-            }
-
-            T hitComponent = hit.transform.GetComponent<T>();
-
-            if (!canMove && hitComponent != null)
-            {
-                OnCantMove(hitComponent);
-            }
         }
 
-        protected abstract void OnCantMove<T>(T component) where T : Component;
+        protected abstract void OnCantMove(Transform transform); // expects transform to be not null
 		protected abstract void OnFinishMove();
-	
-
+		protected abstract void UpdateSprite();
     }
 }

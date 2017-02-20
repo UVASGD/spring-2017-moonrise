@@ -536,7 +536,7 @@ PlayerSettings:
   XboxOne::VR::enabledDevices: []
   iOS::VR::enabledDevices: []
   tvOS::VR::enabledDevices: []
-  cloudProjectId: 
-  projectName: 
-  organizationId: 
+  cloudProjectId: 061b4eab-a2b6-40e4-9215-52b2c5db86cf
+  projectName: Moonrise
+  organizationId: rhinoforce135
   cloudEnabled: 0

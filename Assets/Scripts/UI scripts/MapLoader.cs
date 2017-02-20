@@ -16,6 +16,8 @@ using UnityEngine.UI;
  *  3-Player
  *  10-Gold Because Why not?
  *  15-Chest
+ *  
+ *  TODO: Make it efficient
  */
 
 public class MapLoader : MonoBehaviour
@@ -34,6 +36,8 @@ public class MapLoader : MonoBehaviour
     private GameObject miniMap;
     private GameObject mainMap;
 
+    private bool constructed = false;
+
     private int mapRadius = 7;
     // Use this for initialization. Start or Awake will crash it. 
     void Start()
@@ -43,6 +47,7 @@ public class MapLoader : MonoBehaviour
         board = (BoardManager)gameManager.GetComponent(typeof(BoardManager));
         loadMap();
         constructMiniMap();
+        constructed = true;
     }
 
     /// <summary>
@@ -74,10 +79,8 @@ public class MapLoader : MonoBehaviour
         mapTex.Apply();
         mapSprite = Sprite.Create(mapTex, new Rect(0, 0, mapTex.width, mapTex.height), new Vector2(0.5f, 0.5f),16.0f);
         var mapTransform = mainMap.transform.FindChild("MapStore").GetComponent<RectTransform>();
-        if (mapTransform != null)
-        {
-            mapTransform.sizeDelta = new Vector2(mapTransform.sizeDelta.x, mapTransform.sizeDelta.y * ((float)mapTex.height / (float)mapTex.width)); //Perfect Square Pixels
-        }
+        Debug.Log(mapTex.width + ", " + mapTex.height);
+        mapTransform.sizeDelta = new Vector2(mapTransform.sizeDelta.x * ((float)mapTex.height / (float)mapTex.width), mapTransform.sizeDelta.y); //Perfect Square Pixels
         mainMap.transform.FindChild("MapStore").gameObject.GetComponent<Image>().sprite = mapSprite;
     }
     
@@ -112,7 +115,7 @@ public class MapLoader : MonoBehaviour
                     mapTex.SetPixel(i, j, Color.yellow);
                 else if (mapBoard[i - 1, j - 1] == 15)
                     mapTex.SetPixel(i, j, Color.cyan);
-                else
+                else if (mapBoard[i - 1, j - 1] == 1)
                     mapTex.SetPixel(i, j, Color.gray);
 
                 var curFog = fog[i, j].GetComponent<SpriteRenderer>(); //Fog Pass
@@ -260,7 +263,7 @@ public class MapLoader : MonoBehaviour
 
     void Update()
     {
-        if(gameObject.activeInHierarchy)
+        if(gameObject.activeInHierarchy && constructed)
         {
             //If the UI element needs to repeatedly update: Do it here.
             updateMap();

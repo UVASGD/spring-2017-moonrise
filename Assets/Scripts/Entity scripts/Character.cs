@@ -2,6 +2,7 @@
 using ItemSpace;
 using UnityEditor;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace Completed
 {
@@ -9,20 +10,16 @@ namespace Completed
 	{
 		//leveled up with magic character points
 		protected int baseHP;
-		protected double baseDodge;
-		protected double baseBlock;
-		protected int baseAttack;
-		protected double baseAccuracy;
-		protected int baseRange;
+		protected double rangedBlock;
+		protected double meleeBlock;
+		protected double rangedDamage;
+		protected double meleeDamage;
+		protected double rangedAccuracy;
+		protected double meleeAccuracy;
 
 		//affected by items
 		protected int totalHP;
-		protected double totalDodge;
-		protected double totalBlock;
-		protected int totalAttack;
-		protected double totalAccuracy;
-		protected int totalRange;
-
+		protected int range;
 		protected int currentHP;
 
 		protected double baseSpeed;
@@ -31,27 +28,30 @@ namespace Completed
 		protected EquippedItemSet equippedItems;
 		protected Inventory inventory;
 
-		public Character () : this(100, .1, .1, 5, .9, 5, 1.0)
+		public Character () : this(100, 10, 10, 1, 1, 90, 90, 5, 1.0)
 		{
 		}
 			
-		public Character (int hp, double dodge, double block, int attack, double accuracy,int range, double speed)
+		public Character (int hp, double dodge, double block, int rangedDamage, int meleeDamage, double rangedAccuracy, double meleeAccuracy, int range, double speed)
 		{
-			baseHP = hp;
-			baseBlock = block;
-			baseAttack = attack;
-			baseAccuracy = accuracy;
-			baseRange = range;
-			baseSpeed = speed;
 
+			this.rangedBlock = dodge;
+			this.meleeBlock = block;
+
+			this.rangedDamage = rangedDamage;
+			this.meleeDamage = meleeDamage;
+
+			this.rangedAccuracy = rangedAccuracy;
+			this.meleeAccuracy = meleeAccuracy;
+
+			this.range = range;
+
+			baseHP = hp;
 			currentHP = baseHP;
 			totalHP = baseHP;
 
-			totalBlock = baseBlock;
-			totalAttack = baseAttack;
-			totalAccuracy = baseAccuracy;
-			totalRange = baseRange;
-			totalSpeed = baseSpeed;
+			baseSpeed = speed;
+			totalSpeed = speed;
 
 			equippedItems = new EquippedItemSet ();
 			inventory = new Inventory ();
@@ -63,12 +63,22 @@ namespace Completed
 		/// <returns>The attack.</returns>
 		/// <param name="target">Target.</param>
 		public int RangedAttack(Character target) {
-			if (UnityEngine.Random.Range (0.0f, 1.0f) <= this.TotalAccuracy) {
-				if (UnityEngine.Random.Range (0.0f, 1.0f) > target.TotalDodge) {
-					int damage = this.TotalAttack + (int)(this.TotalAttack * (UnityEngine.Random.Range (0.0f, 1.0f) / 10 - .05));
-					target.CurrentHP -= damage;
-					return damage;
-				}
+			float distance = Mathf.Sqrt (Mathf.Pow (target.transform.position.x - this.transform.position.x, 2) + Mathf.Pow (target.transform.position.y - this.transform.position.y, 2));
+
+			//Weapon weap = (Weapon)(equippedItems.Get (ItemClass.Weapon));
+
+			// Placeholder weapon values
+			int weaponMin = 3;
+			int weaponMax = 5;
+
+			// If distance is 1, use melee values instead of ranged values
+			double accuracyValue = distance <= 1 ? (this.RangedAccuracy / 2 + this.MeleeAccuracy) / 1.5 : (this.RangedAccuracy + this.MeleeAccuracy/2) / 1.5;
+			double blockValue = distance <= 1 ? (target.RangedBlock / 2 + target.MeleeBlock) / 1.5 : (target.RangedBlock + this.MeleeBlock/2) / 1.5;
+
+			if (accuracyValue - blockValue > UnityEngine.Random.Range (0.0f, 100.0f)) {
+				int damage = (int)(this.RangedDamage + this.MeleeDamage/2 / 1.5) * (UnityEngine.Random.Range (weaponMin, weaponMax+1));
+				target.LoseHp(damage);
+				return damage;
 			}
 			return 0;
 		}
@@ -79,12 +89,20 @@ namespace Completed
 		/// <returns>The attack.</returns>
 		/// <param name="target">Target.</param>
 		public int MeleeAttack(Character target) {
-			if (UnityEngine.Random.Range (0.0f, 1.0f) <= this.TotalAccuracy) {
-				if (UnityEngine.Random.Range (0.0f, 1.0f) > target.TotalBlock) {
-					int damage = this.TotalAttack + (int)(this.TotalAttack * (UnityEngine.Random.Range (0.0f, 1.0f) / 10 - .05));
-					target.CurrentHP -= damage;
-					return damage;
-				}
+			//Weapon weap = (Weapon)(equippedItems.Get (ItemClass.Weapon));
+		
+			// Placeholder weapon values
+			int weaponMin = 3;
+			int weaponMax = 5;
+
+			// If distance is 1, use melee values instead of ranged values
+			double accuracyValue = this.RangedAccuracy / 2 + this.MeleeAccuracy;
+			double blockValue = target.RangedBlock / 2 + target.MeleeBlock;
+
+			if (accuracyValue - blockValue > UnityEngine.Random.Range (0.0f, 100.0f)) {
+				int damage = (int)(this.RangedDamage/2 + this.MeleeDamage / 1.5) * (UnityEngine.Random.Range (weaponMin, weaponMax+1));
+				((Player)target).LoseHp(damage);
+				return damage;
 			}
 			return 0;
 		}
@@ -135,6 +153,7 @@ namespace Completed
 		/// <param name="loss">Loss.</param>
 		public virtual void LoseHp(int loss)
 		{
+			Debug.Log ("losing " + loss + " from " + this);
 			currentHP -= loss;
 			if (currentHP <= 0) {
 				KillObject ();
@@ -165,57 +184,66 @@ namespace Completed
 			}
 		}
 
-		public double TotalDodge {
+		public double RangedBlock {
 			get {
-				return this.totalDodge;
+				return this.rangedBlock;
 			}
 			set {
-				totalDodge = value;
+				rangedBlock = value;
 			}
 		}
 
-		public int BaseAttack {
+		public double RangedDamage {
 			get {
-				return this.baseAttack;
+				return this.rangedDamage;
 			}
 			set {
-				baseAttack = value;
+				rangedDamage = value;
 			}
 		}
 
-		public double TotalBlock {
+		public double MeleeDamage {
 			get {
-				return this.totalBlock;
+				return this.meleeDamage;
 			}
 			set {
-				totalBlock = value;
+				meleeDamage = value;
 			}
 		}
 
-		public int TotalAttack {
+		public double MeleeBlock {
 			get {
-				return this.totalAttack;
+				return this.meleeBlock;
 			}
 			set {
-				totalAttack = value;
+				meleeBlock = value;
 			}
 		}
 
-		public double TotalAccuracy {
+		public double RangedAccuracy {
 			get {
-				return this.totalAccuracy;
+				return this.rangedAccuracy;
 			}
 			set {
-				totalAccuracy = value;
+				rangedAccuracy = value;
 			}
 		}
 
-		public int TotalRange {
+		public double MeleeAccuracy {
 			get {
-				return this.totalRange;
+				return this.meleeAccuracy;
 			}
 			set {
-				totalRange = value;
+				meleeAccuracy = value;
+			}
+		}
+
+		public int Range {
+			get {
+				return this.range;
+			}
+			set {
+				range = value;
 			}
 		}
 
@@ -256,13 +284,16 @@ namespace Completed
 		}
 		#endregion
 
-		protected override void OnCantMove<T>(T component)
+		protected override void OnCantMove(Transform transform)
 		{
 
 		}
 
 		protected override void OnFinishMove(){
 
+		}
+
+		protected override void UpdateSprite(){
 		}
 	}
 }

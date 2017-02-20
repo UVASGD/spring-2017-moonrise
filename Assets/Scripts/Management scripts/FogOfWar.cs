@@ -39,12 +39,12 @@ namespace Completed {
 			c.a = alpha;
 			sp.color = c;
 
-			//if(visible != oldVis){
+			if(oldVis!=visible || visible){
 				GameObject enemyT = g.getEnemy(new Vector2(this.transform.position.x,this.transform.position.y));
 				if(enemyT != null)
 					enemyT.GetComponent<Enemy>().isVisible(visible);
 				oldVis = visible;
-			//}
+			}
 		}
 
 		public void isVisible(bool vis){

@@ -20,8 +20,18 @@ public class BoardManager : MonoBehaviour {
         }
     }
 
-    public int columns = 100;                       //Columns on the board
-    public int rows = 100;                          //Rows on the board
+	//References to the map generators
+	private MazeGenerator2 slumGen;
+	private GenerateMarket marketGen;
+	private Dictionary<string,mapGenerator> generators = new Dictionary<string,mapGenerator>();
+	public string area = "M";
+	private Dictionary<string,int[]> startLocs = new Dictionary<string,int[]>{
+		{"M", new int[2]{60,60}},
+		{"S", new int[2]{4,4}}
+	};
+
+    private int columns = 100;                       //Columns on the board
+    private int rows = 100;                          //Rows on the board
     public Count wallCount = new Count(20, 40 );    //Number of wall tiles
     public Count goldCount = new Count(10, 30);     //Number of gold tiles
 
@@ -73,30 +83,38 @@ public class BoardManager : MonoBehaviour {
     /// </summary>
     void BoardSetup()
     {
-        boardMap = new int[columns, rows];
 
-        fogTiles = new GameObject[columns+2, rows+2];
 
         boardHolder = new GameObject("Board").transform;
+		slumGen = GetComponent<MazeGenerator2>();
+		marketGen = GetComponent<GenerateMarket>();
 
-        //Loops through entire board, creating floor tiles and outer wall tiles
+		generators.Add("M", marketGen);
+		generators.Add("S", slumGen);
+
+		mapGenerator generator = generators[area];
+
+		boardMap = generator.init();
+		Debug.Log(boardMap);
+
+		rows = boardMap.GetLength(0);
+		columns = boardMap.GetLength(1);
+
+        fogTiles = new GameObject[columns + 2, rows + 2];
+
+        Vector3 loc = new Vector3(startLocs[area][0],startLocs[area][1],0);
+		Debug.Log(loc);
+		player.transform.localPosition = loc;
+
+        //Loops through entire board, creating fog
         for (int x = -1; x < columns + 1; x++)
         {
             for (int y = -1; y < rows + 1; y++)
             {
-                GameObject toInstantiate = floorTiles[Random.Range(0, floorTiles.Length)];
-
-                if (x == -1 || x == columns || y == -1 || y == rows)
-                {
-                    toInstantiate = outerWallTiles[Random.Range(0, outerWallTiles.Length)];
-                    //boardMap[x, y] = 1;
-                }
-				else
-					boardMap[x, y] = 0;
-                GameObject instance = Instantiate(toInstantiate, new Vector2(x, y), Quaternion.identity) as GameObject;
-                fogTiles[x+1,y+1] = (GameObject)Instantiate(fog, new Vector2(x,y), Quaternion.identity);
-
-				instance.transform.SetParent(boardHolder);
+                
+				GameObject f = Instantiate(fog, new Vector2(x,y), Quaternion.identity) as GameObject;
+                f.transform.SetParent(this.transform);
+                fogTiles[x + 1, y + 1] = f;
             }
         }
     }
@@ -139,15 +157,17 @@ public class BoardManager : MonoBehaviour {
     /// <param name="tileArray">Array of tiles to select from</param>
     /// <param name="minimum">Minimum number of tiles to place</param>
     /// <param name="maximum">Maximum number of tiles to place</param>
-    /// <param name="tileType">The type of tile to place. Used for mapping</param>
-	void LayoutObjectAtRandom(GameObject[] tileArray, int minimum, int maximum,int tileType)
+	void LayoutObjectAtRandom(GameObject[] tileArray, int minimum, int maximum, bool blocking = false)
     {
         int objectCount = Random.Range(minimum, maximum + 1);
 
         for (int i = 0; i < objectCount; i++)
         {
             Vector2 randomPosition = RandomPosition();
-			boardMap[(int)randomPosition.x,(int)randomPosition.y] = tileType;
+			while(boardMap[(int)randomPosition.x,(int)randomPosition.y] > 0)
+				randomPosition = RandomPosition();
+			if(blocking)
+				boardMap[(int)randomPosition.x,(int)randomPosition.y] = 1;
             GameObject tileChoice = tileArray[Random.Range(0, tileArray.Length)];
 			GameObject ob = (GameObject)Instantiate(tileChoice, randomPosition, Quaternion.identity);
         }
@@ -158,12 +178,12 @@ public class BoardManager : MonoBehaviour {
     {
         BoardSetup();           //Initialize board with floor/outer wall tiles
         InitializeList();       //Create the list of board positions
-        LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum,1);      //Place wall tiles
-        LayoutObjectAtRandom(goldTiles, goldCount.minimum, goldCount.maximum,10);      //Place gold tiles
+        //LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum);      //Place wall tiles
+        LayoutObjectAtRandom(goldTiles, goldCount.minimum, goldCount.maximum);      //Place gold tiles
 		int chestCount = 7;
-		LayoutObjectAtRandom (chestTiles, chestCount, chestCount,15);
-        int enemyCount = 2;//(int)Mathf.Log(level, 2f);
-        LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount,0);                   //Place enemies
+		LayoutObjectAtRandom (chestTiles, chestCount, chestCount);
+        int enemyCount = 18;//(int)Mathf.Log(level, 2f);
+        LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount);                   //Place enemies
         Instantiate(door1, new Vector2(columns - 1, rows - 1), Quaternion.identity);//Create the floor exit
 
     }

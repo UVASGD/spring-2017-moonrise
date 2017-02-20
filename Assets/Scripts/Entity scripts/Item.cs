@@ -7,6 +7,10 @@ namespace ItemSpace
 		protected string name, description;
 		protected ItemClass itemClass;
 
+		public static Item RandomItem() {
+			return Weapon.RandomItem ();
+		}
+
 		public string Name {
 			get {
 				return name;
