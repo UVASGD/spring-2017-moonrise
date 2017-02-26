@@ -74,8 +74,8 @@ namespace Completed
 
 			Weapon myWeapon = (Weapon)(this.EquippedItems.Get(ItemClass.Weapon));
 
-			int weaponMin = 3;
-			int weaponMax = 6;
+			int weaponMin;
+			int weaponMax;
 
 			if (myWeapon != null) {
 				weaponMin = myWeapon.AttackMinMax [0];
