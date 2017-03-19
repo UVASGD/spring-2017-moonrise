@@ -95,7 +95,6 @@ public class BoardManager : MonoBehaviour {
 		mapGenerator generator = generators[area];
 
 		boardMap = generator.init();
-		Debug.Log(boardMap);
 
 		rows = boardMap.GetLength(0);
 		columns = boardMap.GetLength(1);
@@ -111,8 +110,8 @@ public class BoardManager : MonoBehaviour {
         {
             for (int y = -1; y < rows + 1; y++)
             {
-                
-				GameObject f = Instantiate(fog, new Vector2(x,y), Quaternion.identity) as GameObject;
+
+                GameObject f = Instantiate(fog, new Vector2(x, y), Quaternion.identity) as GameObject;
                 f.transform.SetParent(this.transform);
                 fogTiles[x + 1, y + 1] = f;
             }

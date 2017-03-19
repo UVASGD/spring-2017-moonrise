@@ -18,6 +18,7 @@ using UnityEngine.UI;
  *  15-Chest
  *  
  *  TODO: Make it efficient
+ *  TODO: Fix weird inconsistencies (May be Generation)
  */
 
 public class MapLoader : MonoBehaviour
@@ -32,11 +33,14 @@ public class MapLoader : MonoBehaviour
     private Sprite mapSprite;
     private Sprite miniSprite;
     private BoardManager board;
+    private int[,] boardData;
+    private List<Vector2> prevEnemyPositions;
+    private Vector2 prevPlayerPosition;
 
     private GameObject miniMap;
     private GameObject mainMap;
 
-    private bool constructed = false;
+    private bool firstUpdate = true;
 
     private int mapRadius = 7;
     // Use this for initialization. Start or Awake will crash it. 
@@ -45,9 +49,10 @@ public class MapLoader : MonoBehaviour
         miniMap = gameObject.transform.FindChild("Contents").gameObject;
         mainMap = gameObject.transform.FindChild("Expand").gameObject;
         board = (BoardManager)gameManager.GetComponent(typeof(BoardManager));
+        prevEnemyPositions = new List<Vector2>();
+        boardData = createMapBoard();
         loadMap();
         constructMiniMap();
-        constructed = true;
     }
 
     /// <summary>
@@ -55,16 +60,14 @@ public class MapLoader : MonoBehaviour
     /// </summary>
     private void loadMap()
     {
-        int[,] mapBoard = createMapBoard();
-
-        mapTex = new Texture2D(mapBoard.GetLength(0)+2, mapBoard.GetLength(1)+2, TextureFormat.ARGB32, false);
+        mapTex = new Texture2D(boardData.GetLength(0)+2, boardData.GetLength(1)+2, TextureFormat.ARGB32, false);
         mapTex.filterMode = FilterMode.Point;
 
         for (int i = 0; i < mapTex.width ; i++)
         {
             for (int j = 0; j < mapTex.height; j++)
             {
-                mapTex.SetPixel(i, j, Color.black);
+                mapTex.SetPixel(j, i, Color.black);
             }
         }
 
@@ -72,8 +75,8 @@ public class MapLoader : MonoBehaviour
         {
             for(int j = 1; j < mapTex.height-1;j++)
             {
-                if (mapBoard[i-1, j-1] == 0)
-                    mapTex.SetPixel(i, j, Color.white);
+                if (boardData[j-1, i-1] == 0)
+                    mapTex.SetPixel(j, i, Color.white);
             }
         }
         mapTex.Apply();
@@ -89,53 +92,64 @@ public class MapLoader : MonoBehaviour
     /// </summary>
     private void updateMap()
     { 
-        int[,] mapBoard = createMapBoard();
         GameObject[,] fog = createFogTile();
         Vector2 playerPos = getPlayerPosition();
         List<Vector2> enemies = GetEnemyPositions();
 
+        //int sightRange = 20;
+
+        //Prev cleanups
+        boardData[(int)prevPlayerPosition.x, (int)prevPlayerPosition.y] = 0;
+        foreach(Vector2 v in prevEnemyPositions)
+        {
+            boardData[(int)v.x, (int)v.y] = 0;
+        }
+        prevEnemyPositions.Clear(); //Empty prevPositions
         //Passes to adjust the map
-        mapBoard[(int)playerPos.x, (int)playerPos.y] = 3; //Player Pass
+        boardData[(int)playerPos.x, (int)playerPos.y] = 3; //Player Pass
+        prevPlayerPosition = playerPos; //prev Save
         foreach(Vector2 v in enemies) //Enemy Pass
         {
-            mapBoard[(int)v.x, (int)v.y] = 2;
+            prevEnemyPositions.Add(v);
+            boardData[(int)v.x, (int)v.y] = 2;
         }
 
         for (int i = 1; i < mapTex.width - 1; i++) //Raw Pass
         {
             for (int j = 1; j < mapTex.height - 1; j++)
             {
-                if (mapBoard[i - 1, j - 1] == 3)
-                    mapTex.SetPixel(i, j, Color.green);
-                else if (mapBoard[i - 1, j - 1] == 2)
-                    mapTex.SetPixel(i, j, Color.red);
-                else if (mapBoard[i - 1, j - 1] == 0)
-                    mapTex.SetPixel(i, j, Color.white);
-                else if (mapBoard[i - 1, j - 1] == 10)
-                    mapTex.SetPixel(i, j, Color.yellow);
-                else if (mapBoard[i - 1, j - 1] == 15)
-                    mapTex.SetPixel(i, j, Color.cyan);
-                else if (mapBoard[i - 1, j - 1] == 1)
-                    mapTex.SetPixel(i, j, Color.gray);
+                if (boardData[j - 1, i - 1] == 3)
+                    mapTex.SetPixel(j, i, Color.green);
+                else if (boardData[j - 1, i - 1] == 2)
+                    mapTex.SetPixel(j, i, Color.red);
+                else if (boardData[j - 1, i - 1] == 0)
+                    mapTex.SetPixel(j, i, Color.white);
+                else if (boardData[j - 1, i - 1] == 10)
+                    mapTex.SetPixel(j, i, Color.yellow);
+                else if (boardData[j - 1, i - 1] == 15)
+                    mapTex.SetPixel(j, i, Color.cyan);
+                else if (boardData[i - 1, j - 1] == 1)
+                    mapTex.SetPixel(j, i, Color.gray);
 
-                var curFog = fog[i, j].GetComponent<SpriteRenderer>(); //Fog Pass
-                if (curFog != null)
-                {
-                    if (curFog.color.a > 0.8f) //Hidden and unseen
-                    {
-                        mapTex.SetPixel(i, j, Color.black);
-                    }
-                    else if (curFog.color.a > 0.5f && curFog.color.a < 0.8f) //Seen, but currently hidden
-                    {
-                        if (mapBoard[i - 1, j - 1] != 1)
-                            mapTex.SetPixel(i, j, Color.white);
+                //var curFog = fog[i, j].GetComponent<SpriteRenderer>(); //Fog Pass
+                //if (curFog != null)
+                //{
+                //    if (curFog.color.a > 0.8f) //Hidden and unseen
+                //    {
+                //        mapTex.SetPixel(i, j, Color.black);
+                //    }
+                //    else if (curFog.color.a > 0.5f && curFog.color.a < 0.8f) //Seen, but currently hidden
+                //    {
+                //        if (boardData[i - 1, j - 1] != 1)
+                //            mapTex.SetPixel(i, j, Color.white);
 
-                        mapTex.SetPixel(i, j, mapTex.GetPixel(i, j) - new Color(0.2f, 0.2f, 0.2f, 0));
-                    }
-
-                }
+                //        mapTex.SetPixel(i, j, mapTex.GetPixel(i, j) - new Color(0.2f, 0.2f, 0.2f, 0));
+                //    }
+                //}
             }
         }
+        if (firstUpdate)
+            firstUpdate = false;
         mapTex.Apply();
     }
 
@@ -158,35 +172,43 @@ public class MapLoader : MonoBehaviour
     private void UpdateMiniMap()
     {
         Vector2 playerPos = getPlayerPosition();
-        int[,] mapBoard = createMapBoard();
         List<Vector2> enemies = GetEnemyPositions();
         GameObject[,] fog = createFogTile();
 
-        mapBoard[(int)playerPos.x, (int)playerPos.y] = 3; //Player Pass
+        boardData[(int)prevPlayerPosition.x, (int)prevPlayerPosition.y] = 0;
+        foreach (Vector2 v in prevEnemyPositions)
+        {
+            boardData[(int)v.x, (int)v.y] = 0;
+        }
+        prevEnemyPositions.Clear(); //Empty prevPositions
+        //Passes to adjust the map
+        boardData[(int)playerPos.x, (int)playerPos.y] = 3; //Player Pass
+        prevPlayerPosition = playerPos; //prev Save
         foreach (Vector2 v in enemies) //Enemy Pass
         {
-            mapBoard[(int)v.x, (int)v.y] = 2;
+            prevEnemyPositions.Add(v);
+            boardData[(int)v.x, (int)v.y] = 2;
         }
 
         for (int i = -mapRadius; i <= mapRadius; i++) //Raw Pass
         {
             for (int j = -mapRadius; j <= mapRadius; j++)
             {
-                if (playerPos.x + i < 0 || playerPos.x + i >= mapBoard.GetLength(0) || playerPos.y + j < 0 || playerPos.y + j >= mapBoard.GetLength(1))
+                if (playerPos.x + i < 0 || playerPos.x + i >= boardData.GetLength(0) || playerPos.y + j < 0 || playerPos.y + j >= boardData.GetLength(1))
                 {
                     miniTex.SetPixel(i + mapRadius, j + mapRadius, Color.black);
                 }
                 else
                 {
-                    if (mapBoard[(int)playerPos.x + i, (int)playerPos.y + j] == 3)
+                    if (boardData[(int)playerPos.x + i, (int)playerPos.y + j] == 3)
                         miniTex.SetPixel(i + mapRadius, j + mapRadius, Color.green);
-                    else if (mapBoard[(int)playerPos.x + i, (int)playerPos.y + j] == 2)
+                    else if (boardData[(int)playerPos.x + i, (int)playerPos.y + j] == 2)
                         miniTex.SetPixel(i + mapRadius, j + mapRadius, Color.red);
-                    else if (mapBoard[(int)playerPos.x + i, (int)playerPos.y + j] == 0)
+                    else if (boardData[(int)playerPos.x + i, (int)playerPos.y + j] == 0)
                         miniTex.SetPixel(i + mapRadius, j + mapRadius, Color.white);
-                    else if (mapBoard[(int)playerPos.x + i, (int)playerPos.y + j] == 10)
+                    else if (boardData[(int)playerPos.x + i, (int)playerPos.y + j] == 10)
                         miniTex.SetPixel(i + mapRadius, j + mapRadius, Color.yellow);
-                    else if (mapBoard[(int)playerPos.x + i, (int)playerPos.y + j] == 15)
+                    else if (boardData[(int)playerPos.x + i, (int)playerPos.y + j] == 15)
                         miniTex.SetPixel(i + mapRadius, j + mapRadius, Color.cyan);
                     else
                         miniTex.SetPixel(i + mapRadius, j + mapRadius, Color.gray);
@@ -200,12 +222,11 @@ public class MapLoader : MonoBehaviour
                         }
                         else if (curFog.color.a > 0.5f && curFog.color.a < 0.8f) //Seen, but currently hidden
                         {
-                            if (mapBoard[(int)playerPos.x + i, (int)playerPos.y + j] != 1)
+                            if (boardData[(int)playerPos.x + i, (int)playerPos.y + j] != 1)
                                 miniTex.SetPixel(i + mapRadius, j + mapRadius, Color.white);
 
                             miniTex.SetPixel(i + mapRadius, j + mapRadius, miniTex.GetPixel(i + mapRadius, j + mapRadius) - new Color(0.2f, 0.2f, 0.2f, 0));
                         }
-
                     }
                 }
             }
@@ -263,10 +284,10 @@ public class MapLoader : MonoBehaviour
 
     void Update()
     {
-        if(gameObject.activeInHierarchy && constructed)
+        if(gameObject.activeInHierarchy)
         {
             //If the UI element needs to repeatedly update: Do it here.
-            updateMap();
+            //updateMap();
             UpdateMiniMap();
         }
     }

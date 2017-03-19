@@ -96,9 +96,9 @@ public static class ActualMarketGeneration {
 					boardMap[r,c] = 1;
 					//fill(255, 0, 0);
 					break;
-				case 'i': //solid tile
+				case 'i': //outer alley tile
 					currentTile = iA;
-					boardMap[r,c] = 1;
+					//boardMap[r,c] = 1; This might have been mislabelled
 					//fill(150, 0, 150);
 					break;
 				case 'g': //gateway tile/market tile

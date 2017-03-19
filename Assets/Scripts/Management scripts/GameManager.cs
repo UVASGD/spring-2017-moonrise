@@ -32,7 +32,9 @@ namespace Completed
         private bool enemiesMoving;                             
         private bool doingSetup = true;
 
-        private Queue<string> journalQueue;   
+        private Queue<string> journalQueue;
+        private Text CurrencyText;
+        private int prevCurrency;
                             
 
 
@@ -53,6 +55,8 @@ namespace Completed
             enemies = new List<Enemy>();
 
             journalQueue = new Queue<string>();
+            CurrencyText = GameObject.Find("MenuCanvas").transform.FindChild("CurrencyShow").FindChild("Text").GetComponent<Text>();
+            CurrencyText.text = "" + playerGoldPoints;
 
             boardScript = GetComponent<BoardManager>();
 
@@ -109,11 +113,18 @@ namespace Completed
 
         void Update()
         {
+            if(Input.GetKeyDown(KeyCode.Delete))
+            {
+                instance.timeLeft -= 100;
+            }
+
             if (playersTurn || enemiesMoving || doingSetup)
 
                 return;
 			
 			StartCoroutine(MoveEnemies());
+
+            CurrencyCheck();
         }
 
         public void AddEnemyToList(Enemy script)
@@ -198,6 +209,15 @@ namespace Completed
         {
             Queue<string> retJ = journalQueue;
             return retJ;
+        }
+
+        private void CurrencyCheck()
+        {
+            if (playerGoldPoints != prevCurrency)
+            {
+                CurrencyText.text = "" + playerGoldPoints;
+                prevCurrency = playerGoldPoints;
+            }
         }
 
 		/// <summary>
