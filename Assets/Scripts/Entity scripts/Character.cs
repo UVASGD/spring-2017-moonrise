@@ -125,6 +125,7 @@ namespace Completed
 			}
 			return 0;
 		}
+			
 
 		/// <summary>
 		/// Add the item to the inventory.
