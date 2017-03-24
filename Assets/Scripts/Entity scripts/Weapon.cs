@@ -230,6 +230,20 @@ namespace ItemSpace
 			}
 		}
 
+		public int[] AttackMinMax {
+			get {
+				double mult;
+				if (this.weight == WeaponWeight.Light)
+					mult = 0.9;
+				else if (this.weight == WeaponWeight.Medium)
+					mult = 0.8;
+				else 
+					mult = 0.7;
+				
+				return new int[] {(int)(attackMult * attackBonus * mult), (int)(attackMult*attackBonus)};
+			}
+		}
+
 		public int HpBonus {
 			get {
 				return hpBonus;

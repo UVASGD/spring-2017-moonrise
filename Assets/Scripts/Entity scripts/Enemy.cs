@@ -17,7 +17,7 @@ namespace Completed
 		public GameObject indicator;
 		public float sightRange;
 
-		public int Range;
+		public new float range;
 
         private Animator animator;
         private Transform target;
@@ -127,7 +127,7 @@ namespace Completed
 			hitbox.enabled = false;
 			hit = Physics2D.Linecast(new Vector2(transform.position.x,transform.position.y),new Vector2(target.position.x,target.position.y), blockingLayer);
 			hitbox.enabled = true;
-			float range = sightRange-(player.sneak);
+			range = sightRange-1-((player.baseSneak+(player.sneak))/1.333f*(player.sneaking ? 1 : 0)); //David: baseSneak=3, player.sneak is 1 at lvl 1 and 5 at lvl 4. Right now enemy range decreases by 1 per level
 			if(hit.transform == target && hit.distance <= range){
 				targetLoc = new Vector2(target.position.x,target.position.y);
 				if(path.Count == 0)
@@ -143,7 +143,7 @@ namespace Completed
 			if(init)
 				AP += speed;
 				
-			if(AP < 1)
+			if(AP < player.TotalSpeed)
 				return false;
 				
 			
@@ -295,5 +295,15 @@ namespace Completed
 			return true;
 		}
 		#endregion
+
+		public float Range {
+			get {
+				return this.range;
+			}
+			set {
+				range = value;
+			}
+		}
+		
     }
 }
