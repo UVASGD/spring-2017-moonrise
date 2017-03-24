@@ -36,19 +36,14 @@ namespace Completed
 		public int charm;
 		public int dodge;
 		public int bite;
-		public int rage;
+		public int lunge;
 		public int growl;
 		public int fortify;
 
-		// Player Stats
-		/*
-		public double rangedDamage = 1.0; // multipliers
-		public double meleeDamage = 1.0;
-		public double rangedAccuracy = 0.9; // percentages
-		public double meleeAccuracy = 0.9;
-		public double rangedBlock = 0.1;
-		public double meleeBlock = 0.1;
-		*/
+		private Boolean willLunge = false;
+
+		// Use of skills
+		public int ragingTurnsLeft;
 
 		// Displays
 		public Text displayText;
@@ -63,7 +58,7 @@ namespace Completed
 		public LayerMask sightBlocks, fogLayer;
 		private ArrayList revealed;
 
-		//Healthbar object
+		// Healthbar object
 		public GameObject hpBar;
 
         // Use this for initialization
@@ -87,9 +82,11 @@ namespace Completed
 			this.charm = 1;
 			this.dodge = 1;
 			this.bite = 1;
-			this.rage = 1;
+			this.lunge = 1;
 			this.growl = 1;
 			this.fortify = 1;
+
+			this.ragingTurnsLeft = -5;
 
 			//sightBlocks = LayerMask.NameToLayer("BlockingLayer");
 			//fogLayer = LayerMask.NameToLayer("Fog");
@@ -154,13 +151,12 @@ namespace Completed
 			if (Input.GetKeyDown (KeyCode.T)) {
 				actionText.text = "";
 				switchForm ();
-				GameManager.instance.playersTurn = false;
-				GameManager.instance.timeLeft--;
-				timeLeft = "Time Left: " + GameManager.instance.timeLeft;
-				UpdateText ();
-				return;
+				EndTurn ();
+
 			} else if (Input.GetMouseButtonDown (0)) {
-				if (GameManager.instance.enemyClicked) {
+				if (this.willLunge) {
+					Lunge ();
+				} else if (GameManager.instance.enemyClicked) {
 					Attack ();
 				}
 			} // Add skill points
@@ -180,6 +176,10 @@ namespace Completed
 				IncreaseSkill (7);
 			} else if (Input.GetKeyDown (KeyCode.Keypad8) || Input.GetKeyDown (KeyCode.Alpha8)) {
 				IncreaseSkill (8);
+			} // Use skills
+			else if (Input.GetKeyDown (KeyCode.R)) {
+				Debug.Log ("pressed R!");
+				EnableLunge ();
 			}
 				
             int horizontal = 0;
@@ -195,6 +195,64 @@ namespace Completed
                 AttemptMove(horizontal, vertical);
             }
         }
+
+		private void EnableLunge() {
+			if (!this.willLunge) {
+				GameManager.instance.print ("Click a tile to lunge to");
+
+				this.willLunge = true;
+			}
+		}
+
+		private void Lunge() {
+			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+			int xDir = (int)Math.Round(ray.origin.x - this.transform.position.x);
+			int yDir = (int)Math.Round(ray.origin.y - this.transform.position.y);
+
+			bool canLunge = base.AttemptMove (xDir, yDir);
+			if (canLunge) {
+				this.willLunge = false;
+
+				bool foundEnemy = false;
+
+				int damage = 0;
+				switch (this.lunge) {
+				case 1:
+					damage = 3;
+					break;
+				case 2:
+					damage = 5;
+					break;
+				case 3:
+					damage = 8;
+					break;
+				case 4:
+					damage = 13;
+					break;
+				}
+
+				// Attack everyone within one tile
+				Collider2D[] enemyColliders = Physics2D.OverlapBoxAll(new Vector2(ray.origin.x, ray.origin.y), new Vector2(2.9f, 2.9f), 0);
+				int i = 0;
+				while (i < enemyColliders.Length) {
+					// If collider found is an enemy, attack for 
+					if (enemyColliders[i].tag.Equals("Enemy")) {
+						foundEnemy = true;
+						enemyColliders [i].gameObject.transform.GetComponent<Character> ().LoseHp (damage);
+					}
+					i++;
+				}
+
+				if (foundEnemy) {
+					GameManager.instance.print ("You dealt " + damage + " damage to surrounding enemies");
+				}
+
+				EndTurn ();
+			} else { // There is something blocking the way
+				GameManager.instance.print ("You cannot lunge there.");
+			}
+		}
 
 		public void IncreaseSkill(int skill) {
 			int cost = 100 * (int)Math.Pow(2, GameManager.instance.level-1);
@@ -246,10 +304,10 @@ namespace Completed
 					}
 					break;
 				case 6:
-					if (this.rage < 8) {
-						this.rage += 1;
+					if (this.lunge < 8) {
+						this.lunge += 1;
 						// TODO
-						GameManager.instance.print ("Upgraded rage to level " + this.rage + "!");
+						GameManager.instance.print ("Upgraded lunge to level " + this.lunge + "!");
 						upgradedSkill = true;
 					}
 					break;
@@ -314,7 +372,7 @@ namespace Completed
 
 
 
-		protected override void AttemptMove(int xDir, int yDir)
+		protected override bool AttemptMove(int xDir, int yDir)
 		{
 			base.AttemptMove (xDir, yDir);
 
@@ -325,17 +383,13 @@ namespace Completed
 
 			// Only reset turn if can move
 			if (!willHitWall) {
-				GameManager.instance.timeLeft--;
-				timeLeft = "Time Left: " + GameManager.instance.timeLeft;
-				UpdateText ();
-
-				CheckIfGameOver ();
-
-				GameManager.instance.playersTurn = false;
+				EndTurn ();
 			}
 
 			if (hit.transform != null && !canMove)
 				OnCantMove (hit.transform);
+
+			return false;
         }
 
 		protected void Attack()
