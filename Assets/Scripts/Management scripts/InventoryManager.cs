@@ -10,8 +10,9 @@ namespace Completed
 	public class InventoryManager : MonoBehaviour
 	{
 		public GameObject itemPrefab;
+		public GameObject inventoryBoxPrefab;
 
-		public GameObject inventoryBox;
+		private GameObject inventoryBox;
 		private Text inventoryText, bagText;
 		private GameObject weaponBox, armorBox, bag, itemGrid;
 
@@ -26,6 +27,9 @@ namespace Completed
 		// Use this for initialization
 		void Start ()
 		{
+			inventoryBox = Instantiate (inventoryBoxPrefab);
+			inventoryBox.transform.SetParent (GameObject.Find ("Canvas").transform);
+
 			Transform inventoryTransform = inventoryBox.transform;
 			inventoryText = inventoryTransform.GetChild (0).gameObject.GetComponent<Text>();
 			weaponBox = inventoryTransform.GetChild (1).gameObject;
