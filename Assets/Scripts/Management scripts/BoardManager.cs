@@ -28,22 +28,25 @@ public class BoardManager : MonoBehaviour, SerialOb {
 		Entertainment_NI,
 		Government_NI,
 		Temple_NI,
-		University_NI,
+		University,
 		Estates_NI
 	}
 
 	private Dictionary<string,areas> areaLookup = new Dictionary<string, areas>{
 		{"Market", areas.Market},
-		{"Slums", areas.Slums}
+		{"Slums", areas.Slums},
+		{"University", areas.University}
 	};
 
 	//References to the map generators
 	private MazeGenerator2 slumGen;
 	private GenerateMarket marketGen;
+	private UniversityGenerator universityGen;
 	private Dictionary<areas,mapGenerator> generators = new Dictionary<areas,mapGenerator>();
 	public areas area = areas.Market;
 	private Dictionary<areas,int[]> startLocs = new Dictionary<areas,int[]>{
 		{areas.Market, new int[2]{60,60}},
+		{areas.University, new int[2]{60,20}},
 		{areas.Slums, new int[2]{4,4}}
 	};
 
@@ -96,9 +99,11 @@ public class BoardManager : MonoBehaviour, SerialOb {
 		
 		slumGen = GetComponent<MazeGenerator2>();
 		marketGen = GetComponent<GenerateMarket>();
+		universityGen = GetComponent<UniversityGenerator> ();
 
 		generators.Add(areas.Market, marketGen);
 		generators.Add(areas.Slums, slumGen);
+		generators.Add (areas.University, universityGen);
 
 		mapGenerator generator = generators[area];
 
@@ -147,6 +152,8 @@ public class BoardManager : MonoBehaviour, SerialOb {
 			}
 			break;
 		case areas.Slums:
+			break;
+		case areas.University:
 			break;
 		}
 	}
