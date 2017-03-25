@@ -27,7 +27,8 @@ namespace Completed
 
         private Text levelText, actionText;                                 
         private GameObject levelImage;                        
-        private BoardManager boardScript;   
+        private BoardManager boardScript;
+		private InventoryManager inventoryScript;
         public int level = 1;                                  
         private List<Enemy> enemies;
 		public Player player;
@@ -54,6 +55,7 @@ namespace Completed
 			player = GameObject.Find("Player").GetComponent<Player>();
 
             boardScript = GetComponent<BoardManager>();
+			inventoryScript = GetComponent<InventoryManager> ();
 
             InitGame();
         }

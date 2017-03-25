@@ -183,7 +183,6 @@ namespace Completed
 				if (GameManager.instance.enemyClicked) {
 					Attack ();
 				}
-			
 			}
 				 
 				// Upgrade Skills
@@ -448,7 +447,9 @@ namespace Completed
 				
 			} else if (character is Chest) {
 				Chest chest = (Chest)character;
-				chest.ObtainItem (this);
+				AddItem (chest.item);
+				GameManager.instance.print ("A " + chest.item.Name + " was added to inventory");
+				Destroy (chest.gameObject);
 			}
 		}
 

@@ -72,7 +72,7 @@ namespace Completed
 
 			// Placeholder weapon values
 
-			Weapon myWeapon = (Weapon)(this.EquippedItems.Get(ItemClass.Weapon));
+			Weapon myWeapon = this.EquippedItems.Weapon;
 
 			int weaponMin;
 			int weaponMax;

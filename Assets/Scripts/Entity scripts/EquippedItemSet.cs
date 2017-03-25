@@ -8,13 +8,12 @@ namespace ItemSpace
 		/* An item can only be equipped if the no item of the same type is currently equipped.
 		 */
 
-		private Dictionary<ItemClass, EquipItem> items;
+		private Weapon weapon;
+		private Armor armor;
 
 		public EquippedItemSet()
 		{
-			items = new Dictionary<ItemClass, EquipItem>();
-			items.Add (ItemClass.Helmet, null);
-			items.Add (ItemClass.Weapon, null);
+			
 		}
 
 		/// <summary>
@@ -24,12 +23,18 @@ namespace ItemSpace
 		/// </summary>
 		/// <param name="item">Item.</param>
 		/// <returns>Whether the item was successfully equipped.</returns>
-		public bool Equip(EquipItem item)
+		public bool Equip(Item item)
 		{
-			ItemClass ic = item.ItemClass;
-			if (items.ContainsKey (ic) && items [ic] == null) {
-				items [ic] = item;
-				return true;
+			if(item is Weapon) {
+				if(weapon == null) {
+					weapon = (Weapon)item;
+					return true;
+				}
+			} else if (item is Armor) {
+				if(armor == null) {
+					armor = (Armor)item;
+					return true;
+				}
 			}
 			return false;
 		}
@@ -41,24 +46,26 @@ namespace ItemSpace
 		/// <returns>The unequipped item.</returns>
 		public Item Unequip(ItemClass ic)
 		{
-			if (items.ContainsKey (ic)) {
-				Item item = items [ic];
-				items [ic] = null;
-				return item;
+			Item val = null;
+			if(ic == ItemClass.Weapon) {
+				val = weapon;
+				weapon = null;
+			} else if (ic == ItemClass.Armor) {
+				val = armor;
+				armor = null;
 			}
-			return null;
+			return val;
 		}
 
-		public Item Get(ItemClass ic)
-		{
-			if (items.ContainsKey (ic))
-				return items [ic];
-			return null;
-		}
-
-		public Dictionary<ItemClass, EquipItem> Items {
+		public Weapon Weapon {
 			get {
-				return items;
+				return weapon;
+			}
+		}
+
+		public Armor Armor {
+			get {
+				return armor;
 			}
 		}
 	}
