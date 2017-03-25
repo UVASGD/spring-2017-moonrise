@@ -1,0 +1,902 @@
+fileFormatVersion: 2
+guid: 682d9a7486226ba43a2bdb4ed9a0cd56
+timeCreated: 1490409416
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: reverse spritesheet_0
+    21300002: reverse spritesheet_1
+    21300004: reverse spritesheet_2
+    21300006: reverse spritesheet_3
+    21300008: reverse spritesheet_4
+    21300010: reverse spritesheet_5
+    21300012: reverse spritesheet_6
+    21300014: reverse spritesheet_7
+    21300016: reverse spritesheet_8
+    21300018: reverse spritesheet_9
+    21300020: reverse spritesheet_10
+    21300022: reverse spritesheet_11
+    21300024: reverse spritesheet_12
+    21300026: reverse spritesheet_13
+    21300028: reverse spritesheet_14
+    21300030: reverse spritesheet_15
+    21300032: reverse spritesheet_16
+    21300034: reverse spritesheet_17
+    21300036: reverse spritesheet_18
+    21300038: reverse spritesheet_19
+    21300040: reverse spritesheet_20
+    21300042: reverse spritesheet_21
+    21300044: reverse spritesheet_22
+    21300046: reverse spritesheet_23
+    21300048: reverse spritesheet_24
+    21300050: reverse spritesheet_25
+    21300052: reverse spritesheet_26
+    21300054: reverse spritesheet_27
+    21300056: reverse spritesheet_28
+    21300058: reverse spritesheet_29
+    21300060: reverse spritesheet_30
+    21300062: reverse spritesheet_31
+    21300064: reverse spritesheet_32
+    21300066: reverse spritesheet_33
+    21300068: reverse spritesheet_34
+    21300070: reverse spritesheet_35
+    21300072: reverse spritesheet_36
+    21300074: reverse spritesheet_37
+    21300076: reverse spritesheet_38
+    21300078: reverse spritesheet_39
+    21300080: reverse spritesheet_40
+    21300082: reverse spritesheet_41
+    21300084: reverse spritesheet_42
+    21300086: reverse spritesheet_43
+    21300088: reverse spritesheet_44
+    21300090: reverse spritesheet_45
+    21300092: reverse spritesheet_46
+    21300094: reverse spritesheet_47
+    21300096: reverse spritesheet_48
+    21300098: reverse spritesheet_49
+    21300100: reverse spritesheet_50
+    21300102: reverse spritesheet_51
+    21300104: reverse spritesheet_52
+    21300106: reverse spritesheet_53
+    21300108: reverse spritesheet_54
+    21300110: reverse spritesheet_55
+    21300112: reverse spritesheet_56
+    21300114: reverse spritesheet_57
+    21300116: reverse spritesheet_58
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: reverse spritesheet_0
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 1803
+        width: 136
+        height: 279
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_1
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 1803
+        width: 137
+        height: 279
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_2
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1803
+        width: 137
+        height: 279
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_3
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 1803
+        width: 136
+        height: 279
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_4
+      rect:
+        serializedVersion: 2
+        x: 978
+        y: 1803
+        width: 136
+        height: 279
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_5
+      rect:
+        serializedVersion: 2
+        x: 1211
+        y: 1803
+        width: 136
+        height: 279
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_6
+      rect:
+        serializedVersion: 2
+        x: 1397
+        y: 1799
+        width: 235
+        height: 301
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_7
+      rect:
+        serializedVersion: 2
+        x: 1682
+        y: 1803
+        width: 126
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_8
+      rect:
+        serializedVersion: 2
+        x: 1863
+        y: 1799
+        width: 234
+        height: 301
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_9
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 1503
+        width: 126
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_10
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 1499
+        width: 235
+        height: 302
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_11
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 1503
+        width: 126
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_12
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 1503
+        width: 126
+        height: 270
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_13
+      rect:
+        serializedVersion: 2
+        x: 931
+        y: 1499
+        width: 235
+        height: 302
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_14
+      rect:
+        serializedVersion: 2
+        x: 1216
+        y: 1503
+        width: 126
+        height: 270
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_15
+      rect:
+        serializedVersion: 2
+        x: 1448
+        y: 1503
+        width: 128
+        height: 270
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_16
+      rect:
+        serializedVersion: 2
+        x: 1682
+        y: 1503
+        width: 126
+        height: 270
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_17
+      rect:
+        serializedVersion: 2
+        x: 1915
+        y: 1503
+        width: 126
+        height: 270
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_18
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 1203
+        width: 126
+        height: 270
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_19
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 1203
+        width: 126
+        height: 270
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_20
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 1203
+        width: 126
+        height: 270
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_21
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 1203
+        width: 126
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_22
+      rect:
+        serializedVersion: 2
+        x: 983
+        y: 1203
+        width: 126
+        height: 279
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_23
+      rect:
+        serializedVersion: 2
+        x: 1216
+        y: 1203
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_24
+      rect:
+        serializedVersion: 2
+        x: 1448
+        y: 1203
+        width: 128
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_25
+      rect:
+        serializedVersion: 2
+        x: 1682
+        y: 1203
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_26
+      rect:
+        serializedVersion: 2
+        x: 1915
+        y: 1203
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_27
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 903
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_28
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 903
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_29
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 903
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_30
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 903
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_31
+      rect:
+        serializedVersion: 2
+        x: 983
+        y: 903
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_32
+      rect:
+        serializedVersion: 2
+        x: 1216
+        y: 903
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_33
+      rect:
+        serializedVersion: 2
+        x: 1448
+        y: 903
+        width: 128
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_34
+      rect:
+        serializedVersion: 2
+        x: 1630
+        y: 899
+        width: 235
+        height: 302
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_35
+      rect:
+        serializedVersion: 2
+        x: 1910
+        y: 903
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_36
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 599
+        width: 234
+        height: 302
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_37
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 602
+        width: 129
+        height: 291
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_38
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 602
+        width: 126
+        height: 291
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_39
+      rect:
+        serializedVersion: 2
+        x: 740
+        y: 602
+        width: 127
+        height: 291
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_40
+      rect:
+        serializedVersion: 2
+        x: 978
+        y: 602
+        width: 127
+        height: 291
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_41
+      rect:
+        serializedVersion: 2
+        x: 1216
+        y: 602
+        width: 126
+        height: 291
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_42
+      rect:
+        serializedVersion: 2
+        x: 1444
+        y: 602
+        width: 127
+        height: 291
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_43
+      rect:
+        serializedVersion: 2
+        x: 1672
+        y: 602
+        width: 127
+        height: 291
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_44
+      rect:
+        serializedVersion: 2
+        x: 1910
+        y: 602
+        width: 127
+        height: 291
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_45
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 303
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_46
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 303
+        width: 129
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_47
+      rect:
+        serializedVersion: 2
+        x: 507
+        y: 303
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_48
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 303
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_49
+      rect:
+        serializedVersion: 2
+        x: 983
+        y: 303
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_50
+      rect:
+        serializedVersion: 2
+        x: 1211
+        y: 303
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_51
+      rect:
+        serializedVersion: 2
+        x: 1439
+        y: 303
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_52
+      rect:
+        serializedVersion: 2
+        x: 1677
+        y: 303
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_53
+      rect:
+        serializedVersion: 2
+        x: 1915
+        y: 303
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_54
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 3
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_55
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 3
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_56
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 3
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_57
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 3
+        width: 112
+        height: 298
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: reverse spritesheet_58
+      rect:
+        serializedVersion: 2
+        x: 958
+        y: 3
+        width: 133
+        height: 298
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
