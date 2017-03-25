@@ -36,22 +36,14 @@ namespace Completed
 		public int charm;
 		public int dodge;
 		public int bite;
-		public int rage;
+		public int lunge;
 		public int growl;
 		public int fortify;
 
-		//Abilities
-		public Boolean sneaking = false;
-
-		// Player Stats
-		/*
-		public double rangedDamage = 1.0; // multipliers
-		public double meleeDamage = 1.0;
-		public double rangedAccuracy = 0.9; // percentages
-		public double meleeAccuracy = 0.9;
-		public double rangedBlock = 0.1;
-		public double meleeBlock = 0.1;
-		*/
+		// Abilities
+		private bool willLunge = false;
+		private int lungeCooldown;
+		public bool sneaking = false;
 
 		// Displays
 		public Text displayText;
@@ -67,7 +59,7 @@ namespace Completed
 		public LayerMask sightBlocks, fogLayer;
 		private ArrayList revealed;
 
-		//Healthbar object
+		// Healthbar object
 		public GameObject hpBar;
 
 		//transformation variables
@@ -103,19 +95,21 @@ namespace Completed
 
 			hitbox = GetComponent<BoxCollider2D> ();
 
-			//initialize skill levels if they weren't loaded
+//initialize skill levels if they weren't loaded
 			if(this.shoot == 0){
-				this.shoot = 1;
-				this.sneak = 1;
-				this.charm = 1;
-				this.dodge = 1;
-				this.bite = 1;
-				this.rage = 1;
-				this.growl = 1;
-				this.fortify = 1;
+        this.shoot = 1;
+        this.sneak = 1;
+        this.charm = 1;
+        this.dodge = 1;
+        this.bite = 1;
+        this.lunge = 1;
+        this.growl = 1;
+        this.fortify = 1;
+
 			}
 			Debug.Log("setVals");
 
+			this.lungeCooldown = 0;
 
 			//sightBlocks = LayerMask.NameToLayer("BlockingLayer");
 			//fogLayer = LayerMask.NameToLayer("Fog");
@@ -201,13 +195,12 @@ namespace Completed
 			if (Input.GetKeyDown (KeyCode.T)) {
 				actionText.text = "";
 				switchForm ();
-				GameManager.instance.playersTurn = false;
-				GameManager.instance.timeLeft--;
-				timeLeft = "Time Left: " + GameManager.instance.timeLeft;
-				UpdateText ();
-				return;
+				EndTurn ();
+
 			} else if (Input.GetMouseButtonDown (0)) {
-				if (GameManager.instance.enemyClicked) {
+				if (this.willLunge) {
+					Lunge ();
+				} else if (GameManager.instance.enemyClicked) {
 					Attack ();
 				}
 			}
@@ -224,7 +217,7 @@ namespace Completed
 			} else if ((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && (Input.GetKeyDown (KeyCode.Keypad5) || Input.GetKeyDown (KeyCode.Alpha5))) {
 				IncreaseSkill (5); //bite
 			} else if ((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && (Input.GetKeyDown (KeyCode.Keypad6) || Input.GetKeyDown (KeyCode.Alpha6))) {
-				IncreaseSkill (6); //rage	
+				IncreaseSkill (6); //lunge	
 			} else if ((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && (Input.GetKeyDown (KeyCode.Keypad7) || Input.GetKeyDown (KeyCode.Alpha7))) {
 				IncreaseSkill (7); //growl
 			} else if ((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && (Input.GetKeyDown (KeyCode.Keypad8) || Input.GetKeyDown (KeyCode.Alpha8))) {
@@ -244,7 +237,7 @@ namespace Completed
 			} else if (Input.GetKeyDown (KeyCode.Keypad5) || Input.GetKeyDown (KeyCode.Alpha5)) {
 				 //bite
 			} else if (Input.GetKeyDown (KeyCode.Keypad6) || Input.GetKeyDown (KeyCode.Alpha6)) {
-				//rage
+				EnableLunge (); //lunge
 			} else if (Input.GetKeyDown (KeyCode.Keypad7) || Input.GetKeyDown (KeyCode.Alpha7)) {
 				 //growl
 			} else if (Input.GetKeyDown (KeyCode.Keypad8) || Input.GetKeyDown (KeyCode.Alpha8)) {
@@ -267,6 +260,73 @@ namespace Completed
 			}
 		}
 
+		private void EnableLunge() {
+			if (!this.willLunge && this.lungeCooldown < 1) {
+				GameManager.instance.print ("Click a tile to lunge to");
+				this.willLunge = true;
+			} else {
+				GameManager.instance.print ("You can't lunge right now");
+			}
+		}
+
+		private void Lunge() {
+			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+			int xDir = (int)Math.Round(ray.origin.x - this.transform.position.x);
+			int yDir = (int)Math.Round(ray.origin.y - this.transform.position.y);
+
+			bool canLunge = base.AttemptMove (xDir, yDir);
+			if (canLunge) {
+				this.willLunge = false;
+
+				bool foundEnemy = false;
+
+				int damage = 0;
+				switch (this.lunge) {
+				case 1:
+					damage = 3;
+					this.lungeCooldown = 6;
+					break;
+				case 2:
+					damage = 5;
+					this.lungeCooldown = 5;
+					break;
+				case 3:
+					damage = 8;
+					this.lungeCooldown = 5;
+					break;
+				case 4:
+					damage = 12;
+					this.lungeCooldown = 4;
+					break;
+				case 5:
+					damage = 17;
+					this.lungeCooldown = 4;
+					break;
+				}
+
+				// Attack everyone within one tile
+				Collider2D[] enemyColliders = Physics2D.OverlapBoxAll(new Vector2(ray.origin.x, ray.origin.y), new Vector2(2.9f, 2.9f), 0);
+				int i = 0;
+				while (i < enemyColliders.Length) {
+					// If collider found is an enemy, attack for 
+					if (enemyColliders[i].tag.Equals("Enemy")) {
+						foundEnemy = true;
+						enemyColliders [i].gameObject.transform.GetComponent<Character> ().LoseHp (damage);
+					}
+					i++;
+				}
+
+				if (foundEnemy) {
+					GameManager.instance.print ("You dealt " + damage + " damage to surrounding enemies");
+				}
+
+				EndTurn ();
+			} else { // There is something blocking the way
+				GameManager.instance.print ("You cannot lunge there.");
+			}
+		}
+			
 		public void IncreaseSkill (int skill)
 		{
 			int cost = 100 * (int)Math.Pow (2, GameManager.instance.level - 1);
@@ -318,10 +378,9 @@ namespace Completed
 					}
 					break;
 				case 6:
-					if (this.rage < 5) {
-						this.rage += 1;
-						// TODO
-						GameManager.instance.print ("Upgraded rage to level " + this.rage + "!");
+					if (this.lunge < 5) {
+						this.lunge += 1;
+						GameManager.instance.print ("Upgraded lunge to level " + this.lunge + "!");
 						upgradedSkill = true;
 					}
 					break;
@@ -384,9 +443,8 @@ namespace Completed
 			}
 		}
 
-
-
-		protected override void AttemptMove (int xDir, int yDir)
+	
+		protected override bool AttemptMove (int xDir, int yDir)
 		{
 			base.AttemptMove (xDir, yDir);
 
@@ -397,18 +455,14 @@ namespace Completed
 
 			// Only reset turn if can move
 			if (!willHitWall) {
-				GameManager.instance.timeLeft--;
-				timeLeft = "Time Left: " + GameManager.instance.timeLeft;
-				UpdateText ();
-
-				CheckIfGameOver ();
-
-				GameManager.instance.playersTurn = false;
+				EndTurn ();
 			}
 
 			if (hit.transform != null && !canMove)
 				OnCantMove (hit.transform);
-		}
+			
+			return false;
+        }
 
 		protected void Attack ()
 		{
@@ -420,6 +474,7 @@ namespace Completed
 		protected void EndTurn ()
 		{
 			GameManager.instance.timeLeft--;
+			this.lungeCooldown--;
 			timeLeft = "Time Left: " + GameManager.instance.timeLeft;
 			UpdateText ();
 
@@ -614,16 +669,6 @@ namespace Completed
 		//Serialization methods
 		public override XElement serialize ()
 		{
-			/*
-			public int shoot;
-			public int sneak;
-			public int charm;
-			public int dodge;
-			public int bite;
-			public int rage;
-			public int growl;
-			public int fortify;
-			*/
 			XElement node = new XElement ("player",
                 new XElement ("locationX", this.transform.localPosition.x),
                 new XElement ("locationY", this.transform.localPosition.y),
@@ -634,7 +679,7 @@ namespace Completed
 				new XElement ("charm", charm),
 				new XElement ("dodge", dodge),
 				new XElement ("bite", bite),
-				new XElement ("rage", rage),
+				new XElement ("lunge", lunge),
 				new XElement ("growl", growl),
 				new XElement ("fortify", fortify),
 				new XElement ("level", GameManager.instance.level),
@@ -682,7 +727,7 @@ namespace Completed
 			charm = Convert.ToInt32(info[6].Value);
 			dodge = Convert.ToInt32(info[7].Value);
 			bite = Convert.ToInt32(info[8].Value);
-			rage = Convert.ToInt32(info[9].Value);
+			lunge = Convert.ToInt32(info[9].Value);
 			growl = Convert.ToInt32(info[10].Value);
 			fortify = Convert.ToInt32(info[11].Value);
 			GameManager.instance.level = Convert.ToInt32(info[12].Value);
