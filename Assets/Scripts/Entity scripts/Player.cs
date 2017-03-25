@@ -151,7 +151,9 @@ namespace Completed
         {
             if (!GameManager.instance.playersTurn) return;
 
-			if (Input.GetKeyDown (KeyCode.T)) {
+			if (Input.GetKeyDown (KeyCode.Tab)){
+				SceneManager.LoadScene(0);
+			}else if (Input.GetKeyDown (KeyCode.T)) {
 				actionText.text = "";
 				switchForm ();
 				GameManager.instance.playersTurn = false;
@@ -361,7 +363,11 @@ namespace Completed
 			//Debug.Log("#TRIGGERED");
             if (other.tag == "Exit")
             {
-                Invoke("Restart", restartLevelDelay);
+				Debug.Log("Exit");
+				GameManager.instance.Save();
+				dataSlave.instance.newGame = false;
+				SceneManager.LoadScene(((ExitPos)(other.GetComponent<ExitPos>())).getTarget());
+                //Invoke("Restart", restartLevelDelay);
                 enabled = false;
             }
             else if (other.tag == "Item")
@@ -423,8 +429,8 @@ namespace Completed
 			this.CurrentHP -= loss;
 			if (this.currentHP < 0) {
 				this.currentHP = 0;
-			} else if (this.currentHP > 100) {
-				this.currentHP = 100;
+			} else if (this.currentHP > this.baseHP*(GameManager.instance.isWerewolf?2:1)) {
+				this.currentHP = this.baseHP*(GameManager.instance.isWerewolf?2:1);
 			}
 			/*String message;
 			if (loss > 0) {
@@ -538,6 +544,7 @@ namespace Completed
 			//LocationX, locationY, werewolf status, character object
 			List<XElement> info = s.Elements().ToList<XElement>();
 			Vector3 v = new Vector3(0,0,0);
+			Debug.Log(info[0]);
 			v.x = (float)Convert.ToDouble(info[0].Value);
 			v.y = (float)Convert.ToDouble(info[1].Value);
 			this.transform.localPosition = v;

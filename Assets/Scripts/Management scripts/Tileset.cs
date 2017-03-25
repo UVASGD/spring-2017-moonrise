@@ -16,14 +16,15 @@ public class Tileset : MonoBehaviour {
 
 	public void buildMap(char[,] tiles){
 		GameObject tileChoice = null;
-		tileMap = new char[tiles.GetLength(1)-1,tiles.GetLength(0)];
-		boardMap = new int[tiles.GetLength(1)-1,tiles.GetLength(0)];
+		tileMap = new char[tiles.GetLength(0),tiles.GetLength(1)-1];
+		boardMap = new int[tiles.GetLength(0),tiles.GetLength(1)-1];
 		Vector2 offset = new Vector2(0,0);
-		for(int x = 0; x < tiles.GetLength(1)-1; x ++){
-			for(int y = 0; y < tiles.GetLength(0); y ++){
+		Debug.Log(tiles.GetLength(1) + " - " + tiles.GetLength(0));
+		for(int y = 0; y < tiles.GetLength(1)-1; y ++){
+			for(int x = 0; x < tiles.GetLength(0); x ++){
 				offset.x = 0;
 				offset.y = 0;
-				tileMap[x,y] = tiles[x,y];
+				tileMap[y,x] = tiles[x,y];
 				switch(tiles[x,y]){
 				case 'n':
 					tileChoice = northWalls[Random.Range(0, northWalls.Length)];

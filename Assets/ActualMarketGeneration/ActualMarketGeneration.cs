@@ -105,8 +105,8 @@ public static class ActualMarketGeneration {
 					break;
 				case 'i': //solid tile
 					currentTile = iA;
-					boardMap[c,r] = 1;
-					tileMap[r,c] = 'w';
+					boardMap[c,r] = 0;
+					tileMap[r,c] = 'f';
 					//fill(150, 0, 150);
 					break;
 				case 'g': //gateway tile/market tile
@@ -171,7 +171,17 @@ public static class ActualMarketGeneration {
 				}
 			}
 		}
-
+		string logOut = "";
+		//int[,] fixMap = new int[120, 120];
+		for(int i = 0; i < boardMap.GetLength(1); i++){
+			for(int y = 0; y < boardMap.GetLength(0); y++){
+				logOut += boardMap[y,i]+" ";
+		//		fixMap[i,y] = boardMap[y,i];
+			}
+			logOut += "\n";
+		}
+		Debug.Log(logOut);
+		//boardMap = fixMap;
 		return boardMap;
 	}
 

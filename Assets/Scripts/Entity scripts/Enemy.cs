@@ -249,7 +249,7 @@ namespace Completed
 					visible = true;
 				}
 				else{
-					visible = false;
+					visible = true;
 					//c.a = 0;
 					//this.GetComponent<SpriteRenderer>().color = c;
 				}

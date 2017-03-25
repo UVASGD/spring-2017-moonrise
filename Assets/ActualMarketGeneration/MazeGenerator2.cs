@@ -33,9 +33,20 @@ public class MazeGenerator2 : mapGenerator {
 		for (int i = 0; i < rooms.Length; i++) {
 			rooms [i] = new Room (minRoomSize, maxRoomSize); //initializes each room
 		}
-		Debug.Log("mazegen initialized");	
+		Debug.Log("mazegen initialized");
 		GeneratePath ();
 		//StartCoroutine ("GeneratePath");
+		string logOut = "";
+		//int[,] fixMap = new int[radius*3, radius*3];
+		for(int x = 0; x < boardMap.GetLength(1); x++){
+			for(int y = 0; y < boardMap.GetLength(0); y++){
+				logOut += boardMap[y,x]+" ";
+		//		fixMap[x,y] = boardMap[y,x];
+			}
+			logOut += "\n";
+		}
+		Debug.Log(logOut);
+		//boardMap = fixMap;
 		return boardMap;
 	}
 
@@ -54,6 +65,7 @@ public class MazeGenerator2 : mapGenerator {
 				if ((h == 0 || h == radius - 1 || w == 0 || w == radius - 1) || !(h % 2 == 1 && w % 2 == 1)) {
 					grid [w, h].obj = wall;
 					grid [w, h].obj.transform.position = new Vector3 (w, h, 0);
+					grid [w, h].passable = 1;
 					//Instantiate (wall,new Vector3 (w, h, 0), Quaternion.identity) as GameObject;
 				} else {
 					grid [w, h].obj = floor;
@@ -160,8 +172,8 @@ public class MazeGenerator2 : mapGenerator {
 		}
 
 		//for each tile of the maze, expand it to a 3x3 set of tiles in the larger grid
-		for (int h = 0; h < radius; h++) {
-			for (int w = 0; w < radius; w++) {
+		for (int w = 0; w < radius; w++) {
+			for (int h = 0; h < radius; h++) {
 				largeGrid[w*3,h*3] = new Tile();
 				largeGrid[w*3+1,h*3] = new Tile();
 				largeGrid[w*3+2,h*3] = new Tile();
@@ -244,6 +256,8 @@ public class MazeGenerator2 : mapGenerator {
 							room.tiles [w, h].obj = Instantiate (floor) as GameObject;
 						}*/
 						if (h < radius * 3 - 15) {
+							boardMap[w+(int)roomParents[iter].transform.position.x,h+(int)roomParents[iter].transform.position.y] = 0;
+							tileMap[w+(int)roomParents[iter].transform.position.x,h+(int)roomParents[iter].transform.position.y] = 'f';
 							room.tiles [w, h].obj = Instantiate (floor) as GameObject;
 							//yield return new WaitForSeconds (speed);
 							room.tiles [w, h].obj.transform.parent = roomParents [iter].transform;
@@ -263,14 +277,15 @@ public class MazeGenerator2 : mapGenerator {
 			for (int w = 0; w < radius * 3; w++) {
 				Destroy (largeGrid [w, h].obj);
 				Instantiate (floor, new Vector3 (w, h, 0), Quaternion.identity);
+				boardMap[w,h] = 0;
+				tileMap[h,w] = 'f';
 			}
 		}
-		for (int h = radius * 3; h < radius * 3 + 12; h++) {
+		/*for (int h = radius * 3; h < radius * 3 + 12; h++) {
 			for (int w = 0; w < radius * 3; w += 8) {
 				Instantiate (dock, new Vector3 (w, h, 0), Quaternion.identity);
 				Instantiate (dock, new Vector3 (w + 1, h, 0), Quaternion.identity);
 				Instantiate (dock, new Vector3 (w + 2, h, 0), Quaternion.identity);
-				print (h);
 				if (h == 68) {
 					int rand = Random.Range (0, 2);
 					print ("Random: " + rand);
@@ -289,7 +304,7 @@ public class MazeGenerator2 : mapGenerator {
 				if (w + 7 < radius * 3)
 					Instantiate (water, new Vector3 (w + 7, h, 0), Quaternion.identity);
 			}
-		}
+		}*/
 		return boardMap;
 	}
 }

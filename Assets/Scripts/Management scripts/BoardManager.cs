@@ -32,9 +32,14 @@ public class BoardManager : MonoBehaviour, SerialOb {
 		Estates_NI
 	}
 
-	private Dictionary<string,areas> areaLookup = new Dictionary<string, areas>{
+	public Dictionary<string,areas> areaLookup = new Dictionary<string, areas>{
 		{"Market", areas.Market},
 		{"Slums", areas.Slums}
+	};
+
+	public Dictionary<areas,string> reverseAreaLookup = new Dictionary<areas, string>{
+		{areas.Market, "Market"},
+		{areas.Slums, "Slums"}
 	};
 
 	//References to the map generators
@@ -47,8 +52,9 @@ public class BoardManager : MonoBehaviour, SerialOb {
 		{areas.Slums, new int[2]{4,4}}
 	};
 
-	private Dictionary<areas,int[]> entries = new Dictionary<areas,int[]>{
+	public Dictionary<areas,int[]> entries = new Dictionary<areas,int[]>{
 	};
+
 
 	[SerializeField]
 	private LayerMask blockingLayer;
@@ -113,6 +119,7 @@ public class BoardManager : MonoBehaviour, SerialOb {
 		Debug.Log(loc);
 		player.transform.localPosition = loc;
 
+
         //Loops through entire board, creating fog
         for (int x = -1; x < columns + 1; x++)
         {
@@ -129,24 +136,39 @@ public class BoardManager : MonoBehaviour, SerialOb {
 	/// Depending on the area, parses the map and creates exits to other zones
 	/// </summary>
 	public void BuildExits(){
+		int entry = 0;
 		switch(area){
 		case areas.Market:
-			int entry = 0;
-			Debug.Log(boardMap.GetLength(0));
-			for(int y = 0; y < boardMap.GetLength(0); y++){
+			for(int y = 0; y < boardMap.GetLength(1); y++){
 				int[] start = new int[2];
-				start[1] = 0;
+				start[0] = 1;
 				if(boardMap[0,y] == 0){
 					entry++;
-					if(entry == 2){
-						start[0] = y;
+					if(entry == 1){
+						start[1] = y;
 						entries[areas.Slums] = start;
 					}
-					Instantiate(door1, new Vector2(0, y), Quaternion.identity);//Create the floor exit
+					GameObject ob = (GameObject)Instantiate(door1, new Vector2(0, y), Quaternion.identity);//Create the floor exit
+					((ExitPos)ob.GetComponent<ExitPos>()).setTarget("Slums");
 				}
 			}
 			break;
 		case areas.Slums:
+			
+			for(int y = 0; y < boardMap.GetLength(1); y++){
+				int[] start = new int[2];
+				start[0] = boardMap.GetLength(0)-2;
+				if(boardMap[boardMap.GetLength(0)-1,y] == 0){
+					entry++;
+					if(entry == 1){
+						start[1] = y;
+						Debug.Log("made Market entrance");
+						entries[areas.Market] = start;
+					}
+					GameObject ob = (GameObject)Instantiate(door1, new Vector2(boardMap.GetLength(1)-1, y), Quaternion.identity);//Create the floor exit
+					((ExitPos)ob.GetComponent<ExitPos>()).setTarget("Market");
+				}
+			}
 			break;
 		}
 	}
@@ -210,6 +232,15 @@ public class BoardManager : MonoBehaviour, SerialOb {
 
 		BuildExits();
 
+
+
+		if(!dataSlave.instance.newGame){
+			if(dataSlave.instance.curLoc.Value != reverseAreaLookup[area]){
+				string fromArea = dataSlave.instance.curLoc.Value;
+				int[] pos  = entries[areaLookup[fromArea]];
+				player.transform.position = new Vector3(pos[0],pos[1],0);
+			}
+		}
     }
 
 
@@ -316,15 +347,19 @@ public class BoardManager : MonoBehaviour, SerialOb {
 		}
 
 		string stringMap = "";
-		for(int x = 0; x < tileMap.GetLength(0); x++){
-			for(int y = 0; y < tileMap.GetLength(1); y++){
-				stringMap += tileMap[x,y];
-				if(y+1 < tileMap.GetLength(1))
-					stringMap += ",";
-				else
-					stringMap += ";";
+		Debug.Log(tileMap.GetLength(0)+" - "+ tileMap.GetLength(1));
+		for(int y = 0; y < tileMap.GetLength(0); y++){
+			for(int x = 0; x < tileMap.GetLength(1); x++){
+				if(tileMap[x,y] != '\x0'){
+					stringMap += tileMap[x,y];
+					if(x+1 < tileMap.GetLength(1))
+						stringMap += ",";
+					else
+						stringMap += ";";
+				}
 			}
 		}
+		Debug.Log(stringMap);
 
 		XElement tiles = new XElement("tiles", stringMap);
 
