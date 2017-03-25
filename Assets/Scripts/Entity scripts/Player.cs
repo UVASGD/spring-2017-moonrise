@@ -40,6 +40,7 @@ namespace Completed
 		public int growl;
 		public int fortify;
 
+		// Abilities
 		private bool willLunge = false;
 		public bool sneaking = false;
 
@@ -338,7 +339,6 @@ namespace Completed
 				case 6:
 					if (this.lunge < 8) {
 						this.lunge += 1;
-						// TODO
 						GameManager.instance.print ("Upgraded lunge to level " + this.lunge + "!");
 						upgradedSkill = true;
 					}
