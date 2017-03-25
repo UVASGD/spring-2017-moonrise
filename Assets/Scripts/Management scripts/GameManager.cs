@@ -4,6 +4,8 @@ using System.Collections;
 using System.Xml.Linq;
 using System.Linq;
 using sys = System;
+using System.Text.RegularExpressions;
+using System.Xml;
 
 namespace Completed
 {
@@ -27,7 +29,8 @@ namespace Completed
 
         private Text levelText, actionText;                                 
         private GameObject levelImage;                        
-        private BoardManager boardScript;   
+        private BoardManager boardScript;
+		private InventoryManager inventoryScript;
         public int level = 1;                                  
         private List<Enemy> enemies;
 		public Player player;
@@ -54,6 +57,7 @@ namespace Completed
 			player = GameObject.Find("Player").GetComponent<Player>();
 
             boardScript = GetComponent<BoardManager>();
+			inventoryScript = GetComponent<InventoryManager> ();
 
             InitGame();
         }
@@ -69,13 +73,13 @@ namespace Completed
 		/// </summary>
         void InitGame()
         {
+			StartGame.load();
             //Retrieve encounters
             string[] files = null;
 
 			files = Directory.GetFiles(Directory.GetCurrentDirectory());
             foreach (string fileName in files)
             {
-                Debug.Log(fileName);
 				string[] name = fileName.Split('\\');
 				if(name[name.Length-1] == "save.xml" && !dataSlave.instance.newGame){
 
@@ -100,26 +104,28 @@ namespace Completed
 
             enemies.Clear();
 
-			if(dataSlave.instance.newGame)
+			Debug.Log(dataSlave.instance.newGame);
+			Debug.Log(boardScript.area.ToString());
+			if(dataSlave.instance.newGame || dataSlave.instance.areas[boardScript.area.ToString()] == null)
 	            boardScript.SetupScene(level);
 			else{
 				//If loading, retrieve and split up map
-				Debug.Log(dataSlave.instance.areas[boardScript.area.ToString()]);
 				List<XElement> areaData = (dataSlave.instance.areas[boardScript.area.ToString()]).Elements().ToList();
+
 				string map = areaData[0].Value;
 				string[] splitMap = map.Split(';');
-				char[,] charMap = new char[splitMap[0].Split(',').Length+1,splitMap.Length];
+				char[,] charMap = new char[splitMap[0].Split(',').Length,splitMap.Length];
 				int x = 0, y = 0;
 				try{
 					foreach(string s in splitMap){
 						string[] row = s.Split(',');
 						y = 0;
 						//Hideous, I know.
-						if(x < 120){
+						if(x < splitMap[0].Split(',').Length){
 							foreach(string c in row){
-								charMap[y,x] = c.ToCharArray()[0];
+								charMap[x,y] = c.ToCharArray()[0];
 								y++;
-								if(y > 120)
+								if(y > splitMap.Length)
 									break;
 							}
 						}
@@ -130,8 +136,9 @@ namespace Completed
 					print(x+" - "+y);
 				}
 				//Build map
+				Debug.Log("buildin");
 				Tileset.instance.buildMap(charMap);
-
+				Debug.Log("done building");
 				boardScript.boardMap = Tileset.instance.boardMap;
 				boardScript.tileMap = Tileset.instance.tileMap;
 
@@ -141,8 +148,8 @@ namespace Completed
 					for (y = -1; y < boardScript.boardMap.GetLength(1) + 1; y++)
 					{
 
-						//GameObject f = Instantiate(boardScript.fog, new Vector2(x,y), Quaternion.identity) as GameObject;
-						//f.transform.SetParent(this.transform);
+						GameObject f = Instantiate(boardScript.fog, new Vector2(x,y), Quaternion.identity) as GameObject;
+						f.transform.SetParent(this.transform);
 					}
 				}
 
@@ -167,6 +174,24 @@ namespace Completed
 
 				//Create exits
 				boardScript.BuildExits();
+
+				string logOut = "";
+				int[,] fixMap = new int[charMap.GetLength(0), charMap.GetLength(1)];
+				for(x = 0; x < charMap.GetLength(1); x++){
+					for(y = 0; y < charMap.GetLength(0); y++){
+						logOut += charMap[y,x]+" ";
+						//		fixMap[x,y] = boardMap[y,x];
+					}
+					logOut += "\n";
+				}
+				Debug.Log(logOut);
+				//boardMap = fixMap;
+
+				if(dataSlave.instance.curLoc.Value != boardScript.reverseAreaLookup[boardScript.area]){
+					string fromArea = dataSlave.instance.curLoc.Value;
+					int[] pos  = boardScript.entries[boardScript.areaLookup[fromArea]];
+					player.transform.position = new Vector3(pos[0],pos[1],0);
+				}
 			}
 
         }
@@ -219,9 +244,15 @@ namespace Completed
 				dataSlave.instance.manor,
 				dataSlave.instance.university,
 				dataSlave.instance.temple);
-			 
-			System.IO.File.WriteAllText(Directory.GetCurrentDirectory()+"/save.xml", saveDoc.ToString());
+			
+			string writeString = util.CleanInvalidXmlChars(saveDoc.ToString());
+			Debug.Log(writeString[240]);
+
+			//Debug.Log("written string - " + writeString);
+
+			System.IO.File.WriteAllText(Directory.GetCurrentDirectory()+"/save.xml", writeString);
 		}
+
 
 		public void RemoveEnemyFromList(Enemy script) 
 		{
@@ -229,6 +260,7 @@ namespace Completed
 
 		}
 
+		/// <s
 
 		/// <summary>
 		/// Processes enemy turns
@@ -245,27 +277,31 @@ namespace Completed
             {
                 yield return new WaitForSeconds(turnDelay);
             }
-
+			//int movesLeft = 0; //for debugging
 			//As long as an enemy can move, the enemy turn continues
 			while(moreMoves){
 				moreMoves = false;
 				for (int i = 0; i < enemies.Count; i++)
 				{
 					bool canMove = enemies[i].takeTurn(init);
-					
+					//movesLeft += canMove ? 1 : 0;
+
 					moreMoves |= canMove;	//Logical OR, if any enemy returns true, moreMoves will equal true
-					
+
 					
 				}
-				if (enemies.Count > 0) {
-					yield return new WaitForSeconds(enemies[0].moveTime+0.05f);
+				//Debug.Log("in while " + movesLeft);
+				if (moreMoves) { //(enemies.Count > 0)
+					yield return new WaitForSeconds(enemies[0].moveTime+.25f);
 				}
 				init = false;		//Make sure the enemies don't get speed added each time
 			}
+			//Debug.Log ("after while " + movesLeft);
 			
             playersTurn = true;
 
             enemiesMoving = false;
+
         }
 
 		/// <summary>
@@ -306,4 +342,17 @@ namespace Completed
 		}
     }
 }
+static public class util{
+	public static string CleanInvalidXmlChars(string text){
+		string re = @"#x0";
+		return Regex.Replace(text, re, "");
+	}
 
+
+	public static string fixXML(string text){
+		byte[] toEncodeAsBytes
+		= System.Text.ASCIIEncoding.ASCII.GetBytes(text);
+		string returnValue = System.Convert.ToBase64String(toEncodeAsBytes);
+		return returnValue;
+	}
+}

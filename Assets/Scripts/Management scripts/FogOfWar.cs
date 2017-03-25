@@ -56,6 +56,10 @@ namespace Completed {
 		public bool isVisible(){
 			return visible;
 		}
+
+		public void beenSeen(){
+			seen = true;
+		}
 	}
 
 }

@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using ItemSpace;
-using UnityEditor;
 using UnityEngine;
 using System.Xml.Linq;
 using System.Linq;
 
 namespace Completed
 {
-	public class Character : MovingObject, SerialOb
+    public class Character : MovingObject, SerialOb
 	{
 		//leveled up with magic character points
 		protected int baseHP;
@@ -49,9 +47,11 @@ namespace Completed
 
 			this.range = range;
 
-			baseHP = hp;
-			currentHP = baseHP;
-			totalHP = baseHP;
+			if(this.baseHP == 0){
+				baseHP = hp;
+				currentHP = baseHP;
+				totalHP = baseHP;
+			}
 
 			baseSpeed = speed;
 			totalSpeed = speed;
@@ -72,7 +72,7 @@ namespace Completed
 
 			// Placeholder weapon values
 
-			Weapon myWeapon = (Weapon)(this.EquippedItems.Get(ItemClass.Weapon));
+			Weapon myWeapon = this.EquippedItems.Weapon;
 
 			int weaponMin;
 			int weaponMax;
@@ -88,9 +88,9 @@ namespace Completed
 			Debug.Log (weaponMin + " " + weaponMax);
 
 			// If distance is 1, use melee values instead of ranged values
-			double accuracyValue = distance <= 1 ? (this.RangedAccuracy / 2 + this.MeleeAccuracy) / 1.5 : (this.RangedAccuracy + this.MeleeAccuracy/2) / 1.5;
-			double blockValue = distance <= 1 ? (target.RangedBlock / 2 + target.MeleeBlock) / 1.5 : (target.RangedBlock + this.MeleeBlock/2) / 1.5;
-
+			double accuracyValue = distance <= 1 ? (this.RangedAccuracy / 2 + this.MeleeAccuracy)/1.5 : (this.RangedAccuracy + this.MeleeAccuracy/2)/1.5;
+			double blockValue = distance <= 1 ? (target.RangedBlock / 2 + target.MeleeBlock)/1.5 : (target.RangedBlock + this.MeleeBlock/2)/1.5;
+			Debug.Log ("ranged hit chance: " + (accuracyValue - blockValue));
 			if (accuracyValue - blockValue > UnityEngine.Random.Range (0.0f, 100.0f)) {
 				int damage = (int)((this.RangedDamage + this.MeleeDamage/2) / 1.5) * (UnityEngine.Random.Range (weaponMin, weaponMax+1));
 				target.LoseHp(damage);
@@ -313,7 +313,7 @@ namespace Completed
 				new XElement("mDamage", meleeDamage),
 				new XElement("mAccuracy", meleeAccuracy),
 				new XElement("mBlock", meleeBlock),
-				new XElement("bHP", baseHP),
+				new XElement("bHP", totalHP),
 				new XElement("bSpeed", baseSpeed),
 				new XElement("curHP", currentHP));
 			return node;
@@ -328,7 +328,7 @@ namespace Completed
 			meleeDamage = Convert.ToDouble(info[3].Value);
 			meleeAccuracy = Convert.ToDouble(info[4].Value);
 			meleeBlock = Convert.ToDouble(info[5].Value);
-			baseHP = Convert.ToInt32(info[6].Value);
+			totalHP = Convert.ToInt32(info[6].Value);
 			baseSpeed = Convert.ToDouble(info[7].Value);
 			currentHP = Convert.ToInt32(info[8].Value);
 

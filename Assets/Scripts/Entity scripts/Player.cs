@@ -62,6 +62,10 @@ namespace Completed
 		// Healthbar object
 		public GameObject hpBar;
 
+		//transformation variables
+		private float transformationCounter;
+		public Boolean isTransforming;
+
 		// Use this for initialization
 		protected override void Start ()
 		{
@@ -76,16 +80,34 @@ namespace Completed
 			UpdateText ();
 		
 			animator = GetComponent<Animator> ();
+			animator.speed = 1;
+			animator.enabled = false;
+			isTransforming = false;
+			transformationCounter = 0;
+
+
+			//Equip a crossbow
+			if(equippedItems.Weapon == null){
+				ItemSpace.Weapon w = new ItemSpace.Weapon(ItemSpace.WeaponType.Crossbow,ItemSpace.WeaponWeight.Medium,ItemSpace.WeaponPrefix.None,ItemSpace.WeaponInfix.None,ItemSpace.WeaponSuffix.None);
+				equippedItems.Equip(w);
+				InventoryManager.instance.RefreshEquippedItems();
+			}
+
 			hitbox = GetComponent<BoxCollider2D> ();
 
-			this.shoot = 1;
-			this.sneak = 1;
-			this.charm = 1;
-			this.dodge = 1;
-			this.bite = 1;
-			this.lunge = 1;
-			this.growl = 1;
-			this.fortify = 1;
+//initialize skill levels if they weren't loaded
+			if(this.shoot == 0){
+        this.shoot = 1;
+        this.sneak = 1;
+        this.charm = 1;
+        this.dodge = 1;
+        this.bite = 1;
+        this.lunge = 1;
+        this.growl = 1;
+        this.fortify = 1;
+
+			}
+			Debug.Log("setVals");
 
 			this.lungeCooldown = 0;
 
@@ -101,18 +123,16 @@ namespace Completed
 		{
 		}
 
-		private int sneakLvlAtActive;
-
 		private void ToggleSneak ()
 		{
 
 			if (!sneaking) {
-				sneakLvlAtActive = this.sneak;
+				
 				sneaking = true;
-				totalSpeed *= (0.5 + 0.05 * sneakLvlAtActive);
+				TotalSpeed *= (0.4);
 			} else if (sneaking) {
 				sneaking = false;
-				totalSpeed /= (0.5 + 0.05 * sneakLvlAtActive);
+				TotalSpeed /= (0.4);
 			}
 		}
 
@@ -133,7 +153,6 @@ namespace Completed
 		protected override void UpdateSprite ()
 		{
 			Sprite sprite;
-			Color color;
 			if (GameManager.instance.isWerewolf) {
 				if (orientation == Orientation.North)
 					sprite = werewolfBack;
@@ -143,7 +162,6 @@ namespace Completed
 					sprite = werewolfFront;
 				else
 					sprite = werewolfLeft;
-				color = Color.gray;
 			} else {
 				if (orientation == Orientation.North)
 					sprite = humanBack;
@@ -153,18 +171,27 @@ namespace Completed
 					sprite = humanFront;
 				else
 					sprite = humanLeft;
-				color = original;
 			}
 			this.gameObject.GetComponent<SpriteRenderer> ().sprite = sprite;
-			this.gameObject.GetComponent<SpriteRenderer> ().color = color;
 		}
+
 
 		// Update is called once per frame
 		void Update ()
 		{
 			if (!GameManager.instance.playersTurn)
 				return;
-
+			if (isTransforming) {
+				if (Time.time >= transformationCounter) {
+					animator.enabled = false;
+					isTransforming = false;
+					GameObject.FindGameObjectWithTag ("transformbg").GetComponent<Renderer> ().enabled = false;
+					GetComponent<SpriteRenderer> ().sortingLayerName = "Units";
+					UpdateSprite ();
+					GameManager.instance.playersTurn = false;
+				}
+				return;
+			}
 			if (Input.GetKeyDown (KeyCode.T)) {
 				actionText.text = "";
 				switchForm ();
@@ -176,7 +203,6 @@ namespace Completed
 				} else if (GameManager.instance.enemyClicked) {
 					Attack ();
 				}
-			
 			}
 				 
 				// Upgrade Skills
@@ -191,7 +217,7 @@ namespace Completed
 			} else if ((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && (Input.GetKeyDown (KeyCode.Keypad5) || Input.GetKeyDown (KeyCode.Alpha5))) {
 				IncreaseSkill (5); //bite
 			} else if ((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && (Input.GetKeyDown (KeyCode.Keypad6) || Input.GetKeyDown (KeyCode.Alpha6))) {
-				IncreaseSkill (6); //rage	
+				IncreaseSkill (6); //lunge	
 			} else if ((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && (Input.GetKeyDown (KeyCode.Keypad7) || Input.GetKeyDown (KeyCode.Alpha7))) {
 				IncreaseSkill (7); //growl
 			} else if ((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && (Input.GetKeyDown (KeyCode.Keypad8) || Input.GetKeyDown (KeyCode.Alpha8))) {
@@ -203,7 +229,7 @@ namespace Completed
 				//shoot
 			} else if (Input.GetKeyDown (KeyCode.Keypad2) || Input.GetKeyDown (KeyCode.Alpha2)) {
 				ToggleSneak (); //sneak
-				Debug.Log("sneaking"); 
+				Debug.Log(sneaking ? "sneaky and slow" : "stompy and fast"); 
 			} else if (Input.GetKeyDown (KeyCode.Keypad3) || Input.GetKeyDown (KeyCode.Alpha3)) {
 				 //charm
 			} else if (Input.GetKeyDown (KeyCode.Keypad4) || Input.GetKeyDown (KeyCode.Alpha4)) {
@@ -216,6 +242,9 @@ namespace Completed
 				 //growl
 			} else if (Input.GetKeyDown (KeyCode.Keypad8) || Input.GetKeyDown (KeyCode.Alpha8)) {
 				//fortify
+			} else if (Input.GetKeyDown (KeyCode.H) ) {
+				//check speed
+				Debug.Log(this.totalSpeed);
 			}
 				
 			int horizontal = 0;
@@ -307,7 +336,7 @@ namespace Completed
 				bool upgradedSkill = false;
 				switch (skill) {
 				case 1:
-					if (this.shoot < 8) {
+					if (this.shoot < 5) {
 						this.shoot += 1;
 						this.rangedDamage *= 1.1;
 						this.rangedAccuracy *= 1.05;
@@ -316,15 +345,15 @@ namespace Completed
 					}
 					break;
 				case 2:
-					if (this.sneak < 8) {
+					if (this.sneak < 5) {
 						this.sneak += 1;
-						//this.baseSneak += 1; base sneak stays the same, is the starting value -Bryan
+						//this.baseSneak += 1;     base sneak stays the same, is the starting value -Bryan
 						GameManager.instance.print ("Upgraded sneak to level " + this.sneak + "!");
 						upgradedSkill = true;
 					}
 					break;
 				case 3:
-					if (this.charm < 8) {
+					if (this.charm < 5) {
 						this.charm += 1;
 						// TODO
 						GameManager.instance.print ("Upgraded charm to level " + this.charm + "!");
@@ -332,15 +361,15 @@ namespace Completed
 					}
 					break;
 				case 4:
-					if (this.dodge < 8) {
+					if (this.dodge < 5) {
 						this.dodge += 1;
-						this.rangedBlock *= 1.1;
+						this.rangedBlock += dodge == 4 ? 16.5 : 4.5;
 						GameManager.instance.print ("Upgraded dodge to level " + this.dodge + "!");
 						upgradedSkill = true;
 					}
 					break;
 				case 5:
-					if (this.bite < 8) {
+					if (this.bite < 5) {
 						this.bite += 1;
 						this.meleeAccuracy *= 1.1;
 						this.meleeDamage *= 1.1;
@@ -349,14 +378,14 @@ namespace Completed
 					}
 					break;
 				case 6:
-					if (this.lunge < 8) {
+					if (this.lunge < 5) {
 						this.lunge += 1;
 						GameManager.instance.print ("Upgraded lunge to level " + this.lunge + "!");
 						upgradedSkill = true;
 					}
 					break;
 				case 7:
-					if (this.growl < 8) {
+					if (this.growl < 5) {
 						this.growl += 1;
 						// TODO
 						GameManager.instance.print ("Upgraded growl to level " + this.growl + "!");
@@ -364,9 +393,9 @@ namespace Completed
 					}
 					break;
 				case 8:
-					if (this.fortify < 8) {
+					if (this.fortify < 5) {
 						this.fortify += 1;
-						this.meleeBlock *= 1.1;
+						this.meleeBlock += fortify == 7 ? 16.5 : 4.5;
 						GameManager.instance.print ("Upgraded fortify to level " + this.fortify + "!");
 						upgradedSkill = true;
 					}
@@ -457,10 +486,17 @@ namespace Completed
 		private void OnTriggerEnter2D (Collider2D other)
 		{
 			//Debug.Log("#TRIGGERED");
-			if (other.tag == "Exit") {
-				Invoke ("Restart", restartLevelDelay);
-				enabled = false;
-			} else if (other.tag == "Item") {
+            if (other.tag == "Exit")
+            {
+				Debug.Log("Exit");
+				GameManager.instance.Save();
+				dataSlave.instance.newGame = false;
+				SceneManager.LoadScene(((ExitPos)(other.GetComponent<ExitPos>())).getTarget());
+                //Invoke("Restart", restartLevelDelay);
+                enabled = false;
+            }
+            else if (other.tag == "Item")
+            {
 				int chance = UnityEngine.Random.Range (0, 2);
 				String message = "";
 				switch (other.name) {
@@ -503,7 +539,9 @@ namespace Completed
 				
 			} else if (character is Chest) {
 				Chest chest = (Chest)character;
-				chest.ObtainItem (this);
+				AddItem (chest.item);
+				GameManager.instance.print ("A " + chest.item.Name + " was added to inventory");
+				Destroy (chest.gameObject);
 			}
 		}
 
@@ -518,8 +556,8 @@ namespace Completed
 			this.CurrentHP -= loss;
 			if (this.currentHP < 0) {
 				this.currentHP = 0;
-			} else if (this.currentHP > 100) {
-				this.currentHP = 100;
+			} else if (this.currentHP > this.baseHP*(GameManager.instance.isWerewolf?2:1)) {
+				this.currentHP = this.baseHP*(GameManager.instance.isWerewolf?2:1);
 			}
 			/*String message;
 			if (loss > 0) {
@@ -605,14 +643,22 @@ namespace Completed
 		//Switchs form (human or werewolf); updates hp and sprite
 		private void switchForm ()
 		{
+			
 			GameManager.instance.isWerewolf = !GameManager.instance.isWerewolf;
 			if (GameManager.instance.isWerewolf) {
 				this.TotalHP *= 2;
 				this.CurrentHP *= 2;
+				animator.runtimeAnimatorController = Resources.Load ("transform") as RuntimeAnimatorController;
 			} else {
 				this.TotalHP /= 2;
 				this.CurrentHP /= 2;
+				animator.runtimeAnimatorController = Resources.Load ("reverse") as RuntimeAnimatorController;
 			}
+			GetComponent<SpriteRenderer> ().sortingLayerName = "transformation";
+			GameObject.FindGameObjectWithTag ("transformbg").GetComponent<Renderer> ().enabled = true;
+			isTransforming = true;
+			animator.enabled = true;
+			transformationCounter = Time.time + 5.25f;
 			hpText = "HP: " + this.CurrentHP;
 			UpdateText ();
 			UpdateSprite ();
@@ -624,10 +670,44 @@ namespace Completed
 		public override XElement serialize ()
 		{
 			XElement node = new XElement ("player",
-				                new XElement ("locationX", this.transform.localPosition.x),
-				                new XElement ("locationY", this.transform.localPosition.y),
-				                new XElement ("werewolf", GameManager.instance.isWerewolf),
-				                base.serialize ());
+                new XElement ("locationX", this.transform.localPosition.x),
+                new XElement ("locationY", this.transform.localPosition.y),
+                new XElement ("werewolf", GameManager.instance.isWerewolf),
+                base.serialize (),
+				new XElement ("shoot", shoot),
+				new XElement ("sneak", sneak),
+				new XElement ("charm", charm),
+				new XElement ("dodge", dodge),
+				new XElement ("bite", bite),
+				new XElement ("lunge", lunge),
+				new XElement ("growl", growl),
+				new XElement ("fortify", fortify),
+				new XElement ("level", GameManager.instance.level),
+				new XElement ("time", GameManager.instance.timeLeft)
+
+
+			);
+
+			XElement inventoryNode = new XElement("inventory");
+			for(int i = 0; i < this.inventory.Items.Count; i ++){
+				XElement item = new XElement("Item");
+				if(this.inventory.Items[i].GetType() == typeof(ItemSpace.Weapon))
+					item = ((ItemSpace.Weapon)this.inventory.Items[i]).serialize();
+				inventoryNode.Add(item);
+			}
+
+			node.Add(inventoryNode);
+
+			XElement equipNode = new XElement("equipment");
+			if(this.equippedItems.Weapon != null){
+				XElement weapon = ((ItemSpace.Weapon)(this.equippedItems.Weapon)).serialize();
+				equipNode.Add(weapon);
+			}
+			if(this.equippedItems.Armor != null){
+				XElement armor = new XElement("armor",this.equippedItems.Armor.serialize());
+				equipNode.Add(armor);
+			}
+			node.Add(equipNode);
 			return node;
 		}
 
@@ -641,6 +721,38 @@ namespace Completed
 			this.transform.localPosition = v;
 			GameManager.instance.isWerewolf = Convert.ToBoolean (info [2].Value);
 			base.deserialize (new XElement (info [3]));
+
+			shoot = Convert.ToInt32(info[4].Value);
+			sneak = Convert.ToInt32(info[5].Value);
+			charm = Convert.ToInt32(info[6].Value);
+			dodge = Convert.ToInt32(info[7].Value);
+			bite = Convert.ToInt32(info[8].Value);
+			lunge = Convert.ToInt32(info[9].Value);
+			growl = Convert.ToInt32(info[10].Value);
+			fortify = Convert.ToInt32(info[11].Value);
+			GameManager.instance.level = Convert.ToInt32(info[12].Value);
+			GameManager.instance.timeLeft = Convert.ToInt32(info[13].Value);
+
+			XElement inventoryEle = info[14];
+			Debug.Log(info[14].Value);
+			foreach(XElement i in inventoryEle.Elements()){
+				if(i.Name.ToString().Equals("weapon")){
+					ItemSpace.Weapon w = new ItemSpace.Weapon();
+					w.deserialize(i);
+					inventory.AddItem(w);
+				}
+			}
+			XElement equippedEle = info[15];
+			foreach(XElement i in equippedEle.Elements()){
+				Debug.Log(i.Name.ToString());
+				if(i.Name.ToString().Equals("weapon")){
+					ItemSpace.Weapon w = new ItemSpace.Weapon();
+					w.deserialize(i);
+					Debug.Log(w.Name);
+					equippedItems.Equip(w);
+					InventoryManager.instance.RefreshEquippedItems();
+				}
+			}
 			return true;
 		}
 
