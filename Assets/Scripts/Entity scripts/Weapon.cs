@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Completed;
 using UnityEngine;
+using System.Xml.Linq;
+using System.Linq;
 
 namespace ItemSpace
 {
-	public class Weapon : EquipItem
+	public class Weapon : EquipItem, SerialOb
 	{
 		private WeaponType type;
 		private WeaponWeight weight;
@@ -55,6 +58,15 @@ namespace ItemSpace
 
 		public Weapon(WeaponType type, WeaponWeight weight, WeaponPrefix prefix, WeaponInfix infix, WeaponSuffix suffix)
 		{
+			//if(this.type == null)	
+			setup(type,  weight,  prefix,  infix,  suffix);
+		}
+
+		public Weapon(){
+
+		}
+
+		private void setup(WeaponType type, WeaponWeight weight, WeaponPrefix prefix, WeaponInfix infix, WeaponSuffix suffix){
 			this.itemClass = ItemClass.Weapon;
 			this.type = type;
 			this.weight = weight;
@@ -62,7 +74,7 @@ namespace ItemSpace
 			this.infix = infix;
 			this.suffix = suffix;
 
-			attackBonus = 0;
+			attackBonus = 5;
 			attackMult = 1;
 			speedMult = 1;
 			hpBonus = 0;
@@ -230,6 +242,20 @@ namespace ItemSpace
 			}
 		}
 
+		public int[] AttackMinMax {
+			get {
+				double mult;
+				if (this.weight == WeaponWeight.Light)
+					mult = 0.9;
+				else if (this.weight == WeaponWeight.Medium)
+					mult = 0.8;
+				else 
+					mult = 0.7;
+				
+				return new int[] {(int)(attackMult * attackBonus * mult), (int)(attackMult*attackBonus)};
+			}
+		}
+
 		public int HpBonus {
 			get {
 				return hpBonus;
@@ -240,6 +266,28 @@ namespace ItemSpace
 			get {
 				return speedMult;
 			}
+		}
+
+		virtual public XElement serialize(){
+			XElement node = new XElement("weapon",
+				new XElement("type", (int)this.type),
+				new XElement("weight", (int)this.weight),
+				new XElement("prefix", (int)this.prefix),
+				new XElement("infix", (int)this.infix),
+				new XElement("suffix", (int)this.suffix));
+
+			return node;
+		}
+
+		virtual public bool deserialize(XElement s){
+			List<XElement> info = s.Descendants().ToList();
+			setup((WeaponType)Convert.ToDouble(info[0].Value),
+				(WeaponWeight)Convert.ToDouble(info[1].Value),
+				(WeaponPrefix)Convert.ToDouble(info[2].Value),
+				(WeaponInfix)Convert.ToDouble(info[3].Value),
+				(WeaponSuffix)Convert.ToDouble(info[4].Value));
+
+			return true;
 		}
 	}
 

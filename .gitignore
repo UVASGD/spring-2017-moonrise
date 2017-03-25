@@ -35,3 +35,11 @@ sysinfo.txt
 ehthumbs.db
 [Tt]humbs.db
 [Dd]esktop.ini
+
+ProjectSettings/UnityAdsSettings.asset
+
+ProjectSettings/UnityConnectSettings.asset
+
+*.asset
+
+save.xml

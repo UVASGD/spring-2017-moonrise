@@ -196,10 +196,11 @@ public static class ActualMarketGeneration {
 	}
 
 	static void randomRoads(int n) {
-		for (int i = 0; i < n; i++) {
+		int randomPos;
+		for (int i = 1; i < n; i++) {
 			//'i', 'x', 'b', 'g'
 			int s = Random.Range(1, 5);
-			int randomPos = Random.Range(5, 30);;
+			randomPos = Random.Range(5, 30);
 			if (s == 1) {
 				RoadBuilder r = new RoadBuilder(new int[, ] {{bigGridSizeX-1, randomPos}, {0, randomPos}}, new char[] {'i', 'x', 'b', 'g', 'c'});
 			}
@@ -213,6 +214,8 @@ public static class ActualMarketGeneration {
 				RoadBuilder r = new RoadBuilder(new int[, ] {{randomPos, bigGridSizeY-1}, {randomPos, 0}}, new char[] {'i', 'x', 'b', 'g', 'c'});
 			}
 		}
+		randomPos = Random.Range(5, 30);
+		RoadBuilder road = new RoadBuilder(new int[, ] {{randomPos, 0}, {randomPos, bigGridSizeX-1}}, new char[] {'i', 'x', 'b', 'g', 'c'});
 	}
 
 	static void fillSquares(int x, int y, char t) {
