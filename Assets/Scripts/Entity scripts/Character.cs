@@ -88,9 +88,9 @@ namespace Completed
 			Debug.Log (weaponMin + " " + weaponMax);
 
 			// If distance is 1, use melee values instead of ranged values
-			double accuracyValue = distance <= 1 ? (this.RangedAccuracy / 2 + this.MeleeAccuracy) / 1.5 : (this.RangedAccuracy + this.MeleeAccuracy/2) / 1.5;
-			double blockValue = distance <= 1 ? (target.RangedBlock / 2 + target.MeleeBlock) / 1.5 : (target.RangedBlock + this.MeleeBlock/2) / 1.5;
-
+			double accuracyValue = distance <= 1 ? (this.RangedAccuracy / 2 + this.MeleeAccuracy)/1.5 : (this.RangedAccuracy + this.MeleeAccuracy/2)/1.5;
+			double blockValue = distance <= 1 ? (target.RangedBlock / 2 + target.MeleeBlock)/1.5 : (target.RangedBlock + this.MeleeBlock/2)/1.5;
+			Debug.Log ("ranged hit chance: " + (accuracyValue - blockValue));
 			if (accuracyValue - blockValue > UnityEngine.Random.Range (0.0f, 100.0f)) {
 				int damage = (int)((this.RangedDamage + this.MeleeDamage/2) / 1.5) * (UnityEngine.Random.Range (weaponMin, weaponMax+1));
 				target.LoseHp(damage);
