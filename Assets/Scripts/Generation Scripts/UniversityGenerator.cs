@@ -7,6 +7,7 @@ public class UniversityGenerator : mapGenerator {
 	public GameObject floor;
 	public GameObject wall;
 	public GameObject[] buildings;
+	public GameObject mainBuilding;
 
 	public bool debugging = false;
 
@@ -86,6 +87,9 @@ public class UniversityGenerator : mapGenerator {
             }
 		}
 
+		if (mainBuilding != null) {
+			Instantiate (mainBuilding, new Vector3 (gridSize / 2, gridSize / 2, 0f), Quaternion.identity);
+		}
 
 		GenerateGridFromKey(gridKey); //generate initial grid (keep at bottom of function)
 		return boardMap;
