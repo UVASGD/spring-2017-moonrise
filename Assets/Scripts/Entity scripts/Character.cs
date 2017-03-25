@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using ItemSpace;
 using UnityEditor;
 using UnityEngine;
-using System.Collections.Generic;
+using System.Xml.Linq;
+using System.Linq;
 
 namespace Completed
 {
-	public class Character : MovingObject
+	public class Character : MovingObject, SerialOb
 	{
 		//leveled up with magic character points
 		protected int baseHP;
@@ -19,7 +22,7 @@ namespace Completed
 
 		//affected by items
 		protected int totalHP;
-		protected int range;
+		protected float range;
 		protected int currentHP;
 
 		protected double baseSpeed;
@@ -68,16 +71,30 @@ namespace Completed
 			//Weapon weap = (Weapon)(equippedItems.Get (ItemClass.Weapon));
 
 			// Placeholder weapon values
-			int weaponMin = 3;
-			int weaponMax = 5;
+
+			Weapon myWeapon = (Weapon)(this.EquippedItems.Get(ItemClass.Weapon));
+
+			int weaponMin;
+			int weaponMax;
+
+			if (myWeapon != null) {
+				weaponMin = myWeapon.AttackMinMax [0];
+				weaponMax = myWeapon.AttackMinMax [1];
+			} else {
+				weaponMin = 3;
+				weaponMax = 6;
+			}
+
+			Debug.Log (weaponMin + " " + weaponMax);
 
 			// If distance is 1, use melee values instead of ranged values
 			double accuracyValue = distance <= 1 ? (this.RangedAccuracy / 2 + this.MeleeAccuracy) / 1.5 : (this.RangedAccuracy + this.MeleeAccuracy/2) / 1.5;
 			double blockValue = distance <= 1 ? (target.RangedBlock / 2 + target.MeleeBlock) / 1.5 : (target.RangedBlock + this.MeleeBlock/2) / 1.5;
 
 			if (accuracyValue - blockValue > UnityEngine.Random.Range (0.0f, 100.0f)) {
-				int damage = (int)(this.RangedDamage + this.MeleeDamage/2 / 1.5) * (UnityEngine.Random.Range (weaponMin, weaponMax+1));
+				int damage = (int)((this.RangedDamage + this.MeleeDamage/2) / 1.5) * (UnityEngine.Random.Range (weaponMin, weaponMax+1));
 				target.LoseHp(damage);
+				GameManager.instance.player.UpdateText ();
 				return damage;
 			}
 			return 0;
@@ -100,12 +117,15 @@ namespace Completed
 			double blockValue = target.RangedBlock / 2 + target.MeleeBlock;
 
 			if (accuracyValue - blockValue > UnityEngine.Random.Range (0.0f, 100.0f)) {
-				int damage = (int)(this.RangedDamage/2 + this.MeleeDamage / 1.5) * (UnityEngine.Random.Range (weaponMin, weaponMax+1));
-				((Player)target).LoseHp(damage);
+				int damage = (int)((this.RangedDamage/2 + this.MeleeDamage) / 1.5) * (UnityEngine.Random.Range (weaponMin, weaponMax+1));
+				target.LoseHp(damage);
+				GameManager.instance.player.UpdateText ();
+
 				return damage;
 			}
 			return 0;
 		}
+			
 
 		/// <summary>
 		/// Add the item to the inventory.
@@ -240,7 +260,7 @@ namespace Completed
 
 		public int Range {
 			get {
-				return this.range;
+				return (int)this.range; //range needed to be float for enemy, but broke things if not int for character
 			}
 			set {
 				range = value;
@@ -282,6 +302,39 @@ namespace Completed
 				inventory = value;
 			}
 		}
+		#endregion
+
+		#region serialization
+		virtual public XElement serialize(){
+			XElement node = new XElement("character",
+				new XElement("rDamage", rangedDamage),
+				new XElement("rAccuracy", rangedAccuracy),
+				new XElement("rBlock", rangedBlock),
+				new XElement("mDamage", meleeDamage),
+				new XElement("mAccuracy", meleeAccuracy),
+				new XElement("mBlock", meleeBlock),
+				new XElement("bHP", baseHP),
+				new XElement("bSpeed", baseSpeed),
+				new XElement("curHP", currentHP));
+			return node;
+		}
+
+		virtual public bool deserialize(XElement s){
+			//attack, accuracy, hp, dodge, block, range, speed, current HP
+			List<XElement> info = s.Descendants().ToList();
+			rangedDamage = Convert.ToDouble(info[0].Value);
+			rangedAccuracy = Convert.ToDouble(info[1].Value);
+			rangedBlock = Convert.ToDouble(info[2].Value);
+			meleeDamage = Convert.ToDouble(info[3].Value);
+			meleeAccuracy = Convert.ToDouble(info[4].Value);
+			meleeBlock = Convert.ToDouble(info[5].Value);
+			baseHP = Convert.ToInt32(info[6].Value);
+			baseSpeed = Convert.ToDouble(info[7].Value);
+			currentHP = Convert.ToInt32(info[8].Value);
+
+			return true;
+		}
+
 		#endregion
 
 		protected override void OnCantMove(Transform transform)

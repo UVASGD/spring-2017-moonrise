@@ -185,8 +185,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 895894220}
-  - 114: {fileID: 895894221}
   - 114: {fileID: 895894219}
+  - 114: {fileID: 895894221}
   m_Layer: 0
   m_Name: Generator
   m_TagString: Untagged
@@ -239,6 +239,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 381e36a00d0984c9a914dbc6c64eaa60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
+  floor: {fileID: 1000013810770954, guid: b8f2a1a7139bf4450a84b3a11048584e, type: 2}
+  wall: {fileID: 141938, guid: 65923a9620d79894d8a5cbd1ecaceba7, type: 2}
+  radius: 31
+  speed: 1
+  minRoomCount: 18
+=======
   floor: {fileID: 1000013810770954, guid: b021cef5c367b884387065f8bae5ef1e, type: 2}
   wall: {fileID: 141938, guid: 65923a9620d79894d8a5cbd1ecaceba7, type: 2}
   radius: 31
@@ -246,6 +253,7 @@ MonoBehaviour:
   start: 0100000001000000
   rooms: []
   minRoomCount: 10
+>>>>>>> ab25a5f2c2c125a07b67a70e8263812d94e382dc
   maxRoomCount: 20
   minRoomSize: 8
-  maxRoomSize: 20
+  maxRoomSize: 10

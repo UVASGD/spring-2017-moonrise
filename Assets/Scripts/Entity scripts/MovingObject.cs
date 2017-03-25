@@ -11,7 +11,8 @@ namespace Completed
 		public float AP = 0f;				//Action Points, every action for now costs 1 AP
 		
         public float moveTime = 0.1f;		//Movement time for animation
-        public LayerMask blockingLayer;		
+        public LayerMask blockingLayer;
+		public LayerMask impassable;
 
         private BoxCollider2D boxCollider;	//boxCollider for the object - used for raycast tests?
         private Rigidbody2D rb2D;			
@@ -34,7 +35,7 @@ namespace Completed
 	
 			//Check if the move isn't blocked
             boxCollider.enabled = false;
-            hit = Physics2D.Linecast(start, end, blockingLayer);
+			hit = Physics2D.Linecast(start, end, blockingLayer);
             boxCollider.enabled = true;
 
 			//If the move is not blocked, move with animation

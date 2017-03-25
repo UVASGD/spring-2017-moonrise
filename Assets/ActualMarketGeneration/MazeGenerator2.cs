@@ -6,6 +6,9 @@ public class MazeGenerator2 : mapGenerator {
 	//NOTE: I highly recommend putting all of the prefabs into another class that is referenced by every generation class (ex. this and BoardManager)
 	public GameObject floor; //floor prefab
 	public GameObject wall; //wall prefab
+	public GameObject water; //water prefab
+	public GameObject dock; //dock prefab
+	public GameObject boat; //boat prefab
 
 	public int radius = 21; //a third of the total width of the square
 	[Range(0.0001f, 1f)]
@@ -24,14 +27,16 @@ public class MazeGenerator2 : mapGenerator {
 	// Use this for initialization
 	public override int[,] init () {
 		boardMap = new int[radius*3, radius*3];
+		tileMap = new char[radius*3, radius*3];
 		largeGrid = new Tile[radius * 3, radius * 3]; //ensures that the large grid is a 3x inflation of the original grid
 		rooms = new Room[Random.Range (minRoomCount, maxRoomCount)]; //creates a randomly sized list of rooms
 		for (int i = 0; i < rooms.Length; i++) {
 			rooms [i] = new Room (minRoomSize, maxRoomSize); //initializes each room
 		}
 		Debug.Log("mazegen initialized");	
+		GeneratePath ();
 		//StartCoroutine ("GeneratePath");
-		return(GeneratePath());
+		return boardMap;
 	}
 
 	//The entire algorithm. Recommend eventually moving this into several functions
@@ -47,9 +52,13 @@ public class MazeGenerator2 : mapGenerator {
 
 				//Generates a floor in a swiss cheese style (part of the algorithm), each floor tile is surrounded by 8 wall tiles
 				if ((h == 0 || h == radius - 1 || w == 0 || w == radius - 1) || !(h % 2 == 1 && w % 2 == 1)) {
-					grid [w, h].obj = Instantiate (wall,new Vector3 (w, h, 0), Quaternion.identity) as GameObject;
+					grid [w, h].obj = wall;
+					grid [w, h].obj.transform.position = new Vector3 (w, h, 0);
+					//Instantiate (wall,new Vector3 (w, h, 0), Quaternion.identity) as GameObject;
 				} else {
-					grid[w,h].obj = Instantiate (floor,new Vector3 (w, h, 0), Quaternion.identity) as GameObject;
+					grid [w, h].obj = floor;
+					grid [w, h].obj.transform.position = new Vector3(w, h, 0);
+					//Instantiate (floor,new Vector3 (w, h, 0), Quaternion.identity) as GameObject;
 					grid[w,h].passable = 0; //Mark as passable terrain
 				}
 			}
@@ -105,23 +114,31 @@ public class MazeGenerator2 : mapGenerator {
 				int direction = directions [Random.Range (0, directions.Count)];
 				//print ("Going direction " + direction);
 				if (direction == 0) {
-					Destroy (grid [position [0] - 1, position [1]].obj);
-					grid [position[0] - 1, position[1]].obj = Instantiate(floor, new Vector3(position[0] - 1, position[1], 0f), Quaternion.identity) as GameObject;
+					//Destroy (grid [position [0] - 1, position [1]].obj);
+					grid [position [0] - 1, position [1]].obj = floor;
+					grid [position [0] - 1, position [1]].obj.transform.position = new Vector3(position[0] - 1, position[1], 0f);
+					//Instantiate(floor, new Vector3(position[0] - 1, position[1], 0f), Quaternion.identity) as GameObject;
 					grid [position[0] - 1, position[1]].passable = 0;
 					position[0] -= 2;
 				} else if (direction == 1) {
-					Destroy (grid [position [0], position [1] + 1].obj);
-					grid [position[0], position[1] + 1].obj = Instantiate(floor, new Vector3(position[0], position[1] + 1, 0f), Quaternion.identity) as GameObject;
+					//Destroy (grid [position [0], position [1] + 1].obj);
+					grid [position [0], position [1] + 1].obj = floor;
+					grid [position [0], position [1] + 1].obj.transform.position = new Vector3(position[0], position[1] + 1, 0f);
+					//grid [position[0], position[1] + 1].obj = Instantiate(floor, new Vector3(position[0], position[1] + 1, 0f), Quaternion.identity) as GameObject;
 					grid [position[0], position[1] + 1].passable = 0;
 					position[1] += 2;
 				} else if (direction == 2) {
-					Destroy (grid [position [0] + 1, position [1]].obj);
-					grid [position[0] + 1, position[1]].obj = Instantiate(floor, new Vector3(position[0] + 1, position[1], 0f), Quaternion.identity) as GameObject;
+					//Destroy (grid [position [0] + 1, position [1]].obj);
+					grid [position [0] + 1, position [1]].obj = floor;
+					grid [position [0] + 1, position [1]].obj.transform.position = new Vector3(position[0] + 1, position[1], 0f);
+					//grid [position[0] + 1, position[1]].obj = Instantiate(floor, new Vector3(position[0] + 1, position[1], 0f), Quaternion.identity) as GameObject;
 					grid [position[0] + 1, position[1]].passable = 0;
 					position[0] += 2;
 				} else if (direction == 3) {
-					Destroy (grid [position [0], position [1] - 1].obj);
-					grid [position[0], position[1] - 1].obj = Instantiate(floor, new Vector3(position[0], position[1] - 1, 0f), Quaternion.identity) as GameObject;
+					//Destroy (grid [position [0], position [1] - 1].obj);
+					grid [position [0], position [1] - 1].obj = floor;
+					grid [position [0], position [1] - 1].obj.transform.position = new Vector3(position[0], position[1] - 1, 0f);
+					//grid [position[0], position[1] - 1].obj = Instantiate(floor, new Vector3(position[0], position[1] - 1, 0f), Quaternion.identity) as GameObject;
 					grid [position[0], position[1] - 1].passable = 0;
 					position[1] -= 2;
 				}
@@ -130,7 +147,6 @@ public class MazeGenerator2 : mapGenerator {
 				//if it backtracks back to the beginning without finding a place to go, then the maze is completely generated
 				if (index == 0) {
 					finished = true;
-					print ("Complete!");
 				} else {
 					//update position
 					index--;
@@ -168,12 +184,18 @@ public class MazeGenerator2 : mapGenerator {
 					for(int x = 0; x < 3; x++){
 						for(int y = 0; y < 3; y++){
 							boardMap[w*3+x,h*3+y] = grid[w,h].passable;
+							if(grid[w,h].passable == 0){
+								tileMap[w*3+x,h*3+y] = 'f';
+							}
+							else
+								tileMap[w*3+x,h*3+y] = 'w';
 						}
 					}
 					//yield return new WaitForSeconds (speed);
 				}
 				//destroy the original grid instantiations
-				Destroy (grid [w, h].obj);
+				//print("Destroying " + grid[w,h].obj.name);
+				//DestroyImmediate (grid [w, h].obj);
 			}
 
 		}
@@ -187,7 +209,7 @@ public class MazeGenerator2 : mapGenerator {
 		//NOTE: This is not the best system. It is inefficient and makes it so it very often will not spawn the max number of rooms. If you have any ideas how to change it go for it
 		int iter = 0;
 		foreach (Room room in rooms) {
-			print ("Checking room " + iter);
+			//print ("Checking room " + iter);
 			bool isValid = true;
 			bool spawnRoom = true;
 			int tries = 0;
@@ -199,19 +221,21 @@ public class MazeGenerator2 : mapGenerator {
 						roomParents[i].transform.position.y < roomParents[iter].transform.position.y + (float)rooms[iter].size.GetLength(1) &&
 						roomParents[i].transform.position.y + (float)rooms[i].size.GetLength(1) > roomParents[iter].transform.position.y) {
 						isValid = false;
-					} else {
+					}
+					if (roomParents[i].transform.position.y + (float)rooms[i].size.GetLength(1) >= radius * 3 - 15) {
+						isValid = false;
 					}
 				}
 				tries++;
 				if (tries > 1000) {
 					isValid = true;
 					spawnRoom = false;
-					print("Could not find a valid location");
+					//print("Could not find a valid location");
 				}
 			} while (!isValid);
 			if (spawnRoom) {
-				for (int h = 0; h < room.tiles.GetLength (1); h++) {
-					for (int w = 0; w < room.tiles.GetLength (0); w++) {
+				for (int h = 1; h < room.tiles.GetLength (1); h++) {
+					for (int w = 1; w < room.tiles.GetLength (0); w++) {
 						room.tiles [w, h] = new Tile ();
 						Destroy (largeGrid [(int)roomParents [iter].transform.position.x + w, (int)roomParents [iter].transform.position.y + h].obj);
 						/*if (h == 0 || w == 0 || h == room.tiles.GetLength (1) - 1 || w == room.tiles.GetLength (0) - 1) {
@@ -219,23 +243,54 @@ public class MazeGenerator2 : mapGenerator {
 						} else {
 							room.tiles [w, h].obj = Instantiate (floor) as GameObject;
 						}*/
-						room.tiles [w, h].obj = Instantiate (floor) as GameObject;
-						//yield return new WaitForSeconds (speed);
-						room.tiles [w, h].obj.transform.parent = roomParents [iter].transform;
-						room.tiles [w, h].obj.transform.localPosition = new Vector3 (w, h, 0);
+						if (h < radius * 3 - 15) {
+							room.tiles [w, h].obj = Instantiate (floor) as GameObject;
+							//yield return new WaitForSeconds (speed);
+							room.tiles [w, h].obj.transform.parent = roomParents [iter].transform;
+							room.tiles [w, h].obj.transform.localPosition = new Vector3 (w, h, 0);
+						} else {
+							Destroy (room.tiles [w, h].obj);
+						}
 					}
 				}
 			}
 			iter++;
 		}
 
-
+		//DOCK GENERATION
+		//---------------------------------------------------------------------------------------------------------
+		for (int h = radius * 3 - 3; h < radius * 3; h++) {
+			for (int w = 0; w < radius * 3; w++) {
+				Destroy (largeGrid [w, h].obj);
+				Instantiate (floor, new Vector3 (w, h, 0), Quaternion.identity);
+			}
+		}
+		for (int h = radius * 3; h < radius * 3 + 12; h++) {
+			for (int w = 0; w < radius * 3; w += 8) {
+				Instantiate (dock, new Vector3 (w, h, 0), Quaternion.identity);
+				Instantiate (dock, new Vector3 (w + 1, h, 0), Quaternion.identity);
+				Instantiate (dock, new Vector3 (w + 2, h, 0), Quaternion.identity);
+				print (h);
+				if (h == 68) {
+					int rand = Random.Range (0, 2);
+					print ("Random: " + rand);
+					if (rand == 0) {
+						Instantiate(boat, new Vector3 (w + 5, h, 0), Quaternion.identity);
+					}
+				}
+				if (w + 3 < radius * 3)
+					Instantiate (water, new Vector3 (w + 3, h, 0), Quaternion.identity);
+				if (w + 4 < radius * 3)
+					Instantiate (water, new Vector3 (w + 4, h, 0), Quaternion.identity);
+				if (w + 5 < radius * 3)
+					Instantiate (water, new Vector3 (w + 5, h, 0), Quaternion.identity);
+				if (w + 6 < radius * 3)
+					Instantiate (water, new Vector3 (w + 6, h, 0), Quaternion.identity);
+				if (w + 7 < radius * 3)
+					Instantiate (water, new Vector3 (w + 7, h, 0), Quaternion.identity);
+			}
+		}
 		return boardMap;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }
 
@@ -248,6 +303,9 @@ public class Tile {
 	public Tile () {
 		passable = 1;
 		position = new int[2];
+		visited = false;
+		passable = 0;
+		obj = new GameObject ();
 	}
 
 	public Tile (GameObject pf, int[] pos, int pass) {
@@ -272,3 +330,4 @@ public class Room {
 		tiles = new Tile[size.GetLength(0), size.GetLength(1)];
 	}
 }
+

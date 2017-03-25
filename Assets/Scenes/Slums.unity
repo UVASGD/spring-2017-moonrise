@@ -260,6 +260,14 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 11442854, guid: 240702aa0cfe4b147a8886d03c14b265, type: 2}
+      propertyPath: goldTiles.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11442854, guid: 240702aa0cfe4b147a8886d03c14b265, type: 2}
+      propertyPath: enemyTiles.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 492892, guid: 240702aa0cfe4b147a8886d03c14b265, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -305,10 +313,9 @@ Prefab:
       value: 
       objectReference: {fileID: 836931943}
     - target: {fileID: 11442854, guid: 240702aa0cfe4b147a8886d03c14b265, type: 2}
-      propertyPath: fog
-      value: 
-      objectReference: {fileID: 1000013503040542, guid: 7baf4b253367574499eef4268d796131,
-        type: 2}
+      propertyPath: area
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 11442854, guid: 240702aa0cfe4b147a8886d03c14b265, type: 2}
       propertyPath: chestTiles.Array.data[0]
       value: 
@@ -318,6 +325,20 @@ Prefab:
       propertyPath: playerGoldPoints
       value: 10000
       objectReference: {fileID: 0}
+    - target: {fileID: 11442854, guid: 240702aa0cfe4b147a8886d03c14b265, type: 2}
+      propertyPath: blockingLayer.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
+    - target: {fileID: 11442854, guid: 240702aa0cfe4b147a8886d03c14b265, type: 2}
+      propertyPath: enemyTiles.Array.data[1]
+      value: 
+      objectReference: {fileID: 1000012491944936, guid: cf26af8665128e14bbad40ad70e6fe2b,
+        type: 2}
+    - target: {fileID: 11442854, guid: 240702aa0cfe4b147a8886d03c14b265, type: 2}
+      propertyPath: goldTiles.Array.data[1]
+      value: 
+      objectReference: {fileID: 1000012806191258, guid: 1b061cd3aad6aaa4884dbee3b5720d10,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 240702aa0cfe4b147a8886d03c14b265, type: 2}
   m_IsPrefabParent: 0
@@ -337,9 +358,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   floor: {fileID: 1000013810770954, guid: b8f2a1a7139bf4450a84b3a11048584e, type: 2}
-  wall: {fileID: 141938, guid: 65923a9620d79894d8a5cbd1ecaceba7, type: 2}
+  wall: {fileID: 1000010340017046, guid: 417786bae87d641b69409c0496ce833d, type: 2}
+  water: {fileID: 1000011018570536, guid: 4f7d8814b3aa6462aa09e23bfeb7d9b8, type: 2}
+  dock: {fileID: 1000012502378080, guid: c099afcb8607d483a9695a17d402ae84, type: 2}
+  boat: {fileID: 1000011486126448, guid: a598c960bc7a649c4bbd9b9119a55403, type: 2}
   radius: 21
-  speed: 0
+  speed: 1
   minRoomCount: 5
   maxRoomCount: 10
   minRoomSize: 3
@@ -365,9 +389,9 @@ MonoBehaviour:
   c: {fileID: 1000013810770954, guid: b8f2a1a7139bf4450a84b3a11048584e, type: 2}
   v: {fileID: 1000010340017046, guid: 417786bae87d641b69409c0496ce833d, type: 2}
   h: {fileID: 1000010340017046, guid: 417786bae87d641b69409c0496ce833d, type: 2}
-  tallBuilding1: {fileID: 1000010605195022, guid: c109290c4afc24cb9920845b4f37ac5d,
+  tallBuilding1: {fileID: 1000014080277936, guid: a1cca869e2fa34110a445a34c62e7ac2,
     type: 2}
-  tallBuilding2: {fileID: 1000011958596220, guid: 561c061f60ee74ae1bdf4641d6e23801,
+  tallBuilding2: {fileID: 1000013923463004, guid: e83de0f8a588148f682b2d1e03c28e1f,
     type: 2}
 --- !u!1001 &375036325
 Prefab:
@@ -504,6 +528,7 @@ Prefab:
       objectReference: {fileID: 21300000, guid: a1218f5c3c00b4a38a3b81fe2c292383,
         type: 3}
     - target: {fileID: 11460302, guid: 5249b9519bdbed8439af5818a81ec0d6, type: 2}
+<<<<<<< HEAD:Assets/Scenes/Main.unity
       propertyPath: playerUI
       value: 
       objectReference: {fileID: 2075118593}
@@ -519,6 +544,11 @@ Prefab:
       propertyPath: skillsContainer
       value: 
       objectReference: {fileID: 447770185}
+=======
+      propertyPath: baseSneak
+      value: 0
+      objectReference: {fileID: 0}
+>>>>>>> origin/mechanics:Assets/Scenes/Slums.unity
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5249b9519bdbed8439af5818a81ec0d6, type: 2}
   m_IsPrefabParent: 0

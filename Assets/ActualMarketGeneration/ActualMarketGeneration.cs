@@ -15,6 +15,8 @@ public static class ActualMarketGeneration {
 	public static char[,] grid;
 	[HideInInspector]
 	public static char[,] bigGrid;
+	[HideInInspector]
+	public static char[,] tileMap;
 
 	static int gridTileSize = 5;
 	static int bigGridTileSize = 15;
@@ -38,10 +40,11 @@ public static class ActualMarketGeneration {
 
 		//array map for pathfinding, later
 		int[,] boardMap = new int[gridSizeX, gridSizeY];
+		tileMap = new char[gridSizeX, gridSizeY];
 	
 		for (int r = 0; r < gridSizeX; r ++) {
 			for (int c = 0; c < gridSizeY; c++) {
-				boardMap[r,c] = 0;
+				boardMap[c,r] = 1;
 				grid[r,c] = 'n';
 				if (r % 3 == 0)
 					bigGrid[r/3,c/3] = 'n';
@@ -86,36 +89,50 @@ public static class ActualMarketGeneration {
 				switch(grid[r, c]) {
 				case 'n': //solid tile
 					currentTile = n;
-					boardMap[r,c] = 1;
+					boardMap[c,r] = 1;
+					tileMap[r,c] = 'w';
 					break;
 				case 'b': //market tile
 					currentTile = b;
+					boardMap[c,r] = 0;
+					tileMap[r,c] = 'f';
 					break;
 				case 'x': //solid tile
 					currentTile = x;
-					boardMap[r,c] = 1;
+					boardMap[c,r] = 1;
+					tileMap[r,c] = 'w';
 					//fill(255, 0, 0);
 					break;
 				case 'i': //outer alley tile
 					currentTile = iA;
 					//boardMap[r,c] = 1; This might have been mislabelled
+					tileMap[r,c] = 'w';
 					//fill(150, 0, 150);
 					break;
 				case 'g': //gateway tile/market tile
 					currentTile = g;
+					boardMap[c,r] = 0;
+					tileMap[r,c] = 'f';
 					break;
 				case 'a': //alley/road tile
 					currentTile = a;
+					boardMap[c,r] = 0;
+					tileMap[r,c] = 'f';
 					break;
 				case 'r': //road tile
 					currentTile = rA;
+					boardMap[c,r] = 0;
+					tileMap[r,c] = 'f';
 					break;
 				case 'c': //road tile
 					currentTile = cA;
+					boardMap[c,r] = 0;
+					tileMap[r,c] = 'f';
 					break;
 				case 'v': //Vertical walls
 					currentTile = v;
-					boardMap[r,c] = 1;
+					boardMap[c,r] = 1;
+					tileMap[r,c] = 'w';
 					//fill(0, 255, 0);
 					break;
 				case 'h': //Horizontal walls
@@ -134,14 +151,19 @@ public static class ActualMarketGeneration {
 								GameObject.Destroy(tiles[r+1,c]);
 
 							offset = new Vector2(0f,0.5f);
+							tileMap[r,c] = 'n';
 						}
-					}else
+					}else{
 						currentTile = h;
-					boardMap[r,c] = 1;
+						tileMap[r,c] = 'w';
+					}
+					boardMap[c,r] = 1;
 					//fill(0, 0, 255);
 					break;
 				default:
 					currentTile = b;
+					boardMap[c,r] = 0;
+					tileMap[r,c] = 'f';
 					break;
 				}
 				if (currentTile != null) {
@@ -190,4 +212,5 @@ public static class ActualMarketGeneration {
 			}
 		}
 	}
+
 }

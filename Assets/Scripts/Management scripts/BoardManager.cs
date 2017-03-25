@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System;
+using System.Linq;
+using System.Xml.Linq;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
 using Completed;
 
-public class BoardManager : MonoBehaviour {
+public class BoardManager : MonoBehaviour, SerialOb {
     [Serializable]
 
     //Class that acts as a range for a number of uses
@@ -19,16 +21,37 @@ public class BoardManager : MonoBehaviour {
             maximum = max;
         }
     }
+	//Enum for maps
+	public enum areas{
+		Market,
+		Slums,
+		Entertainment_NI,
+		Government_NI,
+		Temple_NI,
+		University_NI,
+		Estates_NI
+	}
+
+	private Dictionary<string,areas> areaLookup = new Dictionary<string, areas>{
+		{"Market", areas.Market},
+		{"Slums", areas.Slums}
+	};
 
 	//References to the map generators
 	private MazeGenerator2 slumGen;
 	private GenerateMarket marketGen;
-	private Dictionary<string,mapGenerator> generators = new Dictionary<string,mapGenerator>();
-	public string area = "M";
-	private Dictionary<string,int[]> startLocs = new Dictionary<string,int[]>{
-		{"M", new int[2]{60,60}},
-		{"S", new int[2]{4,4}}
+	private Dictionary<areas,mapGenerator> generators = new Dictionary<areas,mapGenerator>();
+	public areas area = areas.Market;
+	private Dictionary<areas,int[]> startLocs = new Dictionary<areas,int[]>{
+		{areas.Market, new int[2]{60,60}},
+		{areas.Slums, new int[2]{4,4}}
 	};
+
+	private Dictionary<areas,int[]> entries = new Dictionary<areas,int[]>{
+	};
+
+	[SerializeField]
+	private LayerMask blockingLayer;
 
     private int columns = 100;                       //Columns on the board
     private int rows = 100;                          //Rows on the board
@@ -53,30 +76,17 @@ public class BoardManager : MonoBehaviour {
     public GameObject[,] fogTiles;
 
     
-    
     /// <summary>
     /// 2D array of the board, to be pulled for pathfinding, etc.
     /// Current tiles - 0 = floor, 1 = wall
     /// </summary>
-    private int[,] boardMap;
+    public int[,] boardMap;
+	public char[,] tileMap;
 
     private Transform boardHolder;                              //Holds the parent transform of the board   
-    private List<Vector2> gridPositions = new List<Vector2>();  //A list of grid coordinates, [0,0] to [columns,rows]
     /// <summary>
     /// Creates a list of grid coordinates, [0,0] to [columns,rows]
     /// </summary>
-    void InitializeList()
-    {
-        gridPositions.Clear();
-
-        for (int x = 1; x < columns -1; x++)
-        {
-            for (int y = 1; y < rows - 1; y++)
-            {
-                gridPositions.Add(new Vector2(x, y));
-            }
-        }
-    }
 
     /// <summary>
     /// Initializes board with floor tiles and outer wall tiles
@@ -86,15 +96,18 @@ public class BoardManager : MonoBehaviour {
 
 
         boardHolder = new GameObject("Board").transform;
+		
 		slumGen = GetComponent<MazeGenerator2>();
 		marketGen = GetComponent<GenerateMarket>();
 
-		generators.Add("M", marketGen);
-		generators.Add("S", slumGen);
+		generators.Add(areas.Market, marketGen);
+		generators.Add(areas.Slums, slumGen);
 
 		mapGenerator generator = generators[area];
 
 		boardMap = generator.init();
+
+		tileMap = generator.tileMap;
 
 		rows = boardMap.GetLength(0);
 		columns = boardMap.GetLength(1);
@@ -117,6 +130,32 @@ public class BoardManager : MonoBehaviour {
             }
         }
     }
+
+	/// <summary>
+	/// Depending on the area, parses the map and creates exits to other zones
+	/// </summary>
+	public void BuildExits(){
+		switch(area){
+		case areas.Market:
+			int entry = 0;
+			Debug.Log(boardMap.GetLength(0));
+			for(int y = 0; y < boardMap.GetLength(0); y++){
+				int[] start = new int[2];
+				start[1] = 0;
+				if(boardMap[0,y] == 0){
+					entry++;
+					if(entry == 2){
+						start[0] = y;
+						entries[areas.Slums] = start;
+					}
+					Instantiate(door1, new Vector2(0, y), Quaternion.identity);//Create the floor exit
+				}
+			}
+			break;
+		case areas.Slums:
+			break;
+		}
+	}
 
     /// <summary>
     /// Grabs a copy of the boardMap for mapping purposes
@@ -142,11 +181,20 @@ public class BoardManager : MonoBehaviour {
     /// </summary>
     /// <returns>A Vector2 representing a location on the board</returns>
     Vector2 RandomPosition()
-    {
-        int randomIndex = Random.Range(0, gridPositions.Count);
-        Vector2 randomPosition = gridPositions[randomIndex];
-        gridPositions.RemoveAt(randomIndex);
-        return randomPosition;
+	{
+		bool repeat = true;
+		Vector2 randomPosition = Vector2.zero;
+		while (repeat) {
+			randomPosition = new Vector2 (Random.Range (0, rows), Random.Range (0, columns));
+			RaycastHit2D hit = Physics2D.Raycast (randomPosition, Vector2.up, 0.1f, blockingLayer);
+			if (hit.collider == null) {
+				repeat = false;
+			} else {
+				
+			}
+		
+		}
+		return randomPosition;
     }
 
 
@@ -169,6 +217,8 @@ public class BoardManager : MonoBehaviour {
 				boardMap[(int)randomPosition.x,(int)randomPosition.y] = 1;
             GameObject tileChoice = tileArray[Random.Range(0, tileArray.Length)];
 			GameObject ob = (GameObject)Instantiate(tileChoice, randomPosition, Quaternion.identity);
+			ob.transform.SetParent(boardHolder.transform);
+			ob.name = tileChoice.name;
         }
     }
 
@@ -176,17 +226,16 @@ public class BoardManager : MonoBehaviour {
    public void SetupScene (int level)
     {
         BoardSetup();           //Initialize board with floor/outer wall tiles
-        InitializeList();       //Create the list of board positions
         //LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum);      //Place wall tiles
         LayoutObjectAtRandom(goldTiles, goldCount.minimum, goldCount.maximum);      //Place gold tiles
 		int chestCount = 7;
 		LayoutObjectAtRandom (chestTiles, chestCount, chestCount);
         int enemyCount = 18;//(int)Mathf.Log(level, 2f);
         LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount);                   //Place enemies
-        Instantiate(door1, new Vector2(columns - 1, rows - 1), Quaternion.identity);//Create the floor exit
+
+		BuildExits();
 
     }
-
 
 
 	/// <summary>
@@ -276,6 +325,51 @@ public class BoardManager : MonoBehaviour {
 		}
 		return false;
 	}
+
+	#region serialization
+	public XElement serialize(){
+		XElement enemies = new XElement("enemies");
+		foreach(Enemy enemy in GameManager.instance.getEnemies()){
+			XElement e = enemy.serialize();
+			enemies.Add(e);
+		}
+
+		XElement entryPoints = new XElement("entries");
+		foreach(areas areaCode in entries.Keys){
+			XElement startLoc = new XElement(areaCode.ToString(), entries[areaCode][0]+","+entries[areaCode][1]);
+			entryPoints.Add(startLoc);
+		}
+
+		string stringMap = "";
+		for(int x = 0; x < tileMap.GetLength(0); x++){
+			for(int y = 0; y < tileMap.GetLength(1); y++){
+				stringMap += tileMap[x,y];
+				if(y+1 < tileMap.GetLength(1))
+					stringMap += ",";
+				else
+					stringMap += ";";
+			}
+		}
+
+		XElement tiles = new XElement("tiles", stringMap);
+
+		XElement node = new XElement(area.ToString(),tiles,enemies,entryPoints);
+
+		dataSlave.instance.areas[area.ToString()] = node;
+		dataSlave.instance.updateEles();
+
+		return node;
+	}
+
+
+	public bool deserialize(XElement s){
+			return true;
+	}
+	#endregion
+
+	public void updateEntryPoint(string area, int[] point){
+		entries[areaLookup[area]] = point;
+	}
 }
 
 
@@ -306,5 +400,6 @@ public class ASquare : IComparable<ASquare>{
 	public int CompareTo(ASquare compareASquare){
 		return this.cost.CompareTo(compareASquare.cost);
 	}
+
 
 }
