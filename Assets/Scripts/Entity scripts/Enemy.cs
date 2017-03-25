@@ -17,8 +17,6 @@ namespace Completed
 		public GameObject indicator;
 		public float sightRange;
 
-		public new float range;
-
         private Animator animator;
         private Transform target;
 		private Player player;
@@ -296,7 +294,7 @@ namespace Completed
 		}
 		#endregion
 
-		public float Range {
+		public new float Range {
 			get {
 				return this.range;
 			}

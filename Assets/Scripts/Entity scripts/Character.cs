@@ -22,7 +22,7 @@ namespace Completed
 
 		//affected by items
 		protected int totalHP;
-		protected int range;
+		protected float range;
 		protected int currentHP;
 
 		protected double baseSpeed;
@@ -260,7 +260,7 @@ namespace Completed
 
 		public int Range {
 			get {
-				return this.range;
+				return (int)this.range; //range needed to be float for enemy, but broke things if not int for character
 			}
 			set {
 				range = value;
