@@ -70,6 +70,10 @@ namespace Completed
 		//Healthbar object
 		public GameObject hpBar;
 
+		//transformation variables
+		private float transformationCounter;
+		public Boolean isTransforming;
+
 		// Use this for initialization
 		protected override void Start ()
 		{
@@ -84,6 +88,11 @@ namespace Completed
 			UpdateText ();
 		
 			animator = GetComponent<Animator> ();
+			animator.speed = 1;
+			animator.enabled = false;
+			isTransforming = false;
+			transformationCounter = 0;
+
 			hitbox = GetComponent<BoxCollider2D> ();
 
 			this.shoot = 1;
@@ -107,18 +116,16 @@ namespace Completed
 		{
 		}
 
-		private int sneakLvlAtActive;
-
 		private void ToggleSneak ()
 		{
 
 			if (!sneaking) {
-				sneakLvlAtActive = this.sneak;
+				
 				sneaking = true;
-				totalSpeed *= (0.5 + 0.05 * sneakLvlAtActive);
+				TotalSpeed *= (0.4);
 			} else if (sneaking) {
 				sneaking = false;
-				totalSpeed /= (0.5 + 0.05 * sneakLvlAtActive);
+				TotalSpeed /= (0.4);
 			}
 		}
 
@@ -139,7 +146,6 @@ namespace Completed
 		protected override void UpdateSprite ()
 		{
 			Sprite sprite;
-			Color color;
 			if (GameManager.instance.isWerewolf) {
 				if (orientation == Orientation.North)
 					sprite = werewolfBack;
@@ -149,7 +155,6 @@ namespace Completed
 					sprite = werewolfFront;
 				else
 					sprite = werewolfLeft;
-				color = Color.gray;
 			} else {
 				if (orientation == Orientation.North)
 					sprite = humanBack;
@@ -159,10 +164,8 @@ namespace Completed
 					sprite = humanFront;
 				else
 					sprite = humanLeft;
-				color = original;
 			}
 			this.gameObject.GetComponent<SpriteRenderer> ().sprite = sprite;
-			this.gameObject.GetComponent<SpriteRenderer> ().color = color;
 		}
 
 		// Update is called once per frame
@@ -170,7 +173,17 @@ namespace Completed
 		{
 			if (!GameManager.instance.playersTurn)
 				return;
-
+			if (isTransforming) {
+				if (Time.time >= transformationCounter) {
+					animator.enabled = false;
+					isTransforming = false;
+					GameObject.FindGameObjectWithTag ("transformbg").GetComponent<Renderer> ().enabled = false;
+					GetComponent<SpriteRenderer> ().sortingLayerName = "Units";
+					UpdateSprite ();
+					GameManager.instance.playersTurn = false;
+				}
+				return;
+			}
 			if (Input.GetKeyDown (KeyCode.T)) {
 				actionText.text = "";
 				switchForm ();
@@ -209,7 +222,7 @@ namespace Completed
 				//shoot
 			} else if (Input.GetKeyDown (KeyCode.Keypad2) || Input.GetKeyDown (KeyCode.Alpha2)) {
 				ToggleSneak (); //sneak
-				Debug.Log("sneaking"); 
+				Debug.Log(sneaking ? "sneaky and slow" : "stompy and fast"); 
 			} else if (Input.GetKeyDown (KeyCode.Keypad3) || Input.GetKeyDown (KeyCode.Alpha3)) {
 				 //charm
 			} else if (Input.GetKeyDown (KeyCode.Keypad4) || Input.GetKeyDown (KeyCode.Alpha4)) {
@@ -222,6 +235,9 @@ namespace Completed
 				 //growl
 			} else if (Input.GetKeyDown (KeyCode.Keypad8) || Input.GetKeyDown (KeyCode.Alpha8)) {
 				//fortify
+			} else if (Input.GetKeyDown (KeyCode.H) ) {
+				//check speed
+				Debug.Log(this.totalSpeed);
 			}
 				
 			int horizontal = 0;
@@ -246,7 +262,7 @@ namespace Completed
 				bool upgradedSkill = false;
 				switch (skill) {
 				case 1:
-					if (this.shoot < 8) {
+					if (this.shoot < 5) {
 						this.shoot += 1;
 						this.rangedDamage *= 1.1;
 						this.rangedAccuracy *= 1.05;
@@ -255,15 +271,15 @@ namespace Completed
 					}
 					break;
 				case 2:
-					if (this.sneak < 8) {
+					if (this.sneak < 5) {
 						this.sneak += 1;
-						//this.baseSneak += 1; base sneak stays the same, is the starting value -Bryan
+						//this.baseSneak += 1;     base sneak stays the same, is the starting value -Bryan
 						GameManager.instance.print ("Upgraded sneak to level " + this.sneak + "!");
 						upgradedSkill = true;
 					}
 					break;
 				case 3:
-					if (this.charm < 8) {
+					if (this.charm < 5) {
 						this.charm += 1;
 						// TODO
 						GameManager.instance.print ("Upgraded charm to level " + this.charm + "!");
@@ -271,15 +287,15 @@ namespace Completed
 					}
 					break;
 				case 4:
-					if (this.dodge < 8) {
+					if (this.dodge < 5) {
 						this.dodge += 1;
-						this.rangedBlock *= 1.1;
+						this.rangedBlock += dodge == 4 ? 16.5 : 4.5;
 						GameManager.instance.print ("Upgraded dodge to level " + this.dodge + "!");
 						upgradedSkill = true;
 					}
 					break;
 				case 5:
-					if (this.bite < 8) {
+					if (this.bite < 5) {
 						this.bite += 1;
 						this.meleeAccuracy *= 1.1;
 						this.meleeDamage *= 1.1;
@@ -288,7 +304,7 @@ namespace Completed
 					}
 					break;
 				case 6:
-					if (this.rage < 8) {
+					if (this.rage < 5) {
 						this.rage += 1;
 						// TODO
 						GameManager.instance.print ("Upgraded rage to level " + this.rage + "!");
@@ -296,7 +312,7 @@ namespace Completed
 					}
 					break;
 				case 7:
-					if (this.growl < 8) {
+					if (this.growl < 5) {
 						this.growl += 1;
 						// TODO
 						GameManager.instance.print ("Upgraded growl to level " + this.growl + "!");
@@ -304,9 +320,9 @@ namespace Completed
 					}
 					break;
 				case 8:
-					if (this.fortify < 8) {
+					if (this.fortify < 5) {
 						this.fortify += 1;
-						this.meleeBlock *= 1.1;
+						this.meleeBlock += fortify == 7 ? 16.5 : 4.5;
 						GameManager.instance.print ("Upgraded fortify to level " + this.fortify + "!");
 						upgradedSkill = true;
 					}
@@ -551,14 +567,22 @@ namespace Completed
 		//Switchs form (human or werewolf); updates hp and sprite
 		private void switchForm ()
 		{
+			
 			GameManager.instance.isWerewolf = !GameManager.instance.isWerewolf;
 			if (GameManager.instance.isWerewolf) {
 				this.TotalHP *= 2;
 				this.CurrentHP *= 2;
+				animator.runtimeAnimatorController = Resources.Load ("transform") as RuntimeAnimatorController;
 			} else {
 				this.TotalHP /= 2;
 				this.CurrentHP /= 2;
+				animator.runtimeAnimatorController = Resources.Load ("reverse") as RuntimeAnimatorController;
 			}
+			GetComponent<SpriteRenderer> ().sortingLayerName = "transformation";
+			GameObject.FindGameObjectWithTag ("transformbg").GetComponent<Renderer> ().enabled = true;
+			isTransforming = true;
+			animator.enabled = true;
+			transformationCounter = Time.time + 5.25f;
 			hpText = "HP: " + this.CurrentHP;
 			UpdateText ();
 			UpdateSprite ();

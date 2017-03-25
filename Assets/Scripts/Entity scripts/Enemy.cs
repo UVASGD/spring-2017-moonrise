@@ -17,8 +17,6 @@ namespace Completed
 		public GameObject indicator;
 		public float sightRange;
 
-		public new float range;
-
         private Animator animator;
         private Transform target;
 		private Player player;
@@ -123,11 +121,14 @@ namespace Completed
 		/// </summary>
         public bool takeTurn(bool init)
         {
+			if (player.isTransforming) {
+				return false;
+			}
 			RaycastHit2D hit;
 			hitbox.enabled = false;
 			hit = Physics2D.Linecast(new Vector2(transform.position.x,transform.position.y),new Vector2(target.position.x,target.position.y), blockingLayer);
 			hitbox.enabled = true;
-			range = sightRange-1-((player.baseSneak+(player.sneak))/1.333f*(player.sneaking ? 1 : 0)); //David: baseSneak=3, player.sneak is 1 at lvl 1 and 5 at lvl 4. Right now enemy range decreases by 1 per level
+			range = sightRange-1-((player.baseSneak+(player.sneak))/1.00f*(player.sneaking ? 1 : 0)); //David: baseSneak=3, player.sneak is 1 at lvl 1 and 5 at lvl 4. Right now enemy range decreases by 1 per level
 			if(hit.transform == target && hit.distance <= range){
 				targetLoc = new Vector2(target.position.x,target.position.y);
 				if(path.Count == 0)
@@ -222,10 +223,11 @@ namespace Completed
 
 				AttemptMove(xDir, yDir);
 			}
-			AP--;
+			AP -= (float)player.TotalSpeed;
 			
 			//Return true if the enemy can move again
-			return (AP >= 1);
+			//Debug.Log("Ap: "+AP+" Player speed: "+ player.TotalSpeed);
+			return (AP >= player.TotalSpeed);
         }
 
 		protected override void OnFinishMove ()
@@ -296,7 +298,7 @@ namespace Completed
 		}
 		#endregion
 
-		public float Range {
+		public new float Range {
 			get {
 				return this.range;
 			}

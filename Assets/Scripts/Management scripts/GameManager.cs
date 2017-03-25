@@ -247,27 +247,31 @@ namespace Completed
             {
                 yield return new WaitForSeconds(turnDelay);
             }
-
+			//int movesLeft = 0; //for debugging
 			//As long as an enemy can move, the enemy turn continues
 			while(moreMoves){
 				moreMoves = false;
 				for (int i = 0; i < enemies.Count; i++)
 				{
 					bool canMove = enemies[i].takeTurn(init);
-					
+					//movesLeft += canMove ? 1 : 0;
+
 					moreMoves |= canMove;	//Logical OR, if any enemy returns true, moreMoves will equal true
-					
+
 					
 				}
-				if (enemies.Count > 0) {
-					yield return new WaitForSeconds(enemies[0].moveTime+0.05f);
+				//Debug.Log("in while " + movesLeft);
+				if (moreMoves) { //(enemies.Count > 0)
+					yield return new WaitForSeconds(enemies[0].moveTime+.25f);
 				}
 				init = false;		//Make sure the enemies don't get speed added each time
 			}
+			//Debug.Log ("after while " + movesLeft);
 			
             playersTurn = true;
 
             enemiesMoving = false;
+
         }
 
 		/// <summary>
