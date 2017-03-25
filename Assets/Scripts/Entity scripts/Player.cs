@@ -42,6 +42,7 @@ namespace Completed
 
 		// Abilities
 		private bool willLunge = false;
+		private int lungeCooldown;
 		public bool sneaking = false;
 
 		// Displays
@@ -85,6 +86,8 @@ namespace Completed
 			this.lunge = 1;
 			this.growl = 1;
 			this.fortify = 1;
+
+			this.lungeCooldown = 0;
 
 			//sightBlocks = LayerMask.NameToLayer("BlockingLayer");
 			//fogLayer = LayerMask.NameToLayer("Fog");
@@ -229,10 +232,11 @@ namespace Completed
 		}
 
 		private void EnableLunge() {
-			if (!this.willLunge) {
+			if (!this.willLunge && this.lungeCooldown < 1) {
 				GameManager.instance.print ("Click a tile to lunge to");
-
 				this.willLunge = true;
+			} else {
+				GameManager.instance.print ("You can't lunge right now");
 			}
 		}
 
@@ -252,15 +256,23 @@ namespace Completed
 				switch (this.lunge) {
 				case 1:
 					damage = 3;
+					this.lungeCooldown = 6;
 					break;
 				case 2:
 					damage = 5;
+					this.lungeCooldown = 5;
 					break;
 				case 3:
 					damage = 8;
+					this.lungeCooldown = 5;
 					break;
 				case 4:
-					damage = 13;
+					damage = 12;
+					this.lungeCooldown = 4;
+					break;
+				case 5:
+					damage = 17;
+					this.lungeCooldown = 4;
 					break;
 				}
 
@@ -433,6 +445,7 @@ namespace Completed
 		protected void EndTurn ()
 		{
 			GameManager.instance.timeLeft--;
+			this.lungeCooldown--;
 			timeLeft = "Time Left: " + GameManager.instance.timeLeft;
 			UpdateText ();
 
