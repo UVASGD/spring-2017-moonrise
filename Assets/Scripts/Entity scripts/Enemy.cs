@@ -223,7 +223,7 @@ namespace Completed
 			AP -= (float)player.TotalSpeed;
 			
 			//Return true if the enemy can move again
-			Debug.Log("Ap: "+AP+" Player speed: "+ player.TotalSpeed);
+			//Debug.Log("Ap: "+AP+" Player speed: "+ player.TotalSpeed);
 			return (AP >= player.TotalSpeed);
         }
 

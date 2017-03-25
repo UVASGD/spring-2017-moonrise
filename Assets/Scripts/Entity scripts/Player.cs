@@ -208,7 +208,7 @@ namespace Completed
 				//shoot
 			} else if (Input.GetKeyDown (KeyCode.Keypad2) || Input.GetKeyDown (KeyCode.Alpha2)) {
 				ToggleSneak (); //sneak
-				Debug.Log("sneaking"); 
+				Debug.Log(sneaking ? "sneaky and slow" : "stompy and fast"); 
 			} else if (Input.GetKeyDown (KeyCode.Keypad3) || Input.GetKeyDown (KeyCode.Alpha3)) {
 				 //charm
 			} else if (Input.GetKeyDown (KeyCode.Keypad4) || Input.GetKeyDown (KeyCode.Alpha4)) {
@@ -241,7 +241,7 @@ namespace Completed
 
 		public void IncreaseSkill (int skill)
 		{
-			int cost = 1; //00 * (int)Math.Pow (2, GameManager.instance.level - 1);
+			int cost = 100 * (int)Math.Pow (2, GameManager.instance.level - 1);
 			if (cost > GameManager.instance.playerGoldPoints) {
 				GameManager.instance.print ("You don't have enough gold to level up");
 			} else {
