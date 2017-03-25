@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using ItemSpace;
-using UnityEditor;
 using UnityEngine;
 using System.Xml.Linq;
 using System.Linq;
 
 namespace Completed
 {
-	public class Character : MovingObject, SerialOb
+    public class Character : MovingObject, SerialOb
 	{
 		//leveled up with magic character points
 		protected int baseHP;
@@ -22,7 +20,7 @@ namespace Completed
 
 		//affected by items
 		protected int totalHP;
-		protected int range;
+		protected float range;
 		protected int currentHP;
 
 		protected double baseSpeed;
@@ -88,9 +86,9 @@ namespace Completed
 			Debug.Log (weaponMin + " " + weaponMax);
 
 			// If distance is 1, use melee values instead of ranged values
-			double accuracyValue = distance <= 1 ? (this.RangedAccuracy / 2 + this.MeleeAccuracy) / 1.5 : (this.RangedAccuracy + this.MeleeAccuracy/2) / 1.5;
-			double blockValue = distance <= 1 ? (target.RangedBlock / 2 + target.MeleeBlock) / 1.5 : (target.RangedBlock + this.MeleeBlock/2) / 1.5;
-
+			double accuracyValue = distance <= 1 ? (this.RangedAccuracy / 2 + this.MeleeAccuracy)/1.5 : (this.RangedAccuracy + this.MeleeAccuracy/2)/1.5;
+			double blockValue = distance <= 1 ? (target.RangedBlock / 2 + target.MeleeBlock)/1.5 : (target.RangedBlock + this.MeleeBlock/2)/1.5;
+			Debug.Log ("ranged hit chance: " + (accuracyValue - blockValue));
 			if (accuracyValue - blockValue > UnityEngine.Random.Range (0.0f, 100.0f)) {
 				int damage = (int)((this.RangedDamage + this.MeleeDamage/2) / 1.5) * (UnityEngine.Random.Range (weaponMin, weaponMax+1));
 				target.LoseHp(damage);
@@ -260,7 +258,7 @@ namespace Completed
 
 		public int Range {
 			get {
-				return this.range;
+				return (int)this.range; //range needed to be float for enemy, but broke things if not int for character
 			}
 			set {
 				range = value;
