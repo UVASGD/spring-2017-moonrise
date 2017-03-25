@@ -74,7 +74,7 @@ namespace Completed
 			orientation = Orientation.North;
 			original = this.gameObject.GetComponent<SpriteRenderer> ().color;
 			timeLeft = "Time Left: " + GameManager.instance.timeLeft;
-			goldText = "Gold: " + GameManager.instance.playerGoldPoints;
+			goldText = "Silver: " + GameManager.instance.playerGoldPoints;
 			hpText = "HP: " + this.CurrentHP;
 			levelText = "Level: " + GameManager.instance.level;
 			UpdateText ();
@@ -331,7 +331,7 @@ namespace Completed
 		{
 			int cost = 100 * (int)Math.Pow (2, GameManager.instance.level - 1);
 			if (cost > GameManager.instance.playerGoldPoints) {
-				GameManager.instance.print ("You don't have enough gold to level up");
+				GameManager.instance.print ("You don't have enough silver to level up");
 			} else {
 				bool upgradedSkill = false;
 				switch (skill) {
@@ -501,10 +501,10 @@ namespace Completed
 				String message = "";
 				switch (other.name) {
 				case "Gold1":
-					GameManager.instance.print ("Picked up " + pointsPerGold + " gold");
+					GameManager.instance.print ("Picked up " + pointsPerGold + " silver");
 					GameManager.instance.playerGoldPoints += pointsPerGold;
-					goldText = "Gold: " + GameManager.instance.playerGoldPoints;
-					message = "+" + pointsPerGold + " Gold";
+					goldText = "Silver: " + GameManager.instance.playerGoldPoints;
+					message = "+" + pointsPerGold + " Silver";
 					UpdateText ();
 					other.gameObject.SetActive (false);
 					break;
@@ -516,10 +516,10 @@ namespace Completed
 					other.gameObject.SetActive (false);
 					break;
 				default:
-					GameManager.instance.print ("Picked up " + pointsPerGold + " gold");
+					GameManager.instance.print ("Picked up " + pointsPerGold + " silver");
 					GameManager.instance.playerGoldPoints += pointsPerGold;
-					goldText = "Gold: " + GameManager.instance.playerGoldPoints;
-					message = "+" + pointsPerGold + " Gold";
+					goldText = "Silver: " + GameManager.instance.playerGoldPoints;
+					message = "+" + pointsPerGold + " Silver";
 					UpdateText ();
 					other.gameObject.SetActive (false);
 					break;
@@ -578,7 +578,7 @@ namespace Completed
 			} else if (gain > 0) {
 				GameManager.instance.print ("Picked up " + gain + " gold");
 			}
-			goldText = "Gold: " + GameManager.instance.playerGoldPoints;
+			goldText = "Silver: " + GameManager.instance.playerGoldPoints;
 			UpdateText ();
 		}
 
@@ -708,6 +708,8 @@ namespace Completed
 				equipNode.Add(armor);
 			}
 			node.Add(equipNode);
+
+			node.Add(new XElement("gold", GameManager.instance.playerGoldPoints));
 			return node;
 		}
 
@@ -732,6 +734,7 @@ namespace Completed
 			fortify = Convert.ToInt32(info[11].Value);
 			GameManager.instance.level = Convert.ToInt32(info[12].Value);
 			GameManager.instance.timeLeft = Convert.ToInt32(info[13].Value);
+			GameManager.instance.playerGoldPoints = Convert.ToInt32(info[16].Value);
 
 			XElement inventoryEle = info[14];
 			Debug.Log(info[14].Value);

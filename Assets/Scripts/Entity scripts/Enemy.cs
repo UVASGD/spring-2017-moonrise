@@ -272,6 +272,7 @@ namespace Completed
 		protected override void KillObject()
 		{
 			GameManager.instance.RemoveEnemyFromList (this);
+			GameManager.instance.playerGoldPoints += Random.Range(10,30);
 			Destroy (gameObject);
 		}
 

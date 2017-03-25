@@ -173,7 +173,10 @@ namespace Completed
 				}
 
 				//Create exits
+
+				boardScript.boardHolder = new GameObject("Board").transform;
 				boardScript.BuildExits();
+				boardScript.LayoutGoodies();
 
 				string logOut = "";
 				int[,] fixMap = new int[charMap.GetLength(0), charMap.GetLength(1)];

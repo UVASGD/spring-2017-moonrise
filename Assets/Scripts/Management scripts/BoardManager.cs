@@ -90,7 +90,7 @@ public class BoardManager : MonoBehaviour, SerialOb {
     public int[,] boardMap;
 	public char[,] tileMap;
 
-    private Transform boardHolder;                              //Holds the parent transform of the board   
+    public Transform boardHolder;                              //Holds the parent transform of the board   
     /// <summary>
     /// Creates a list of grid coordinates, [0,0] to [columns,rows]
     /// </summary>
@@ -249,6 +249,12 @@ public class BoardManager : MonoBehaviour, SerialOb {
 			}
 		}
     }
+
+	public void LayoutGoodies(){
+		LayoutObjectAtRandom(goldTiles, goldCount.minimum, goldCount.maximum);      //Place gold tiles
+		int chestCount = 7;
+		LayoutObjectAtRandom (chestTiles, chestCount, chestCount);
+	}
 
 
 	/// <summary>
