@@ -70,6 +70,10 @@ namespace Completed
 		//Healthbar object
 		public GameObject hpBar;
 
+		//transformation variables
+		private float transformationCounter;
+		public Boolean isTransforming;
+
 		// Use this for initialization
 		protected override void Start ()
 		{
@@ -84,6 +88,11 @@ namespace Completed
 			UpdateText ();
 		
 			animator = GetComponent<Animator> ();
+			animator.speed = 1;
+			animator.enabled = false;
+			isTransforming = false;
+			transformationCounter = 0;
+
 			hitbox = GetComponent<BoxCollider2D> ();
 
 			this.shoot = 1;
@@ -137,7 +146,6 @@ namespace Completed
 		protected override void UpdateSprite ()
 		{
 			Sprite sprite;
-			Color color;
 			if (GameManager.instance.isWerewolf) {
 				if (orientation == Orientation.North)
 					sprite = werewolfBack;
@@ -147,7 +155,6 @@ namespace Completed
 					sprite = werewolfFront;
 				else
 					sprite = werewolfLeft;
-				color = Color.gray;
 			} else {
 				if (orientation == Orientation.North)
 					sprite = humanBack;
@@ -157,10 +164,8 @@ namespace Completed
 					sprite = humanFront;
 				else
 					sprite = humanLeft;
-				color = original;
 			}
 			this.gameObject.GetComponent<SpriteRenderer> ().sprite = sprite;
-			this.gameObject.GetComponent<SpriteRenderer> ().color = color;
 		}
 
 		// Update is called once per frame
@@ -168,7 +173,17 @@ namespace Completed
 		{
 			if (!GameManager.instance.playersTurn)
 				return;
-
+			if (isTransforming) {
+				if (Time.time >= transformationCounter) {
+					animator.enabled = false;
+					isTransforming = false;
+					GameObject.FindGameObjectWithTag ("transformbg").GetComponent<Renderer> ().enabled = false;
+					GetComponent<SpriteRenderer> ().sortingLayerName = "Units";
+					UpdateSprite ();
+					GameManager.instance.playersTurn = false;
+				}
+				return;
+			}
 			if (Input.GetKeyDown (KeyCode.T)) {
 				actionText.text = "";
 				switchForm ();
@@ -551,14 +566,22 @@ namespace Completed
 		//Switchs form (human or werewolf); updates hp and sprite
 		private void switchForm ()
 		{
+			
 			GameManager.instance.isWerewolf = !GameManager.instance.isWerewolf;
 			if (GameManager.instance.isWerewolf) {
 				this.TotalHP *= 2;
 				this.CurrentHP *= 2;
+				animator.runtimeAnimatorController = Resources.Load ("transform") as RuntimeAnimatorController;
 			} else {
 				this.TotalHP /= 2;
 				this.CurrentHP /= 2;
+				animator.runtimeAnimatorController = Resources.Load ("reverse") as RuntimeAnimatorController;
 			}
+			GetComponent<SpriteRenderer> ().sortingLayerName = "transformation";
+			GameObject.FindGameObjectWithTag ("transformbg").GetComponent<Renderer> ().enabled = true;
+			isTransforming = true;
+			animator.enabled = true;
+			transformationCounter = Time.time + 5.25f;
 			hpText = "HP: " + this.CurrentHP;
 			UpdateText ();
 			UpdateSprite ();

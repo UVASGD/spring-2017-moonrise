@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6149364}
   - component: {fileID: 5091086}
   - component: {fileID: 11460302}
+  - component: {fileID: 95508013947788824}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -154,7 +155,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1923248533
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.4302382, g: 0.19398788, b: 0.6764706, a: 1}
   m_FlipX: 0
@@ -170,3 +171,20 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 146232}
   m_IsPrefabParent: 1
+--- !u!95 &95508013947788824
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 146232}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c4301666593679e49a6deb99e0ce404b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1

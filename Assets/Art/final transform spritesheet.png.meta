@@ -1,0 +1,906 @@
+fileFormatVersion: 2
+guid: e069249a55073f84d963fa9a498961c1
+timeCreated: 1490406844
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: final transform spritesheet_0
+    21300002: final transform spritesheet_1
+    21300004: final transform spritesheet_2
+    21300006: final transform spritesheet_3
+    21300008: final transform spritesheet_4
+    21300010: final transform spritesheet_5
+    21300012: final transform spritesheet_6
+    21300014: final transform spritesheet_7
+    21300016: final transform spritesheet_8
+    21300018: final transform spritesheet_9
+    21300020: final transform spritesheet_10
+    21300022: final transform spritesheet_11
+    21300024: final transform spritesheet_12
+    21300026: final transform spritesheet_13
+    21300028: final transform spritesheet_14
+    21300030: final transform spritesheet_15
+    21300032: final transform spritesheet_16
+    21300034: final transform spritesheet_17
+    21300036: final transform spritesheet_18
+    21300038: final transform spritesheet_19
+    21300040: final transform spritesheet_20
+    21300042: final transform spritesheet_21
+    21300044: final transform spritesheet_22
+    21300046: final transform spritesheet_23
+    21300048: final transform spritesheet_24
+    21300050: final transform spritesheet_25
+    21300052: final transform spritesheet_26
+    21300054: final transform spritesheet_27
+    21300056: final transform spritesheet_28
+    21300058: final transform spritesheet_29
+    21300060: final transform spritesheet_30
+    21300062: final transform spritesheet_31
+    21300064: final transform spritesheet_32
+    21300066: final transform spritesheet_33
+    21300068: final transform spritesheet_34
+    21300070: final transform spritesheet_35
+    21300072: final transform spritesheet_36
+    21300074: final transform spritesheet_37
+    21300076: final transform spritesheet_38
+    21300078: final transform spritesheet_39
+    21300080: final transform spritesheet_40
+    21300082: final transform spritesheet_41
+    21300084: final transform spritesheet_42
+    21300086: final transform spritesheet_43
+    21300088: final transform spritesheet_44
+    21300090: final transform spritesheet_45
+    21300092: final transform spritesheet_46
+    21300094: final transform spritesheet_47
+    21300096: final transform spritesheet_48
+    21300098: final transform spritesheet_49
+    21300100: final transform spritesheet_50
+    21300102: final transform spritesheet_51
+    21300104: final transform spritesheet_52
+    21300106: final transform spritesheet_53
+    21300108: final transform spritesheet_54
+    21300110: final transform spritesheet_55
+    21300112: final transform spritesheet_56
+    21300114: final transform spritesheet_57
+    21300116: final transform spritesheet_58
+    21300118: final transform spritesheet_59
+    21300120: final transform spritesheet_60
+    21300122: final transform spritesheet_61
+    21300124: final transform spritesheet_62
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 0
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: final transform spritesheet_0
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 1803
+        width: 132
+        height: 297
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_1
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 1803
+        width: 113
+        height: 297
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_2
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1803
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_3
+      rect:
+        serializedVersion: 2
+        x: 740
+        y: 1803
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_4
+      rect:
+        serializedVersion: 2
+        x: 978
+        y: 1803
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_5
+      rect:
+        serializedVersion: 2
+        x: 1216
+        y: 1803
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_6
+      rect:
+        serializedVersion: 2
+        x: 1444
+        y: 1803
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_7
+      rect:
+        serializedVersion: 2
+        x: 1672
+        y: 1803
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_8
+      rect:
+        serializedVersion: 2
+        x: 1910
+        y: 1803
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_9
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 1503
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_10
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 1503
+        width: 129
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_11
+      rect:
+        serializedVersion: 2
+        x: 507
+        y: 1503
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_12
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 1503
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_13
+      rect:
+        serializedVersion: 2
+        x: 983
+        y: 1503
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_14
+      rect:
+        serializedVersion: 2
+        x: 1211
+        y: 1503
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_15
+      rect:
+        serializedVersion: 2
+        x: 1439
+        y: 1503
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_16
+      rect:
+        serializedVersion: 2
+        x: 1677
+        y: 1503
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_17
+      rect:
+        serializedVersion: 2
+        x: 1915
+        y: 1503
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_18
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 1203
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_19
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 1203
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_20
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 1203
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_21
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 1203
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_22
+      rect:
+        serializedVersion: 2
+        x: 931
+        y: 1199
+        width: 235
+        height: 302
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_23
+      rect:
+        serializedVersion: 2
+        x: 1211
+        y: 1203
+        width: 127
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_24
+      rect:
+        serializedVersion: 2
+        x: 1397
+        y: 1199
+        width: 235
+        height: 302
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_25
+      rect:
+        serializedVersion: 2
+        x: 1682
+        y: 1203
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_26
+      rect:
+        serializedVersion: 2
+        x: 1915
+        y: 1203
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_27
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 903
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_28
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 903
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_29
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 903
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_30
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 903
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_31
+      rect:
+        serializedVersion: 2
+        x: 983
+        y: 903
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_32
+      rect:
+        serializedVersion: 2
+        x: 1216
+        y: 903
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_33
+      rect:
+        serializedVersion: 2
+        x: 1448
+        y: 903
+        width: 128
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_34
+      rect:
+        serializedVersion: 2
+        x: 1682
+        y: 903
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_35
+      rect:
+        serializedVersion: 2
+        x: 1915
+        y: 903
+        width: 126
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_36
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 602
+        width: 126
+        height: 280
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_37
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 602
+        width: 126
+        height: 276
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_38
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 602
+        width: 126
+        height: 271
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_39
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 602
+        width: 126
+        height: 271
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_40
+      rect:
+        serializedVersion: 2
+        x: 983
+        y: 602
+        width: 126
+        height: 271
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_41
+      rect:
+        serializedVersion: 2
+        x: 1216
+        y: 602
+        width: 126
+        height: 271
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_42
+      rect:
+        serializedVersion: 2
+        x: 1448
+        y: 602
+        width: 128
+        height: 271
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_43
+      rect:
+        serializedVersion: 2
+        x: 1682
+        y: 602
+        width: 126
+        height: 271
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_44
+      rect:
+        serializedVersion: 2
+        x: 1915
+        y: 602
+        width: 126
+        height: 271
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_45
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 299
+        width: 234
+        height: 302
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_46
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 303
+        width: 126
+        height: 270
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_47
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 303
+        width: 126
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_48
+      rect:
+        serializedVersion: 2
+        x: 698
+        y: 299
+        width: 236
+        height: 302
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_49
+      rect:
+        serializedVersion: 2
+        x: 983
+        y: 303
+        width: 126
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_50
+      rect:
+        serializedVersion: 2
+        x: 1164
+        y: 299
+        width: 235
+        height: 302
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_51
+      rect:
+        serializedVersion: 2
+        x: 1448
+        y: 303
+        width: 128
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_52
+      rect:
+        serializedVersion: 2
+        x: 1630
+        y: 299
+        width: 235
+        height: 302
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_53
+      rect:
+        serializedVersion: 2
+        x: 1910
+        y: 303
+        width: 136
+        height: 279
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_54
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 3
+        width: 136
+        height: 279
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_55
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 3
+        width: 137
+        height: 279
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_56
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 3
+        width: 137
+        height: 279
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_57
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 3
+        width: 136
+        height: 279
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: final transform spritesheet_58
+      rect:
+        serializedVersion: 2
+        x: 978
+        y: 3
+        width: 136
+        height: 279
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

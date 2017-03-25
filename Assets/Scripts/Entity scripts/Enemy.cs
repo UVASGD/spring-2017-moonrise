@@ -121,6 +121,9 @@ namespace Completed
 		/// </summary>
         public bool takeTurn(bool init)
         {
+			if (player.isTransforming) {
+				return false;
+			}
 			RaycastHit2D hit;
 			hitbox.enabled = false;
 			hit = Physics2D.Linecast(new Vector2(transform.position.x,transform.position.y),new Vector2(target.position.x,target.position.y), blockingLayer);
