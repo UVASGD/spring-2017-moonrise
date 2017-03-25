@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using ItemSpace;
-using UnityEditor;
 using UnityEngine;
 using System.Xml.Linq;
 using System.Linq;
 
 namespace Completed
 {
-	public class Character : MovingObject, SerialOb
+    public class Character : MovingObject, SerialOb
 	{
 		//leveled up with magic character points
 		protected int baseHP;
