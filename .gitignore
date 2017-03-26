@@ -41,3 +41,5 @@ ProjectSettings/UnityAdsSettings.asset
 ProjectSettings/UnityConnectSettings.asset
 
 *.asset
+
+save.xml

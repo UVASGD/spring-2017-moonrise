@@ -10,6 +10,8 @@ public class dataSlave : MonoBehaviour {
 
 	public XElement playerSave, market, slums, entertainment, government, manor, university, temple;
 
+	public XElement curLoc;
+
 	public Dictionary<string,XElement> areas;
 
 	public Dictionary<string,int> areaNums;

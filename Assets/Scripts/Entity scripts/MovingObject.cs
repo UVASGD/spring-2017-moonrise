@@ -64,7 +64,7 @@ namespace Completed
         }
 
 		//Similar to move, but if a move fails due to a unit, strike the unit.
-        protected virtual void AttemptMove(int xDir, int yDir)
+        protected virtual bool AttemptMove(int xDir, int yDir)
         {
 			RaycastHit2D hit;
 			bool canMove = Move(xDir, yDir, out hit);
@@ -77,7 +77,7 @@ namespace Completed
 			else
 				orientation = Orientation.South;
 			UpdateSprite ();
-
+			return canMove;
         }
 
         protected abstract void OnCantMove(Transform transform); // expects transform to be not null

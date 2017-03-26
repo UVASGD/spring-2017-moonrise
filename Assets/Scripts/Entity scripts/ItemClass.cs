@@ -7,7 +7,8 @@ namespace ItemSpace
 		Food,
 		Helmet,
 		Potion,
-		Weapon
+		Weapon,
+		Armor
 	}
 }
 
