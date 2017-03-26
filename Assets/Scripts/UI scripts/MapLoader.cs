@@ -67,7 +67,7 @@ public class MapLoader : MonoBehaviour
         {
             for (int j = 0; j < mapTex.height; j++)
             {
-                mapTex.SetPixel(i, j, Color.black);
+                mapTex.SetPixel(j, i, Color.black);
             }
         }
 
@@ -75,13 +75,11 @@ public class MapLoader : MonoBehaviour
         {
             for(int j = 1; j < mapTex.height-1;j++)
             {
-                if (boardData[i-1, j-1] == 0)
-                    mapTex.SetPixel(i, j, Color.white);
+                if (boardData[j-1, i-1] == 0)
+                    mapTex.SetPixel(j, i, Color.white);
             }
         }
-        mapTex.SetPixel(0,0,Color.magenta);
         mapTex.Apply();
-
         mapSprite = Sprite.Create(mapTex, new Rect(0, 0, mapTex.width, mapTex.height), new Vector2(0.5f, 0.5f),16.0f);
         var mapTransform = mainMap.transform.FindChild("MapStore").GetComponent<RectTransform>();
         Debug.Log(mapTex.width + ", " + mapTex.height);
@@ -284,11 +282,6 @@ public class MapLoader : MonoBehaviour
         return returnList;
     }
 
-    private void forceUpdate()
-    {
-        loadMap();
-    }
-
     void Update()
     {
         if(gameObject.activeInHierarchy)
@@ -296,10 +289,6 @@ public class MapLoader : MonoBehaviour
             //If the UI element needs to repeatedly update: Do it here.
             //updateMap();
             UpdateMiniMap();
-            if(Input.GetKeyDown(KeyCode.Minus))
-            {
-                forceUpdate();
-            }
         }
     }
 
