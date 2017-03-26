@@ -63,12 +63,13 @@ namespace Completed
 
 		// Healthbar object
 		public GameObject hpBar;
-        //UI element that manages player leveling.
+        //UI element storage
         public GameObject playerUI;
         public GameObject Clock;
+        public GameObject skillsContainer;
 
-		//transformation variables
-		private float transformationCounter;
+        //transformation variables
+        private float transformationCounter;
 		public Boolean isTransforming;
 
 		// Use this for initialization
@@ -79,7 +80,8 @@ namespace Completed
 			orientation = Orientation.North;
 			original = this.gameObject.GetComponent<SpriteRenderer> ().color;
 			timeLeft = "Time Left: " + GameManager.instance.timeLeft;
-			goldText = "Silver: " + GameManager.instance.playerGoldPoints;
+            totalTime = GameManager.instance.timeLeft;
+            goldText = "Silver: " + GameManager.instance.playerGoldPoints;
 			hpText = "HP: " + this.CurrentHP;
 			levelText = "Level: " + GameManager.instance.level;
 			UpdateText ();
@@ -123,7 +125,7 @@ namespace Completed
 			base.Start ();
 			OnFinishMove ();
 		}
-		
+
 		private void OnDisable ()
 		{
 		}
@@ -153,48 +155,7 @@ namespace Completed
 			if (message != "") {
 				displayText.text += " | " + message;
 			}
-
-            //Clock if set
-            float timeCheck = (float)GameManager.instance.timeLeft / (float)totalTime;
-            if(timeCheck > 0.88)
-            {
-                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Full Moon";
-            }
-            else if (timeCheck <= 0.88 && timeCheck > 0.77)
-            {
-                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Waning Gibbous";
-            }
-            else if (timeCheck <= 0.77 && timeCheck > 0.66)
-            {
-                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Last Quarter";
-            }
-            else if (timeCheck <= 0.66 && timeCheck > 0.55)
-            {
-                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Waning Crescent";
-            }
-            else if (timeCheck <= 0.55 && timeCheck > 0.44)
-            {
-                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "New Moon";
-            }
-            else if (timeCheck <= 0.44 && timeCheck > 0.33)
-            {
-                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Waxing Crescent";
-            }
-            else if (timeCheck <= 0.33 && timeCheck > 0.22)
-            {
-                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "First Quarter";
-            }
-            else if (timeCheck <= 0.22 && timeCheck > 0.11)
-            {
-                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Waxing Gibbous";
-            }
-            else if (timeCheck <= 0.11)
-            {
-                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Near Full Moon";
-            }
-
-
-        }
+		}
 
 		protected override void UpdateSprite ()
 		{
@@ -376,7 +337,8 @@ namespace Completed
 		public void IncreaseSkill (int skill)
 		{
 			int cost = 100 * (int)Math.Pow (2, GameManager.instance.level - 1);
-			if (cost > GameManager.instance.playerGoldPoints) {
+            int nextCost = 100 * (int)Math.Pow(2, GameManager.instance.level);
+            if (cost > GameManager.instance.playerGoldPoints) {
 				GameManager.instance.print ("You don't have enough silver to level up");
 			} else {
 				bool upgradedSkill = false;
@@ -433,7 +395,7 @@ namespace Completed
 						this.lunge += 1;
 						GameManager.instance.print ("Upgraded lunge to level " + this.lunge + "!");
 						upgradedSkill = true;
-                        SkillUIUpdate(skill, this.rage, nextCost);
+                        SkillUIUpdate(skill, this.lunge, nextCost);
                         }
 					break;
 				case 7:
@@ -452,7 +414,7 @@ namespace Completed
 						GameManager.instance.print ("Upgraded fortify to level " + this.fortify + "!");
 						upgradedSkill = true;
                         SkillUIUpdate(skill, this.fortify, nextCost);
-					}
+                        }
 					break;
 				}
 				if (!upgradedSkill) {
@@ -716,13 +678,46 @@ namespace Completed
 			hpText = "HP: " + this.CurrentHP;
 			UpdateText ();
 			UpdateSprite ();
+            UpdateIndicator();
 		}
 
+        /// <summary>
+        /// Updates the indicators on the HUD for what state the player is in.
+        /// </summary>
+        private void UpdateIndicator()
+        {
+            //This is designed for a text-based interaction. Replacing the FindChild("Text") onward with GetComponent<Image>().sprite and setting the sprite that way
+            //TODO Switch this to images
+            if (GameManager.instance.isWerewolf)
+            {
+                skillsContainer.transform.FindChild("FormIndicator").FindChild("Text").GetComponent<Text>().text = "W";
 
+                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill1").FindChild("Text").GetComponent<Text>().text = "Bite";
+                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill2").FindChild("Text").GetComponent<Text>().text = "Rage";
+                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill3").FindChild("Text").GetComponent<Text>().text = "Growl";
+                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill4").FindChild("Text").GetComponent<Text>().text = "Fortify";
+
+            }
+            else
+            {
+                skillsContainer.transform.FindChild("FormIndicator").FindChild("Text").GetComponent<Text>().text = "H";
+
+                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill1").FindChild("Text").GetComponent<Text>().text = "Shoot";
+                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill2").FindChild("Text").GetComponent<Text>().text = "Sneak";
+                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill3").FindChild("Text").GetComponent<Text>().text = "Charm";
+                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill4").FindChild("Text").GetComponent<Text>().text = "Dodge";
+            }
+        }
+        /// <summary>
+        /// Adjusts the player's skills in the Character tab
+        /// </summary>
+        /// <param name="skill">The skill as an int. See the levelup method.</param>
+        /// <param name="level">What level is the stat going to?</param>
+        /// <param name="cost">What is the cost of the stat?</param>
         private void SkillUIUpdate(int skill, int level, int cost)
         {
             GameObject skillBox;
-            switch(skill)
+            switch (skill)
             {
                 case 1:
                     skillBox = playerUI.transform.FindChild("HumanContainer").FindChild("Skill1").FindChild("Desc").gameObject;
@@ -760,13 +755,56 @@ namespace Completed
             GameObject currencyBox = playerUI.transform.FindChild("Currency").gameObject;
             currencyBox.GetComponent<Text>().text = "Cost for Next Level: " + cost;
         }
-	}
+        /// <summary>
+        /// Updates the HUD clock to reflect time left. Works on text at the moment
+        /// </summary>
+        private void UpdateClock()
+        {
+            //TODO: Switch this to images
+            //Clock if set
+            float timeCheck = (float)GameManager.instance.timeLeft / (float)totalTime;
+            if (timeCheck > 0.88)
+            {
+                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Full Moon";
+            }
+            else if (timeCheck <= 0.88 && timeCheck > 0.77)
+            {
+                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Waning Gibbous";
+            }
+            else if (timeCheck <= 0.77 && timeCheck > 0.66)
+            {
+                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Last Quarter";
+            }
+            else if (timeCheck <= 0.66 && timeCheck > 0.55)
+            {
+                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Waning Crescent";
+            }
+            else if (timeCheck <= 0.55 && timeCheck > 0.44)
+            {
+                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "New Moon";
+            }
+            else if (timeCheck <= 0.44 && timeCheck > 0.33)
+            {
+                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Waxing Crescent";
+            }
+            else if (timeCheck <= 0.33 && timeCheck > 0.22)
+            {
+                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "First Quarter";
+            }
+            else if (timeCheck <= 0.22 && timeCheck > 0.11)
+            {
+                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Waxing Gibbous";
+            }
+            else if (timeCheck <= 0.11)
+            {
+                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Near Full Moon";
+            }
+        }
 
+        #region serialization
 
-		#region serialization
-
-		//Serialization methods
-		public override XElement serialize ()
+        //Serialization methods
+        public override XElement serialize ()
 		{
 			XElement node = new XElement ("player",
                 new XElement ("locationX", this.transform.localPosition.x),

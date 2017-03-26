@@ -464,7 +464,6 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
->>>>>>> origin/mechanics:Assets/Scenes/Slums.unity
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7baf4b253367574499eef4268d796131, type: 2}
   m_IsPrefabParent: 0

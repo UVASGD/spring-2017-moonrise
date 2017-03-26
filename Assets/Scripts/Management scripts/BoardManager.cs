@@ -103,7 +103,6 @@ public class BoardManager : MonoBehaviour, SerialOb {
     void BoardSetup()
     {
 
-
         boardHolder = new GameObject("Board").transform;
 		
 		slumGen = GetComponent<MazeGenerator2>();
@@ -117,7 +116,6 @@ public class BoardManager : MonoBehaviour, SerialOb {
 		mapGenerator generator = generators[area];
 
 		boardMap = generator.init();
-
 		tileMap = generator.tileMap;
 
 		rows = boardMap.GetLength(0);
@@ -135,18 +133,37 @@ public class BoardManager : MonoBehaviour, SerialOb {
         {
             for (int y = -1; y < rows + 1; y++)
             {
-
-                GameObject f = Instantiate(fog, new Vector2(x, y), Quaternion.identity) as GameObject;
-                f.transform.SetParent(this.transform);
+                
+				GameObject f = Instantiate(fog, new Vector2(x,y), Quaternion.identity) as GameObject;
+				f.transform.SetParent(this.transform);
                 fogTiles[x + 1, y + 1] = f;
             }
         }
     }
 
-	/// <summary>
-	/// Depending on the area, parses the map and creates exits to other zones
-	/// </summary>
-	public void BuildExits(){
+    /// <summary>
+    /// Grabs a copy of the boardMap for mapping purposes
+    /// </summary>
+    /// <returns></returns>
+    public int[,] getBoard()
+    {
+        int[,] returnBoard = (int[,])boardMap.Clone(); //To ensure nothing is changed in the array by accident.
+        return returnBoard;
+    }
+    /// <summary>
+    /// Grabs all fog tiles for mapping purposes
+    /// </summary>
+    /// <returns></returns>
+    public GameObject[,] getFogTiles()
+    {
+        GameObject[,] returnBoard = (GameObject[,])fogTiles.Clone();
+        return returnBoard;
+    }
+
+    /// <summary>
+    /// Depending on the area, parses the map and creates exits to other zones
+    /// </summary>
+    public void BuildExits(){
 		int entry = 0;
 		switch(area){
 		case areas.Market:
@@ -185,25 +202,6 @@ public class BoardManager : MonoBehaviour, SerialOb {
 			break;
 		}
 	}
-
-    /// <summary>
-    /// Grabs a copy of the boardMap for mapping purposes
-    /// </summary>
-    /// <returns></returns>
-    public int[,] getBoard()
-    {
-        int[,] returnBoard = (int[,])boardMap.Clone(); //To ensure nothing is changed in the array by accident.
-        return returnBoard;
-    }
-    /// <summary>
-    /// Grabs all fog tiles for mapping purposes
-    /// </summary>
-    /// <returns></returns>
-    public GameObject[,] getFogTiles()
-    {
-        GameObject[,] returnBoard = (GameObject[,])fogTiles.Clone();
-        return returnBoard;
-    }
 
     /// <summary>
     /// Creates a random position in the grid

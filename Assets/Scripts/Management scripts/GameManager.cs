@@ -26,8 +26,6 @@ namespace Completed
         public bool playersTurn = true;     
 		public bool enemyClicked = false;
 
-        public int journalSize = 30;
-
 
         private Text levelText, actionText;                                 
         private GameObject levelImage;                        
@@ -42,7 +40,8 @@ namespace Completed
         private Queue<string> journalQueue;
         private Text CurrencyText;
         private int prevCurrency;
-                            
+        public int journalSize = 30;
+
 
 
         /// <summary>
@@ -219,13 +218,11 @@ namespace Completed
 
         void Update()
         {
-            if(Input.GetKeyDown(KeyCode.Delete))
+            if (Input.GetKeyDown(KeyCode.Delete))
             {
                 instance.timeLeft -= 100;
             }
-
-
-			if(Input.GetKeyUp(KeyCode.S)){
+            if (Input.GetKeyUp(KeyCode.S)){
 				Save();
 			}
             if (playersTurn || enemiesMoving || doingSetup)
@@ -233,8 +230,6 @@ namespace Completed
                 return;
 			
 			StartCoroutine(MoveEnemies());
-
-            CurrencyCheck();
         }
 
         public void AddEnemyToList(Enemy script)
@@ -339,6 +334,7 @@ namespace Completed
 			}
 			return null;
 		}
+
         /// <summary>
         /// Gets the current game Journal
         /// </summary>
@@ -358,12 +354,11 @@ namespace Completed
             }
         }
 
-
-		/// <summary>
-		/// Returns a list of enemies
-		/// </summary>
-		/// <returns>The enemies.</returns>
-		public List<Enemy> getEnemies(){
+        /// <summary>
+        /// Returns a list of enemies
+        /// </summary>
+        /// <returns>The enemies.</returns>
+        public List<Enemy> getEnemies(){
 			return enemies;
 		}
 
@@ -372,7 +367,7 @@ namespace Completed
 		/// </summary>
 		public void print(string s){
 			Debug.Log(s);
-			actionText.text += s+"\n";
+            actionText.text += s + "\n";
 
             //Should probably be in its own location, but that would take a lot of effort for little reward.
             if (journalQueue.Count == journalSize)

@@ -103,7 +103,7 @@ public static class ActualMarketGeneration {
 					tileMap[r,c] = 'w';
 					//fill(255, 0, 0);
 					break;
-				case 'i': //outer alley tile
+				case 'i': //solid tile
 					currentTile = iA;
 					boardMap[c,r] = 0;
 					tileMap[r,c] = 'f';
