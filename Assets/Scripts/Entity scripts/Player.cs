@@ -182,7 +182,7 @@ namespace Completed
 			if (!GameManager.instance.playersTurn)
 				return;
 			if (isTransforming) {
-				if (Time.time >= transformationCounter) {
+				if (Input.anyKeyDown || Time.time >= transformationCounter) {
 					animator.enabled = false;
 					isTransforming = false;
 					GameObject.FindGameObjectWithTag ("transformbg").GetComponent<Renderer> ().enabled = false;
