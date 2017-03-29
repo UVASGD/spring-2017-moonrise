@@ -330,7 +330,7 @@ namespace Completed
 		private int skillCost (int skill)
 		{
 			/* 100 base
-			 * 1.5x per character level
+			 * 1.25x per character level
 			 * 2x per skill level
 			 * round to nearest 25
 			 */
@@ -361,7 +361,7 @@ namespace Completed
 				skillLevel = this.fortify;
 				break;
 			}
-			double rawcost = 100.0 * Math.Pow (1.5, GameManager.instance.level - 1) * Math.Pow (2, skillLevel-1);
+			double rawcost = 100.0 * Math.Pow (1.25, GameManager.instance.level - 1) * Math.Pow (2, skillLevel-1);
 			return (int)((Math.Round(rawcost/100 * 4)) / 4 * 100.0);
 				//GameManager.instance.print ("You don't have enough silver to level up");
 			}

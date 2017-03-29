@@ -5,11 +5,11 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 419904}
-  - 114: {fileID: 11475412}
-  - 114: {fileID: 11480766}
+  - component: {fileID: 419904}
+  - component: {fileID: 11475412}
+  - component: {fileID: 11480766}
   m_Layer: 0
   m_Name: GameManager 1
   m_TagString: Untagged
@@ -26,10 +26,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.7615523, y: 0.016821418, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &11475412
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -41,8 +41,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1517ef1d55b1d0d4bb1cf67573cc4a9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  columns: 8
-  rows: 8
+  area: 0
+  blockingLayer:
+    serializedVersion: 2
+    m_Bits: 0
   wallCount:
     minimum: 3
     maximum: 9
@@ -64,6 +66,7 @@ MonoBehaviour:
   - {fileID: 1000014228673168, guid: a65e7e84eac21ae42ab43ec74ba5ed82, type: 2}
   outerWallTiles:
   - {fileID: 109970, guid: 613875cbea9433f4a999e6cb714a11d1, type: 2}
+  boardHolder: {fileID: 0}
 --- !u!114 &11480766
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -79,9 +82,11 @@ MonoBehaviour:
   levelStartDelay: 2
   turnDelay: 0.1
   playerGoldPoints: 100
-  playerHp: 100
   isWerewolf: 0
   playersTurn: 1
+  enemyClicked: 0
+  level: 1
+  player: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
