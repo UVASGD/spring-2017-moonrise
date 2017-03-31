@@ -40,6 +40,10 @@ public class MapLoader : MonoBehaviour
     private GameObject miniMap;
     private GameObject mainMap;
 
+    private Rect prevUpdate;
+    private Rect curUpdate;
+    private Rect unionUpdate;
+
     private bool firstUpdate = true;
 
     private int mapRadius = 7;
@@ -53,6 +57,8 @@ public class MapLoader : MonoBehaviour
         boardData = createMapBoard();
         loadMap();
         constructMiniMap();
+        prevUpdate = new Rect();
+        curUpdate = new Rect();
     }
 
     /// <summary>
@@ -97,62 +103,128 @@ public class MapLoader : MonoBehaviour
         GameObject[,] fog = createFogTile();
         Vector2 playerPos = getPlayerPosition();
         List<Vector2> enemies = GetEnemyPositions();
+        int sightRange = 20;
 
-        //int sightRange = 20;
+        //Current Update Square
+        curUpdate.xMin = Mathf.Clamp(playerPos.y - sightRange, 0, boardData.GetLength(0));
+        curUpdate.xMax = Mathf.Clamp(playerPos.y + sightRange, 0, boardData.GetLength(0));
+        curUpdate.yMin = Mathf.Clamp(playerPos.x - sightRange, 0, boardData.GetLength(1));
+        curUpdate.yMax = Mathf.Clamp(playerPos.x + sightRange, 0, boardData.GetLength(1));
 
         //Prev cleanups
         boardData[(int)prevPlayerPosition.x, (int)prevPlayerPosition.y] = 0;
         foreach(Vector2 v in prevEnemyPositions)
         {
-            boardData[(int)v.x, (int)v.y] = 0;
+            if((v.x < boardData.GetLength(0) && v.x > 0) && (v.y < boardData.GetLength(1) && v.y > 0)) //The Void causes enemy writing crashes
+                boardData[(int)v.x, (int)v.y] = 0;
         }
         prevEnemyPositions.Clear(); //Empty prevPositions
         //Passes to adjust the map
+
         boardData[(int)playerPos.x, (int)playerPos.y] = 3; //Player Pass
         prevPlayerPosition = playerPos; //prev Save
+
         foreach(Vector2 v in enemies) //Enemy Pass
         {
             prevEnemyPositions.Add(v);
             boardData[(int)v.x, (int)v.y] = 2;
         }
 
-        for (int i = 1; i < mapTex.width - 1; i++) //Raw Pass
+
+        if (firstUpdate) //Just Update everything first. Later updates are only via Rectangles.
         {
-            for (int j = 1; j < mapTex.height - 1; j++)
+            for (int i = 1; i < mapTex.width - 1; i++) //Raw Pass
             {
-                if (boardData[j - 1, i - 1] == 3)
-                    mapTex.SetPixel(j, i, Color.green);
-                else if (boardData[j - 1, i - 1] == 2)
-                    mapTex.SetPixel(j, i, Color.red);
-                else if (boardData[j - 1, i - 1] == 0)
-                    mapTex.SetPixel(j, i, Color.white);
-                else if (boardData[j - 1, i - 1] == 10)
-                    mapTex.SetPixel(j, i, Color.yellow);
-                else if (boardData[j - 1, i - 1] == 15)
-                    mapTex.SetPixel(j, i, Color.cyan);
-                else if (boardData[i - 1, j - 1] == 1)
-                    mapTex.SetPixel(j, i, Color.gray);
+                for (int j = 1; j < mapTex.height - 1; j++)
+                {
+                    if (boardData[i - 1, j - 1] == 3)
+                        mapTex.SetPixel(i, j, Color.green);
+                    else if (boardData[i - 1, j - 1] == 2)
+                        mapTex.SetPixel(i, j, Color.red);
+                    else if (boardData[i - 1, j - 1] == 0)
+                        mapTex.SetPixel(i, j, Color.white);
+                    else if (boardData[i - 1, j - 1] == 10)
+                        mapTex.SetPixel(i, j, Color.yellow);
+                    else if (boardData[i - 1, j - 1] == 15)
+                        mapTex.SetPixel(i, j, Color.cyan);
+                    else if (boardData[i - 1, j - 1] == 1)
+                        mapTex.SetPixel(i, j, Color.gray);
 
-                //var curFog = fog[i, j].GetComponent<SpriteRenderer>(); //Fog Pass
-                //if (curFog != null)
-                //{
-                //    if (curFog.color.a > 0.8f) //Hidden and unseen
-                //    {
-                //        mapTex.SetPixel(i, j, Color.black);
-                //    }
-                //    else if (curFog.color.a > 0.5f && curFog.color.a < 0.8f) //Seen, but currently hidden
-                //    {
-                //        if (boardData[i - 1, j - 1] != 1)
-                //            mapTex.SetPixel(i, j, Color.white);
+                    var curFog = fog[i, j].GetComponent<SpriteRenderer>(); //Fog Pass
+                    if (curFog != null)
+                    {
+                        if (curFog.color.a > 0.8f) //Hidden and unseen
+                        {
+                            mapTex.SetPixel(i, j, Color.black);
+                        }
+                        else if (curFog.color.a > 0.5f && curFog.color.a < 0.8f) //Seen, but currently hidden
+                        {
+                            if (boardData[i - 1, j - 1] == 2)
+                                mapTex.SetPixel(i, j, Color.white);
 
-                //        mapTex.SetPixel(i, j, mapTex.GetPixel(i, j) - new Color(0.2f, 0.2f, 0.2f, 0));
-                //    }
-                //}
+                            mapTex.SetPixel(i, j, mapTex.GetPixel(i, j) - new Color(0.2f, 0.2f, 0.2f, 0));
+                        }
+                    }
+                }
             }
-        }
+        } // i warned you bro
+        else
+        {
+            //Ternary operators saving Unity's worthless Rect class. Captures both update rects into a larger rect to make sure everything updates correctly.
+            unionUpdate.xMin = curUpdate.xMin > prevUpdate.xMin ? prevUpdate.xMin : curUpdate.xMin;
+            unionUpdate.xMax = curUpdate.xMax > prevUpdate.xMax ? curUpdate.xMax : prevUpdate.xMax;
+            unionUpdate.yMin = curUpdate.yMin > prevUpdate.yMin ? prevUpdate.yMin : curUpdate.yMin;
+            unionUpdate.yMax = curUpdate.yMax > prevUpdate.yMax ? curUpdate.yMax : prevUpdate.yMax;
+
+
+
+            for (int i = (int)unionUpdate.yMin+1; i < (int)unionUpdate.yMax; i++) //Raw Pass
+            {
+                for (int j = (int)unionUpdate.xMin+1; j < (int)unionUpdate.xMax; j++)
+                {
+                    if (boardData[i - 1, j - 1] == 3)
+                        mapTex.SetPixel(i, j, Color.green);
+                    else if (boardData[i - 1, j - 1] == 2)
+                        mapTex.SetPixel(i, j, Color.red);
+                    else if (boardData[i - 1, j - 1] == 0)
+                        mapTex.SetPixel(i, j, Color.white);
+                    else if (boardData[i - 1, j - 1] == 10)
+                        mapTex.SetPixel(i, j, Color.yellow);
+                    else if (boardData[i - 1, j - 1] == 15)
+                        mapTex.SetPixel(i, j, Color.cyan);
+                    else if (boardData[i - 1, j - 1] == 1)
+                        mapTex.SetPixel(i, j, Color.gray);
+
+                    var curFog = fog[i, j].GetComponent<SpriteRenderer>(); //Fog Pass
+                    if (curFog != null)
+                    {
+                        if (curFog.color.a > 0.8f) //Hidden and unseen
+                        {
+                            mapTex.SetPixel(i, j, Color.black);
+                        }
+                        else if (curFog.color.a > 0.5f && curFog.color.a < 0.8f) //Seen, but currently hidden
+                        {
+                            if (boardData[i - 1, j - 1] != 1)
+                                mapTex.SetPixel(i, j, Color.white);
+
+                            mapTex.SetPixel(i, j, mapTex.GetPixel(i, j) - new Color(0.2f, 0.2f, 0.2f, 0));
+                        }
+                    }
+                    if(i == unionUpdate.yMin || i == unionUpdate.yMax || j == unionUpdate.xMin || j == unionUpdate.xMax)
+                    {
+                        mapTex.SetPixel(i, j, Color.magenta);
+                    }
+                }
+            }
+        } //i warned you about the stairs
         if (firstUpdate)
             firstUpdate = false;
         mapTex.Apply();
+
+        prevUpdate.xMin = curUpdate.xMin;
+        prevUpdate.xMax = curUpdate.xMax;
+        prevUpdate.yMin = curUpdate.yMin;
+        prevUpdate.yMax = curUpdate.yMax;
     }
 
     /// <summary>
@@ -294,7 +366,7 @@ public class MapLoader : MonoBehaviour
         if(gameObject.activeInHierarchy)
         {
             //If the UI element needs to repeatedly update: Do it here.
-            //updateMap();
+            updateMap();
             UpdateMiniMap();
             if(Input.GetKeyDown(KeyCode.Minus))
             {

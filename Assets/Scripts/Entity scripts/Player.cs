@@ -67,6 +67,7 @@ namespace Completed
         public GameObject playerUI;
         public GameObject Clock;
         public GameObject skillsContainer;
+        public TabManager tabScript;
 
         //transformation variables
         private float transformationCounter;
@@ -493,6 +494,7 @@ namespace Completed
 			this.lungeCooldown--;
 			timeLeft = "Time Left: " + GameManager.instance.timeLeft;
 			UpdateText ();
+            UpdateClock();
 
 			CheckIfGameOver ();
 			GameManager.instance.playersTurn = false;
@@ -692,20 +694,20 @@ namespace Completed
             {
                 skillsContainer.transform.FindChild("FormIndicator").FindChild("Text").GetComponent<Text>().text = "W";
 
-                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill1").FindChild("Text").GetComponent<Text>().text = "Bite";
-                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill2").FindChild("Text").GetComponent<Text>().text = "Rage";
-                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill3").FindChild("Text").GetComponent<Text>().text = "Growl";
-                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill4").FindChild("Text").GetComponent<Text>().text = "Fortify";
+                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill1").GetComponent<Image>().sprite = tabScript.skillImages[4];
+                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill2").GetComponent<Image>().sprite = tabScript.skillImages[5];
+                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill3").GetComponent<Image>().sprite = tabScript.skillImages[6];
+                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill4").GetComponent<Image>().sprite = tabScript.skillImages[7];
 
             }
             else
             {
                 skillsContainer.transform.FindChild("FormIndicator").FindChild("Text").GetComponent<Text>().text = "H";
 
-                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill1").FindChild("Text").GetComponent<Text>().text = "Shoot";
-                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill2").FindChild("Text").GetComponent<Text>().text = "Sneak";
-                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill3").FindChild("Text").GetComponent<Text>().text = "Charm";
-                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill4").FindChild("Text").GetComponent<Text>().text = "Dodge";
+                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill1").GetComponent<Image>().sprite = tabScript.skillImages[0];
+                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill2").GetComponent<Image>().sprite = tabScript.skillImages[1];
+                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill3").GetComponent<Image>().sprite = tabScript.skillImages[2];
+                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill4").GetComponent<Image>().sprite = tabScript.skillImages[3];
             }
         }
         /// <summary>

@@ -159,7 +159,6 @@ public class BoardManager : MonoBehaviour, SerialOb {
         GameObject[,] returnBoard = (GameObject[,])fogTiles.Clone();
         return returnBoard;
     }
-
     /// <summary>
     /// Depending on the area, parses the map and creates exits to other zones
     /// </summary>
@@ -231,7 +230,7 @@ public class BoardManager : MonoBehaviour, SerialOb {
     /// <param name="tileArray">Array of tiles to select from</param>
     /// <param name="minimum">Minimum number of tiles to place</param>
     /// <param name="maximum">Maximum number of tiles to place</param>
-	void LayoutObjectAtRandom(GameObject[] tileArray, int minimum, int maximum, bool blocking = false)
+	void LayoutObjectAtRandom(GameObject[] tileArray, int minimum, int maximum,int tiletype, bool blocking = false)
     {
         int objectCount = Random.Range(minimum, maximum + 1);
 
@@ -240,8 +239,10 @@ public class BoardManager : MonoBehaviour, SerialOb {
             Vector2 randomPosition = RandomPosition();
 			while(boardMap[(int)randomPosition.x,(int)randomPosition.y] > 0)
 				randomPosition = RandomPosition();
-			if(blocking)
-				boardMap[(int)randomPosition.x,(int)randomPosition.y] = 1;
+            if (blocking)
+                boardMap[(int)randomPosition.x, (int)randomPosition.y] = 1;
+            else
+                boardMap[(int)randomPosition.x, (int)randomPosition.y] = tiletype;
             GameObject tileChoice = tileArray[Random.Range(0, tileArray.Length)];
 			GameObject ob = (GameObject)Instantiate(tileChoice, randomPosition, Quaternion.identity);
 			ob.transform.SetParent(boardHolder.transform);
@@ -254,11 +255,11 @@ public class BoardManager : MonoBehaviour, SerialOb {
     {
         BoardSetup();           //Initialize board with floor/outer wall tiles
         //LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum);      //Place wall tiles
-        LayoutObjectAtRandom(goldTiles, goldCount.minimum, goldCount.maximum);      //Place gold tiles
+        LayoutObjectAtRandom(goldTiles, goldCount.minimum, goldCount.maximum,10);      //Place gold tiles
 		int chestCount = 7;
-		LayoutObjectAtRandom (chestTiles, chestCount, chestCount);
+		LayoutObjectAtRandom (chestTiles, chestCount, chestCount,15);
         int enemyCount = 18;//(int)Mathf.Log(level, 2f);
-        LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount);                   //Place enemies
+        LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount,0);                   //Place enemies
 
 		BuildExits();
 
@@ -274,9 +275,9 @@ public class BoardManager : MonoBehaviour, SerialOb {
     }
 
 	public void LayoutGoodies(){
-		LayoutObjectAtRandom(goldTiles, goldCount.minimum, goldCount.maximum);      //Place gold tiles
+		LayoutObjectAtRandom(goldTiles, goldCount.minimum, goldCount.maximum, 10);      //Place gold tiles
 		int chestCount = 7;
-		LayoutObjectAtRandom (chestTiles, chestCount, chestCount);
+		LayoutObjectAtRandom (chestTiles, chestCount, chestCount, 15);
 	}
 
 

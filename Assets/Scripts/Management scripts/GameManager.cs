@@ -230,6 +230,7 @@ namespace Completed
                 return;
 			
 			StartCoroutine(MoveEnemies());
+            CurrencyCheck();
         }
 
         public void AddEnemyToList(Enemy script)
