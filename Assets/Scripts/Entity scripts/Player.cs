@@ -27,9 +27,10 @@ namespace Completed
 		public Sprite humanBack;
 		public Sprite humanLeft;
 		public Sprite humanRight;
+		public Sprite highlightedGreen;
+		public Sprite highlightedRed;
 		public Color original;
 		public GameObject indicator;
-
 		// Skills
 		public int shoot;
 		public int sneak;
@@ -65,6 +66,9 @@ namespace Completed
 		//transformation variables
 		private float transformationCounter;
 		public Boolean isTransforming;
+
+		//checks if range is currently higlighted
+		private Boolean refreshHighlight = false;
 
 		// Use this for initialization
 		protected override void Start ()
@@ -179,6 +183,10 @@ namespace Completed
 		// Update is called once per frame
 		void Update ()
 		{
+			if (GameManager.instance.rangeHighlighted && refreshHighlight) {
+				refreshHighlightRange ();
+				refreshHighlight = false;
+			}
 			if (!GameManager.instance.playersTurn)
 				return;
 			if (isTransforming) {
@@ -188,6 +196,7 @@ namespace Completed
 					GameObject.FindGameObjectWithTag ("transformbg").GetComponent<Renderer> ().enabled = false;
 					GetComponent<SpriteRenderer> ().sortingLayerName = "Units";
 					UpdateSprite ();
+					refreshHighlightRange ();
 					GameManager.instance.playersTurn = false;
 				}
 				return;
@@ -197,7 +206,8 @@ namespace Completed
 				switchForm ();
 				EndTurn ();
 
-			} else if (Input.GetMouseButtonDown (0)) {
+			}
+			 if (Input.GetMouseButtonDown (0)) {
 				if (this.willLunge) {
 					Lunge ();
 				} else if (GameManager.instance.enemyClicked) {
@@ -227,6 +237,7 @@ namespace Completed
 			 // Activate Ability
 			else if (Input.GetKeyDown (KeyCode.Keypad1) || Input.GetKeyDown (KeyCode.Alpha1)) {
 				//shoot
+				toggleHighlightRange();
 			} else if (Input.GetKeyDown (KeyCode.Keypad2) || Input.GetKeyDown (KeyCode.Alpha2)) {
 				ToggleSneak (); //sneak
 				Debug.Log(sneaking ? "sneaky and slow" : "stompy and fast"); 
@@ -257,6 +268,53 @@ namespace Completed
 			if (horizontal != 0 || vertical != 0 || spacebar) {
 				actionText.text = "";
 				AttemptMove (horizontal, vertical);
+				refreshHighlight = true;
+			}
+		}
+
+		private void refreshHighlightRange() {
+			disableHighlightRange ();
+			enableHighlightRange ();
+		}
+
+		private void toggleHighlightRange() {
+			if (!GameManager.instance.rangeHighlighted) {
+				enableHighlightRange ();
+			} else {
+				disableHighlightRange ();
+			}
+		}
+
+		private void enableHighlightRange() {
+			GameManager.instance.rangeHighlighted = true;
+			//because range is a float for some reason...
+			int intRange = GameManager.instance.isWerewolf ? 1: (int)range;
+			for (int x = -1 * (intRange + 1) ; x <= intRange + 1; x++) {
+				for (int y = -1 * (intRange + 1); y <= intRange + 1; y++) {
+					double distance = Math.Sqrt (Math.Pow (x, 2) + Math.Pow (y, 2));
+					if (distance > intRange + 1)
+						continue;
+
+					GameObject highlighted = new GameObject ("highlight");
+					highlighted.tag = "rangehighlight";
+					highlighted.transform.position = new Vector3 (transform.position.x + x, transform.position.y + y);
+
+					highlighted.AddComponent<SpriteRenderer> ();
+					if (distance > intRange) {
+						highlighted.GetComponent<SpriteRenderer> ().sprite = highlightedRed;
+					} else {
+						highlighted.GetComponent<SpriteRenderer> ().sprite = highlightedGreen;
+					}
+					highlighted.GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 0.25f);
+				}
+			}
+		}
+
+		private void disableHighlightRange() {
+			GameManager.instance.rangeHighlighted = false;
+			GameObject[] highlights = GameObject.FindGameObjectsWithTag ("rangehighlight");
+			for(int i = 0; i < highlights.Length; i++) {
+				Destroy (highlights [i]);
 			}
 		}
 
@@ -447,7 +505,6 @@ namespace Completed
 		protected override bool AttemptMove (int xDir, int yDir)
 		{
 			base.AttemptMove (xDir, yDir);
-
 			RaycastHit2D hit;
 			bool canMove = Move (xDir, yDir, out hit);
 
@@ -460,7 +517,7 @@ namespace Completed
 
 			if (hit.transform != null && !canMove)
 				OnCantMove (hit.transform);
-			
+
 			return false;
         }
 
