@@ -9,6 +9,8 @@ TagManager:
   - Wall
   - transformbg
   - Exit
+  - rangehighlight
+
   layers:
   - Default
   - TransparentFX
