@@ -90,6 +90,7 @@ MonoBehaviour:
   - {fileID: 1000014228673168, guid: a65e7e84eac21ae42ab43ec74ba5ed82, type: 2}
   outerWallTiles:
   - {fileID: 109970, guid: 613875cbea9433f4a999e6cb714a11d1, type: 2}
+  boardHolder: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

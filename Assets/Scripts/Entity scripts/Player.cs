@@ -385,13 +385,54 @@ namespace Completed
 			}
 		}
 			
+		private int skillCost (int skill)
+		{
+			/* 100 base
+			 * 1.25x per character level
+			 * 2x per skill level
+			 * round to nearest 25
+			 */
+			int skillLevel = 0;
+			switch (skill) {
+			case 1:
+				skillLevel = this.shoot;
+				break;
+			case 2:
+				skillLevel = this.sneak;
+				break;
+			case 3:
+				skillLevel = this.charm;
+				break;
+			case 4:
+				skillLevel = this.dodge;
+				break;
+			case 5:
+				skillLevel = this.bite;
+				break;
+			case 6:
+				skillLevel = this.lunge;
+				break;
+			case 7:
+				skillLevel = this.growl;
+				break;
+			case 8:
+				skillLevel = this.fortify;
+				break;
+			}
+			double rawcost = 100.0 * Math.Pow (1.25, GameManager.instance.level - 1) * Math.Pow (2, skillLevel-1);
+			return (int)((Math.Round(rawcost/100 * 4)) / 4 * 100.0);
+				//GameManager.instance.print ("You don't have enough silver to level up");
+			}
+	
+
 		public void IncreaseSkill (int skill)
 		{
-			int cost = 100 * (int)Math.Pow (2, GameManager.instance.level - 1);
-			if (cost > GameManager.instance.playerGoldPoints) {
-				GameManager.instance.print ("You don't have enough silver to level up");
-			} else {
 				bool upgradedSkill = false;
+			int cost = skillCost (skill);
+			if (cost > GameManager.instance.playerGoldPoints) {
+				GameManager.instance.print ("You need " + (skillCost (skill) - GameManager.instance.playerGoldPoints) + " more silver for that! " + GameManager.instance.playerGoldPoints + " "+ cost);
+
+			} else {
 				switch (skill) {
 				case 1:
 					if (this.shoot < 5) {
@@ -469,11 +510,11 @@ namespace Completed
 					this.TotalHP = (int)(this.TotalHP + 20);
 
 					this.CurrentHP = this.TotalHP - currentHealthLoss;
-
 					AlterGold (-cost);
 					EndTurn ();
 				}
 			}
+
 		}
 
 		protected bool WillHitWall (int xDir, int yDir, out RaycastHit2D hit)
