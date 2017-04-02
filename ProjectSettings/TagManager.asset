@@ -5,10 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
-  - Door
   - Item
   - Wall
   - transformbg
+  - Exit
   layers:
   - Default
   - TransparentFX
