@@ -152,7 +152,7 @@ namespace Completed
 						f.transform.SetParent(this.transform);
 					}
 				}
-
+				//enemy data loaded
 				XElement enemyElements = areaData[1];
 				foreach(XElement e in enemyElements.Elements()){
 
