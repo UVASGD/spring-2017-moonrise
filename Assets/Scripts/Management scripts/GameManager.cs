@@ -41,6 +41,7 @@ namespace Completed
         private Text CurrencyText;
         private int prevCurrency;
         public int journalSize = 30;
+        private JournalManager journal;
 
 
 
@@ -103,6 +104,7 @@ namespace Completed
 
             levelText = GameObject.Find("LevelText").GetComponent<Text>();
 			actionText = GameObject.Find("ActionText").GetComponent<Text>();
+            journal = GameObject.Find("JournalContainer").transform.FindChild("Text").GetComponent<JournalManager>();
 
 
             levelText.text = "Day " + level;
@@ -374,6 +376,7 @@ namespace Completed
             if (journalQueue.Count == journalSize)
                 journalQueue.Dequeue();
             journalQueue.Enqueue("- " + s);
+            journal.displayJournal();
         }
 
 

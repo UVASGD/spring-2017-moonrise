@@ -32,14 +32,13 @@ namespace Completed {
         /// <summary>
         /// Places text from the Journal into the text box
         /// </summary>
-        private void displayJournal()
+        public void displayJournal()
         {
             var textBox = gameObject.GetComponent<Text>();
             textBox.text = "";
             foreach(string s in journal)
             {
                 textBox.text += s + "\n";
-                Debug.Log(s);
             }
 
         }
@@ -50,7 +49,7 @@ namespace Completed {
             {
                 //If the UI element needs to repeatedly update: Do it here.
                 collectJournal();
-                displayJournal();
+                //displayJournal();
                 //Keyboard controls
                 /*
                 if(Input.GetKey(KeyCode.Z))

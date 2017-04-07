@@ -379,6 +379,7 @@ namespace Completed
 		{
 				bool upgradedSkill = false;
 			int cost = skillCost (skill);
+            int nextCost = byte.MaxValue; //TODO: Fix this.
 			if (cost > GameManager.instance.playerGoldPoints) {
 				GameManager.instance.print ("You need " + (skillCost (skill) - GameManager.instance.playerGoldPoints) + " more silver for that! " + GameManager.instance.playerGoldPoints + " "+ cost);
 			} else {

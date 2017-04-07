@@ -200,4 +200,8 @@ public class TabManager : MonoBehaviour {
         }
     }
 
+    public void beep()
+    {
+        Debug.Log("Beep");
+    }
 }
