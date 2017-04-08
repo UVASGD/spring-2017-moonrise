@@ -17,8 +17,7 @@ using UnityEngine.UI;
  *  10-Gold Because Why not?
  *  15-Chest
  *  
- *  TODO: Make it efficient
- *  TODO: Fix weird inconsistencies (May be Generation)
+ *  TODO: Make Zoom Things (Literally just rescaling the image)
  */
 
 public class MapLoader : MonoBehaviour

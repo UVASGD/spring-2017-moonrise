@@ -348,7 +348,7 @@ namespace Completed
             return retJ;
         }
 
-        private void CurrencyCheck()
+        public void CurrencyCheck()
         {
             if (playerGoldPoints != prevCurrency)
             {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using System.Collections.Generic;
 using Completed;
 using ItemSpace;
 
@@ -9,14 +9,18 @@ namespace Completed
 
     public class InventoryManagerAlt : MonoBehaviour
     {
+        private GameObject InventoryUI;
+        private GameObject InventoryContainer;
+        private GameObject inventoryExpand;
+        private GameObject inventoryMini;
+
         public GameObject itemPrefab;
-        public GameObject inventoryBoxPrefab;
 
         public static InventoryManagerAlt instance;
 
         private GameObject inventoryBox;
-        private Text inventoryText, bagText;
-        private GameObject weaponBox, armorBox, bag, itemGrid;
+
+        private List<GameObject> itemGrid;
 
         private bool active;
 
@@ -34,137 +38,124 @@ namespace Completed
             player = (Player)GameObject.Find("Player").transform.GetComponent<Player>();
             equipped = player.EquippedItems;
             inventory = player.Inventory;
+            InventoryUI = GameObject.Find("Inventory");
+            inventoryExpand = InventoryUI.transform.FindChild("Expand").gameObject;
+            inventoryMini = InventoryUI.transform.FindChild("Contents").gameObject;
+            InventoryContainer = inventoryExpand.transform.FindChild("InventoryStore").gameObject;
 
-            inventoryBox = Instantiate(inventoryBoxPrefab);
-            GameObject canvas = GameObject.Find("Canvas");
-            RectTransform canvasRect = canvas.GetComponent<RectTransform>();
-            inventoryBox.transform.SetParent(canvas.transform);
-            float[] size = { inventoryBox.GetComponent<RectTransform>().rect.width, inventoryBox.GetComponent<RectTransform>().rect.height };
-            float posX = (-canvasRect.rect.width / 2) + (size[0] / 2);
-            float posY = (-canvasRect.rect.height / 2) + (size[1] / 2);
-
-            Transform inventoryTransform = inventoryBox.transform;
-            inventoryText = inventoryTransform.GetChild(0).gameObject.GetComponent<Text>();
-            weaponBox = inventoryTransform.GetChild(1).gameObject;
-            weaponBox.GetComponent<Text>().text = noWeapon;
-            armorBox = inventoryTransform.GetChild(2).gameObject;
-            armorBox.GetComponent<Text>().text = noArmor;
-            bag = inventoryTransform.GetChild(3).gameObject;
-
-            Transform bagTransform = bag.transform;
-            bagText = bagTransform.GetChild(0).gameObject.GetComponent<Text>();
-            itemGrid = bagTransform.GetChild(1).gameObject;
+            inventoryMini.transform.FindChild("WeaponText").GetChild(0).GetComponent<Text>().text = noWeapon;
+            inventoryMini.transform.FindChild("ArmorText").GetChild(0).GetComponent<Text>().text = noArmor;
+            itemGrid = new List<GameObject>();
 
             active = false;
-            bag.SetActive(active);
         }
 
-        // Use this for initialization
-        void Start()
-        {
-
-
-
-
-
-            //			// test of how to initialize item prefabs, getting the index of a child
-            //			for(int i = 0; i < 10; i++) {
-            //				GameObject testItem = Instantiate(itemPrefab);
-            //				testItem.GetComponent<Text> ().text = "Unmarked Test Item";
-            //				testItem.transform.SetParent (itemGrid.transform);
-            //			}
-            //
-            //			foreach(Transform child in itemGrid.transform) {
-            //				child.gameObject.GetComponent<Text> ().text = "Test Item " + child.GetSiblingIndex ();
-            //			}
-        }
 
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.I))
+            //Optimizing Update is kind of annoying.
+            if (inventoryExpand.activeInHierarchy && !active)
             {
-                ToggleInventory();
+                active = true;
+                Refresh();
             }
-
-            // filler weapon equipping capability
-            if (Input.GetKeyDown(KeyCode.E))
+            else if (!inventoryExpand.activeInHierarchy && active)
             {
-                if (inventory.Items.Count > 0)
-                {
-                    UnequipItem(1);
-                    EquipItem(0);
-                }
+                active = false;
             }
-
-            // not-working mouse functionality
-            //			// from unity answers
-            //			if( Input.GetMouseButtonDown(0) )
-            //			{
-            //				Ray ray = Camera.main.ScreenPointToRay( Input.mousePosition );
-            //				RaycastHit hit;
-            //
-            //				if( Physics.Raycast( ray, out hit, 100 ) )
-            //				{
-            //					Transform target = hit.transform;
-            //					Debug.Log( target.gameObject.name );
-            //					if(target.parent == itemGrid.transform)
-            //						Debug.Log( target.gameObject.GetComponent<Text>().text );
-            //				}
-            //			}
-        }
-
-        void EquipItem(int index)
-        {
-            Item item = inventory.Items[index];
-            player.EquipItem(item);
-            Refresh();
-        }
-
-        void UnequipItem(int index)
-        {
-            if (index == 1)
-                player.UnequipItem(ItemClass.Weapon);
-            else if (index == 2)
-                player.UnequipItem(ItemClass.Armor);
-            Refresh();
-        }
-
-        void ToggleInventory()
-        {
-            active = !active;
-            bag.SetActive(active);
-            if (active)
+            if (Input.GetKeyDown(KeyCode.B))
             {
+                Debug.Log("Do a Do");
                 Refresh();
             }
         }
+    
+        /// <summary>
+        /// Equips a weapon.
+        /// </summary>
+        /// <param name="index">The item index from inventory.</param>
+        public void EquipWeapon(int index)
+        {
+            player.UnequipItem(ItemClass.Weapon);
+            player.EquipItem(inventory.Items[index]);
+            Refresh();
+        }
+        /// <summary>
+        /// This script is injected into buttons that are created. Allows for selling and equipping.
+        /// </summary>
+        /// <param name="index">The item index from inventory.</param>
+        public void WeaponButton(int index)
+        {
+            if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            {
+                int value = 100; //TODO: Get a means of calculating item value.
+                GameManager.instance.print("Offered " + inventory.Items[index].Name + " for " + value + " silver.");
+                inventory.RemoveItem(inventory.Items[index]);
+                GameManager.instance.playerGoldPoints += value;
+                GameManager.instance.CurrencyCheck();
+                Refresh();
+            }
+            else if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift))
+            {
+                EquipWeapon(index);
+            }
+        }
 
+        public void EquipArmor(int index)
+        {
+            player.UnequipItem(ItemClass.Armor);
+            player.EquipItem(inventory.Items[index]);
+            Refresh();
+        }
+
+        /// <summary>
+        /// Refreshed the inventory layout.
+        /// </summary>
         public void Refresh()
         {
             // reinitialize item grid members
-            foreach (Transform child in itemGrid.transform)
+            Debug.Log("Starting Refresh");
+            foreach (GameObject child in itemGrid)
             {
-                if (child.gameObject != null)
-                    Destroy(child.gameObject);
+                if (child != null)
+                    Destroy(child);
             }
+            itemGrid.Clear(); //Ensure that the button list is empty.
             foreach (Item item in inventory.Items)
             {
                 GameObject itemObj = Instantiate(itemPrefab);
-                itemObj.GetComponent<Text>().text = item.Name;
-                itemObj.transform.SetParent(itemGrid.transform);
+                itemGrid.Add(itemObj);
+                itemObj.transform.GetChild(0).GetComponent<Text>().text = item.Name;
+                switch (item.ItemClass) {
+                    case ItemClass.Weapon:
+                        itemObj.transform.SetParent(InventoryContainer.transform.FindChild("Weapons").FindChild("Content"));
+                        itemObj.transform.GetChild(0).GetComponent<Text>().text = item.Name;
+                        itemObj.GetComponent<Button>().onClick.AddListener(delegate { WeaponButton(inventory.Items.IndexOf(item)); });
+                        break;
+                    case ItemClass.Armor:
+                        itemObj.transform.SetParent(InventoryContainer.transform.FindChild("Armor").FindChild("Content"));
+                        itemObj.transform.GetChild(0).GetComponent<Text>().text = item.Name;
+                        itemObj.GetComponent<Button>().onClick.AddListener(delegate { EquipArmor(inventory.Items.IndexOf(item)); });
+                        break;
+                    default:
+                        Debug.Log("What the shit?"); //TODO: Figure out what all is in the game.
+                        break;
+                }
             }
 
             RefreshEquippedItems();
         }
-
+        /// <summary>
+        /// Refreshes the currently equipped items.
+        /// </summary>
         public void RefreshEquippedItems()
         {
             // reinitialize equipped items
             Weapon weapon = equipped.Weapon;
             Armor armor = equipped.Armor;
-            weaponBox.GetComponent<Text>().text = weapon != null ? weapon.Name : noWeapon;
-            armorBox.GetComponent<Text>().text = armor != null ? armor.Name : noArmor;
+            inventoryMini.transform.FindChild("WeaponText").GetChild(0).GetComponent<Text>().text = weapon != null ? weapon.Name : noWeapon;
+            inventoryMini.transform.FindChild("ArmorText").GetChild(0).GetComponent<Text>().text = armor != null ? armor.Name : noArmor;
         }
     }
 

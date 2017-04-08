@@ -256,7 +256,7 @@ public class BoardManager : MonoBehaviour, SerialOb {
         BoardSetup();           //Initialize board with floor/outer wall tiles
         //LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum);      //Place wall tiles
         LayoutObjectAtRandom(goldTiles, goldCount.minimum, goldCount.maximum,10);      //Place gold tiles
-		int chestCount = 7;
+		int chestCount = 70;
 		LayoutObjectAtRandom (chestTiles, chestCount, chestCount,15);
         int enemyCount = 18;//(int)Mathf.Log(level, 2f);
         LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount,0);                   //Place enemies

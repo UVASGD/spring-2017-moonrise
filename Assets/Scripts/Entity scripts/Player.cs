@@ -99,7 +99,8 @@ namespace Completed
 				ItemSpace.Weapon w = new ItemSpace.Weapon(ItemSpace.WeaponType.Crossbow,ItemSpace.WeaponWeight.Medium,ItemSpace.WeaponPrefix.None,ItemSpace.WeaponInfix.None,ItemSpace.WeaponSuffix.None);
 				equippedItems.Equip(w);
 				InventoryManager.instance.RefreshEquippedItems();
-			}
+                InventoryManagerAlt.instance.RefreshEquippedItems();
+            }
 
 			hitbox = GetComponent<BoxCollider2D> ();
 
