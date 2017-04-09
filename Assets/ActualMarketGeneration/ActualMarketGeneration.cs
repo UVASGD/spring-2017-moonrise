@@ -72,12 +72,6 @@ public static class ActualMarketGeneration {
 				if (bigGrid[i, j] == 'r') {
 					roadSpaces.Add(new int[] {i, j});
 				}
-				/*for (int[] r : roadSpaces) {
-        int c = Random.Range(1, 50));
-        if (c == 1) {
-          
-        }
-      }*/
 				fillSquares(i, j, bigGrid[i, j]);
 			}
 		}
@@ -215,7 +209,8 @@ public static class ActualMarketGeneration {
 			}
 		}
 		randomPos = Random.Range(5, 30);
-		RoadBuilder road = new RoadBuilder(new int[, ] {{randomPos, 0}, {randomPos, bigGridSizeX-1}}, new char[] {'i', 'x', 'b', 'g', 'c'});
+        RoadBuilder botRoad = new RoadBuilder(new int[,] { { 0, randomPos }, { bigGridSizeX - 1, randomPos } }, new char[] { 'i', 'x', 'b', 'g', 'c' }); //This should generate a road leading up from the bottom
+        RoadBuilder road = new RoadBuilder(new int[, ] {{randomPos, 0}, {randomPos, bigGridSizeX-1}}, new char[] {'i', 'x', 'b', 'g', 'c'});
 	}
 
 	static void fillSquares(int x, int y, char t) {
