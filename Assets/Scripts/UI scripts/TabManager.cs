@@ -25,6 +25,7 @@ public class TabManager : MonoBehaviour {
     private CanvasGroup cGroup;
     private Text opacityText;
     public Sprite[] skillImages = new Sprite[8]; // Used to store changing sprites for Skills.
+    public Sprite[] moon;
 
     private bool currentExpansion = false;
 

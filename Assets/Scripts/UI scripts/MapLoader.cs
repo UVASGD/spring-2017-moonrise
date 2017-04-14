@@ -25,6 +25,9 @@ public class MapLoader : MonoBehaviour
     public Canvas canvas; //No idea how important this is. Probably only important for automated UI Movements
     RectTransform rtf;
     public GameObject gameManager;
+    public int zoomReferenceScale = 384;
+    public int maxZoom = 3;
+    public int minZoom = 1;
 
 
     private Texture2D mapTex;
@@ -35,6 +38,7 @@ public class MapLoader : MonoBehaviour
     private int[,] boardData;
     private List<Vector2> prevEnemyPositions;
     private Vector2 prevPlayerPosition;
+    private int currentzoom;
 
     private GameObject miniMap;
     private GameObject mainMap;
@@ -50,7 +54,7 @@ public class MapLoader : MonoBehaviour
     void Start()
     {
         miniMap = gameObject.transform.FindChild("Contents").gameObject;
-        mainMap = gameObject.transform.FindChild("Expand").gameObject;
+        mainMap = gameObject.transform.FindChild("Expand").FindChild("MapMask").gameObject;
         board = (BoardManager)gameManager.GetComponent(typeof(BoardManager));
         prevEnemyPositions = new List<Vector2>();
         boardData = createMapBoard();
@@ -58,7 +62,28 @@ public class MapLoader : MonoBehaviour
         constructMiniMap();
         prevUpdate = new Rect();
         curUpdate = new Rect();
+        currentzoom = 1;
     }
+
+    private void SetZoom(int zoomlevel)
+    {
+        RectTransform mapTransform = mainMap.transform.FindChild("MapStore").GetComponent<RectTransform>();
+        mapTransform.sizeDelta = new Vector2(zoomReferenceScale * zoomlevel, zoomReferenceScale * zoomlevel);
+    }
+
+    public void IncreaseZoom()
+    {
+        if(currentzoom < maxZoom)
+            currentzoom += 1;
+        SetZoom(currentzoom);
+    }
+    public void DecreaseZoom()
+    {
+        if (currentzoom > minZoom)
+            currentzoom -= 1;
+        SetZoom(currentzoom);
+    }
+
 
     /// <summary>
     /// Construct the most basic map.
@@ -126,7 +151,8 @@ public class MapLoader : MonoBehaviour
         foreach(Vector2 v in enemies) //Enemy Pass
         {
             prevEnemyPositions.Add(v);
-            boardData[(int)v.x, (int)v.y] = 2;
+            if ((v.x < boardData.GetLength(0) && v.x > 0) && (v.y < boardData.GetLength(1) && v.y > 0)) //The Void causes enemy writing crashes
+                boardData[(int)v.x, (int)v.y] = 2;
         }
 
 

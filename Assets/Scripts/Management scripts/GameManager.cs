@@ -30,7 +30,7 @@ namespace Completed
         private Text levelText, actionText;                                 
         private GameObject levelImage;                        
         private BoardManager boardScript;
-		private InventoryManager inventoryScript;
+		private InventoryManagerAlt inventoryScript;
         public int level = 1;                                  
         private List<Enemy> enemies;
 		public Player player;
@@ -67,7 +67,7 @@ namespace Completed
             CurrencyText.text = "" + playerGoldPoints;
 
             boardScript = GetComponent<BoardManager>();
-			inventoryScript = GetComponent<InventoryManager> ();
+			inventoryScript = GetComponent<InventoryManagerAlt> ();
 
             InitGame();
         }

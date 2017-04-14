@@ -98,7 +98,6 @@ namespace Completed
 			if(equippedItems.Weapon == null){
 				ItemSpace.Weapon w = new ItemSpace.Weapon(ItemSpace.WeaponType.Crossbow,ItemSpace.WeaponWeight.Medium,ItemSpace.WeaponPrefix.None,ItemSpace.WeaponInfix.None,ItemSpace.WeaponSuffix.None);
 				equippedItems.Equip(w);
-				InventoryManager.instance.RefreshEquippedItems();
                 InventoryManagerAlt.instance.RefreshEquippedItems();
             }
 
@@ -380,7 +379,6 @@ namespace Completed
 		{
 				bool upgradedSkill = false;
 			int cost = skillCost (skill);
-            int nextCost = byte.MaxValue; //TODO: Fix this.
 			if (cost > GameManager.instance.playerGoldPoints) {
 				GameManager.instance.print ("You need " + (skillCost (skill) - GameManager.instance.playerGoldPoints) + " more silver for that! " + GameManager.instance.playerGoldPoints + " "+ cost);
 			} else {
@@ -392,7 +390,6 @@ namespace Completed
 						this.rangedAccuracy *= 1.05;
 						GameManager.instance.print ("Upgraded shoot to level " + this.shoot + "!");
 						upgradedSkill = true;
-                        SkillUIUpdate(skill, this.shoot, nextCost);
                         }
 					break;
 				case 2:
@@ -401,7 +398,6 @@ namespace Completed
 						//this.baseSneak += 1;     base sneak stays the same, is the starting value -Bryan
 						GameManager.instance.print ("Upgraded sneak to level " + this.sneak + "!");
 						upgradedSkill = true;
-                        SkillUIUpdate(skill, this.sneak, nextCost);
                         }
 					break;
 				case 3:
@@ -410,7 +406,6 @@ namespace Completed
 						// TODO
 						GameManager.instance.print ("Upgraded charm to level " + this.charm + "!");
 						upgradedSkill = true;
-                        SkillUIUpdate(skill, this.charm, nextCost);
                         }
 					break;
 				case 4:
@@ -419,7 +414,6 @@ namespace Completed
 						this.rangedBlock += dodge == 4 ? 16.5 : 4.5;
 						GameManager.instance.print ("Upgraded dodge to level " + this.dodge + "!");
 						upgradedSkill = true;
-                        SkillUIUpdate(skill, this.dodge, nextCost);
                         }
 					break;
 				case 5:
@@ -429,7 +423,6 @@ namespace Completed
 						this.meleeDamage *= 1.1;
 						GameManager.instance.print ("Upgraded bite to level " + this.bite + "!");
 						upgradedSkill = true;
-                        SkillUIUpdate(skill, this.bite, nextCost);
                         }
 					break;
 				case 6:
@@ -437,7 +430,6 @@ namespace Completed
 						this.lunge += 1;
 						GameManager.instance.print ("Upgraded lunge to level " + this.lunge + "!");
 						upgradedSkill = true;
-                        SkillUIUpdate(skill, this.lunge, nextCost);
                         }
 					break;
 				case 7:
@@ -446,7 +438,6 @@ namespace Completed
 						// TODO
 						GameManager.instance.print ("Upgraded growl to level " + this.growl + "!");
 						upgradedSkill = true;
-                        SkillUIUpdate(skill, this.growl, nextCost);
                         }
 					break;
 				case 8:
@@ -455,7 +446,6 @@ namespace Completed
 						this.meleeBlock += fortify == 7 ? 16.5 : 4.5;
 						GameManager.instance.print ("Upgraded fortify to level " + this.fortify + "!");
 						upgradedSkill = true;
-                        SkillUIUpdate(skill, this.fortify, nextCost);
                         }
 					break;
 				}
@@ -470,6 +460,7 @@ namespace Completed
 
 					this.CurrentHP = this.TotalHP - currentHealthLoss;
 					AlterGold (-cost);
+                    SkillUIUpdate();
 					EndTurn ();
 				}
 			}
@@ -757,46 +748,34 @@ namespace Completed
         /// <param name="skill">The skill as an int. See the levelup method.</param>
         /// <param name="level">What level is the stat going to?</param>
         /// <param name="cost">What is the cost of the stat?</param>
-        private void SkillUIUpdate(int skill, int level, int cost)
+        private void SkillUIUpdate()
         {
             GameObject skillBox;
-            switch (skill)
-            {
-                case 1:
-                    skillBox = playerUI.transform.FindChild("HumanContainer").FindChild("Skill1").FindChild("Desc").gameObject;
-                    skillBox.GetComponent<Text>().text = "Shoot: Level " + level;
-                    break;
-                case 2:
-                    skillBox = playerUI.transform.FindChild("HumanContainer").FindChild("Skill2").FindChild("Desc").gameObject;
-                    skillBox.GetComponent<Text>().text = "Sneak: Level " + level;
-                    break;
-                case 3:
-                    skillBox = playerUI.transform.FindChild("HumanContainer").FindChild("Skill3").FindChild("Desc").gameObject;
-                    skillBox.GetComponent<Text>().text = "Charm: Level " + level;
-                    break;
-                case 4:
-                    skillBox = playerUI.transform.FindChild("HumanContainer").FindChild("Skill4").FindChild("Desc").gameObject;
-                    skillBox.GetComponent<Text>().text = "Dodge: Level " + level;
-                    break;
-                case 5:
-                    skillBox = playerUI.transform.FindChild("WereWolfContainer").FindChild("Skill1").FindChild("Desc").gameObject;
-                    skillBox.GetComponent<Text>().text = "Bite: Level " + level;
-                    break;
-                case 6:
-                    skillBox = playerUI.transform.FindChild("WereWolfContainer").FindChild("Skill2").FindChild("Desc").gameObject;
-                    skillBox.GetComponent<Text>().text = "Rage: Level " + level;
-                    break;
-                case 7:
-                    skillBox = playerUI.transform.FindChild("WereWolfContainer").FindChild("Skill3").FindChild("Desc").gameObject;
-                    skillBox.GetComponent<Text>().text = "Growl: Level " + level;
-                    break;
-                case 8:
-                    skillBox = playerUI.transform.FindChild("WereWolfContainer").FindChild("Skill4").FindChild("Desc").gameObject;
-                    skillBox.GetComponent<Text>().text = "Fortify: Level " + level;
-                    break;
-            }
-            GameObject currencyBox = playerUI.transform.FindChild("Currency").gameObject;
-            currencyBox.GetComponent<Text>().text = "Cost for Next Level: " + cost;
+            skillBox = playerUI.transform.FindChild("Expand").FindChild("HumanContainer").FindChild("Skill1").FindChild("Desc").gameObject;
+            skillBox.GetComponent<Text>().text = "Shoot | Cost to level: " + skillCost(1);
+            skillBox = playerUI.transform.FindChild("Expand").FindChild("HumanContainer").FindChild("Skill2").FindChild("Desc").gameObject;
+            skillBox.GetComponent<Text>().text = "Sneak | Cost to level: " + skillCost(2);
+            skillBox = playerUI.transform.FindChild("Expand").FindChild("HumanContainer").FindChild("Skill3").FindChild("Desc").gameObject;
+            skillBox.GetComponent<Text>().text = "Charm | Cost to level: " + skillCost(3);
+            skillBox = playerUI.transform.FindChild("Expand").FindChild("HumanContainer").FindChild("Skill4").FindChild("Desc").gameObject;
+            skillBox.GetComponent<Text>().text = "Dodge | Cost to level: " + skillCost(4);
+
+            skillBox = playerUI.transform.FindChild("Expand").FindChild("WereWolfContainer").FindChild("Skill1").FindChild("Desc").gameObject;
+            skillBox.GetComponent<Text>().text = "Bite | Cost to level: " + skillCost(5);
+            skillBox = playerUI.transform.FindChild("Expand").FindChild("WereWolfContainer").FindChild("Skill2").FindChild("Desc").gameObject;
+            skillBox.GetComponent<Text>().text = "Lunge | Cost to level: " + skillCost(6);
+            skillBox = playerUI.transform.FindChild("Expand").FindChild("WereWolfContainer").FindChild("Skill3").FindChild("Desc").gameObject;
+            skillBox.GetComponent<Text>().text = "Growl | Cost to level: " + skillCost(7);
+            skillBox = playerUI.transform.FindChild("Expand").FindChild("WereWolfContainer").FindChild("Skill4").FindChild("Desc").gameObject;
+            skillBox.GetComponent<Text>().text = "Fortify | Cost to level: " + skillCost(8);
+
+            GameObject currencyBox = playerUI.transform.FindChild("Expand").FindChild("Currency").gameObject;
+            currencyBox.GetComponent<Text>().text = "Total Level: " + GameManager.instance.level;
+
+            playerUI.transform.FindChild("Contents").FindChild("H").FindChild("HumanSkills").GetComponent<Text>().text = "Shoot: " + shoot + "\nSneak: " + sneak + "\nCharm: " + charm + "\nDodge: " + dodge;
+            playerUI.transform.FindChild("Contents").FindChild("W").FindChild("WerewolfSkills").GetComponent<Text>().text = "Bite: " + bite + "\nLunge: " + lunge + "\nGrowl: " + growl + "\nFortify: " + fortify;
+
+
         }
         /// <summary>
         /// Updates the HUD clock to reflect time left. Works on text at the moment
@@ -808,39 +787,39 @@ namespace Completed
             float timeCheck = (float)GameManager.instance.timeLeft / (float)totalTime;
             if (timeCheck > 0.88)
             {
-                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Full Moon";
+                Clock.GetComponent<Image>().sprite = tabScript.moon[0];
             }
             else if (timeCheck <= 0.88 && timeCheck > 0.77)
             {
-                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Waning Gibbous";
+                Clock.GetComponent<Image>().sprite = tabScript.moon[7];
             }
             else if (timeCheck <= 0.77 && timeCheck > 0.66)
             {
-                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Last Quarter";
+                Clock.GetComponent<Image>().sprite = tabScript.moon[6];
             }
             else if (timeCheck <= 0.66 && timeCheck > 0.55)
             {
-                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Waning Crescent";
+                Clock.GetComponent<Image>().sprite = tabScript.moon[5];
             }
             else if (timeCheck <= 0.55 && timeCheck > 0.44)
             {
-                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "New Moon";
+                Clock.GetComponent<Image>().sprite = tabScript.moon[4];
             }
             else if (timeCheck <= 0.44 && timeCheck > 0.33)
             {
-                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Waxing Crescent";
+                Clock.GetComponent<Image>().sprite = tabScript.moon[3];
             }
             else if (timeCheck <= 0.33 && timeCheck > 0.22)
             {
-                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "First Quarter";
+                Clock.GetComponent<Image>().sprite = tabScript.moon[2];
             }
             else if (timeCheck <= 0.22 && timeCheck > 0.11)
             {
-                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Waxing Gibbous";
+                Clock.GetComponent<Image>().sprite = tabScript.moon[1];
             }
             else if (timeCheck <= 0.11)
             {
-                Clock.transform.FindChild("Text").gameObject.GetComponent<Text>().text = "Near Full Moon";
+                Clock.GetComponent<Image>().sprite = tabScript.moon[0];
             }
         }
 
@@ -933,7 +912,7 @@ namespace Completed
 					w.deserialize(i);
 					Debug.Log(w.Name);
 					equippedItems.Equip(w);
-					InventoryManager.instance.RefreshEquippedItems();
+                    InventoryManagerAlt.instance.RefreshEquippedItems();
 				}
 			}
 			return true;
