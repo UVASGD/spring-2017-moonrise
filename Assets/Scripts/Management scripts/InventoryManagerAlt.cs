@@ -64,11 +64,6 @@ namespace Completed
             {
                 active = false;
             }
-            if (Input.GetKeyDown(KeyCode.B))
-            {
-                Debug.Log("Do a Do");
-                Refresh();
-            }
         }
     
         /// <summary>
@@ -110,6 +105,27 @@ namespace Completed
         }
 
         /// <summary>
+        /// This script is injected into buttons that are created. Allows for selling and equipping.
+        /// </summary>
+        /// <param name="index">The item index from inventory.</param>
+        public void ArmorButton(int index)
+        {
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            {
+                int value = 100; //TODO: Get a means of calculating item value.
+                GameManager.instance.print("Offered " + inventory.Items[index].Name + " for " + value + " silver.");
+                inventory.RemoveItem(inventory.Items[index]);
+                GameManager.instance.playerGoldPoints += value;
+                GameManager.instance.CurrencyCheck();
+                Refresh();
+            }
+            else if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift))
+            {
+                EquipArmor(index);
+            }
+        }
+
+        /// <summary>
         /// Refreshed the inventory layout.
         /// </summary>
         public void Refresh()
@@ -136,7 +152,7 @@ namespace Completed
                     case ItemClass.Armor:
                         itemObj.transform.SetParent(InventoryContainer.transform.FindChild("Armor").FindChild("Content"));
                         itemObj.transform.GetChild(0).GetComponent<Text>().text = item.Name;
-                        itemObj.GetComponent<Button>().onClick.AddListener(delegate { EquipArmor(inventory.Items.IndexOf(item)); });
+                        itemObj.GetComponent<Button>().onClick.AddListener(delegate { ArmorButton(inventory.Items.IndexOf(item)); });
                         break;
                     default:
                         Debug.Log("What the shit?"); //TODO: Figure out what all is in the game.

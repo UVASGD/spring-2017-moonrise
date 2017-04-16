@@ -277,7 +277,8 @@ public class MapLoader : MonoBehaviour
         boardData[(int)prevPlayerPosition.x, (int)prevPlayerPosition.y] = 0;
         foreach (Vector2 v in prevEnemyPositions)
         {
-            boardData[(int)v.x, (int)v.y] = 0;
+            if ((v.x < boardData.GetLength(0) && v.x > 0) && (v.y < boardData.GetLength(1) && v.y > 0)) //The Void causes enemy writing crashes
+                boardData[(int)v.x, (int)v.y] = 0;
         }
         prevEnemyPositions.Clear(); //Empty prevPositions
         //Passes to adjust the map
@@ -286,7 +287,8 @@ public class MapLoader : MonoBehaviour
         foreach (Vector2 v in enemies) //Enemy Pass
         {
             prevEnemyPositions.Add(v);
-            boardData[(int)v.x, (int)v.y] = 2;
+            if ((v.x < boardData.GetLength(0) && v.x > 0) && (v.y < boardData.GetLength(1) && v.y > 0)) //The Void causes enemy writing crashes
+                boardData[(int)v.x, (int)v.y] = 2;
         }
 
         for (int i = -mapRadius; i <= mapRadius; i++) //Raw Pass

@@ -18,14 +18,16 @@ using System.Collections;
 public class TabManager : MonoBehaviour {
 
     private int uiTab;
-    public GameObject[] tabs = new GameObject[5]; //This is best modified in the Manager Panel instead of here. Easier and simpler.
+    public Canvas otherCanvas;
     public GameObject expander;
+    public GameObject[] tabs = new GameObject[5]; //This is best modified in the Manager Panel instead of here. Easier and simpler.
     private GameObject expandedTab;
     private int opacity; //0 = 0%, 1 = 25%, 2 = 50%, 3 = 75%
     private CanvasGroup cGroup;
     private Text opacityText;
     public Sprite[] skillImages = new Sprite[8]; // Used to store changing sprites for Skills.
     public Sprite[] moon;
+
 
     private bool currentExpansion = false;
 
@@ -179,21 +181,25 @@ public class TabManager : MonoBehaviour {
             case 0:
                 opacity = 1;
                 cGroup.alpha = 0.75f;
+                otherCanvas.GetComponent<CanvasGroup>().alpha = 0.75f;
                 opacityText.text = "Opacity: 75%";
                 break;
             case 1:
                 opacity = 2;
                 cGroup.alpha = 0.50f;
+                otherCanvas.GetComponent<CanvasGroup>().alpha = 0.50f;
                 opacityText.text = "Opacity: 50%";
                 break;
             case 2:
                 opacity = 3;
                 cGroup.alpha = 0.25f;
+                otherCanvas.GetComponent<CanvasGroup>().alpha = 0.25f;
                 opacityText.text = "Opacity: 25%";
                 break;
             case 3:
                 opacity = 0;
                 cGroup.alpha = 1.0f;
+                otherCanvas.GetComponent<CanvasGroup>().alpha = 1.0f;
                 opacityText.text = "Opacity: 100%";
                 break;
 
