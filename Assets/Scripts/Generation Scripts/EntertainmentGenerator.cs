@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EntertainmentGenerator : mapGenerator
 {
-
     public GameObject floor;
     public GameObject wall;
     public GameObject[] buildings;
@@ -35,7 +34,9 @@ public class EntertainmentGenerator : mapGenerator
         }
 
         Builder(new int[,] { {0, cent}, {cent-3, cent+3} }, 'g', 0); //Central road, six tiles wide
-
+        EntertainmentBlockRoads();
+        Asylum();
+        Casino();
                 
         GenerateGridFromKey(gridKey); //generate initial grid (keep at bottom of function)
         return boardMap;
