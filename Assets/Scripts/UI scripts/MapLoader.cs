@@ -229,7 +229,7 @@ public class MapLoader : MonoBehaviour
                         }
                         else if (curFog.color.a > 0.5f && curFog.color.a < 0.8f) //Seen, but currently hidden
                         {
-                            if (boardData[i - 1, j - 1] != 1)
+                            if (boardData[i - 1, j - 1] == 2)
                                 mapTex.SetPixel(i, j, Color.white);
 
                             mapTex.SetPixel(i, j, mapTex.GetPixel(i, j) - new Color(0.2f, 0.2f, 0.2f, 0));
@@ -323,7 +323,7 @@ public class MapLoader : MonoBehaviour
                         }
                         else if (curFog.color.a > 0.5f && curFog.color.a < 0.8f) //Seen, but currently hidden
                         {
-                            if (boardData[(int)playerPos.x + i, (int)playerPos.y + j] != 1)
+                            if (boardData[(int)playerPos.x + i, (int)playerPos.y + j] == 2)
                                 miniTex.SetPixel(i + mapRadius, j + mapRadius, Color.white);
 
                             miniTex.SetPixel(i + mapRadius, j + mapRadius, miniTex.GetPixel(i + mapRadius, j + mapRadius) - new Color(0.2f, 0.2f, 0.2f, 0));
@@ -382,10 +382,14 @@ public class MapLoader : MonoBehaviour
         }
         return returnList;
     }
-
-    private void forceUpdate()
+    /// <summary>
+    /// Intended to remove random pixels such as empty chest locations.
+    /// </summary>
+    /// <param name="x">X coordinate in the copied board</param>
+    /// <param name="y">Y coordinate in the copied board</param>
+    public void cleanPixel(int x, int y)
     {
-        loadMap();
+        boardData[x, y] = 0;
     }
 
     void Update()
@@ -395,10 +399,6 @@ public class MapLoader : MonoBehaviour
             //If the UI element needs to repeatedly update: Do it here.
             updateMap();
             UpdateMiniMap();
-            if(Input.GetKeyDown(KeyCode.Minus))
-            {
-                forceUpdate();
-            }
         }
     }
 

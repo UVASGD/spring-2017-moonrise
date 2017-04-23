@@ -107,8 +107,6 @@ namespace Completed
             journal = GameObject.Find("JournalContainer").transform.FindChild("Text").GetComponent<JournalManager>();
 
 
-            levelText.text = "Day " + level;
-
             levelImage.SetActive(true);
 
             Invoke("HideLevelImage", levelStartDelay);

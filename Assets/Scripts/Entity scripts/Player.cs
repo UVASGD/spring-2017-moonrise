@@ -19,7 +19,7 @@ namespace Completed
 		public float sightRange = 12f;
 
         private int totalTime = 0;
-
+        
 		// Sprites
 		public Sprite werewolfFront;
 		public Sprite werewolfBack;
@@ -591,7 +591,8 @@ namespace Completed
 				Chest chest = (Chest)character;
 				AddItem (chest.item);
 				GameManager.instance.print ("A " + chest.item.Name + " was added to inventory");
-				Destroy (chest.gameObject);
+                GameObject.Find("Map").GetComponent<MapLoader>().cleanPixel((int)chest.transform.position.x,(int)chest.transform.position.y);
+                Destroy (chest.gameObject);
 			}
 		}
 
