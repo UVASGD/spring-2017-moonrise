@@ -33,7 +33,7 @@ public class EntertainmentGenerator : mapGenerator
             }
         }
 
-        Builder(new int[,] { {0, cent}, {cent-3, cent+3} }, 'g', 0); //Central road, six tiles wide
+        Builder(new int[,] { {0, cent-3}, {cent, cent+3} }, 'g', 0); //Central road, six tiles wide
         EntertainmentBlockRoads();
         Asylum();
         Casino();
@@ -57,11 +57,13 @@ public class EntertainmentGenerator : mapGenerator
 
     void Insert(char[,] charArr, int[,] boardArr, int[] loc) { //Function to insert commingled block of characters
         for (int h = 0; h < charArr.GetLength(0); h++) {
-            for (int w = 0; w < charArr.GetLength(1); w++) {
+            Debug.Log("h = " + h);
+            for (int w = 0; w < charArr.GetLength(1)-1; w++) {
                 char c = charArr[h, w];
                 int b = boardArr[h, w];
                 gridKey[loc[0] + h, loc[1] + w] = c;
                 boardMap[loc[0] + h, loc[1] + w] = b;
+                Debug.Log("w = " + w);
             }
         }
     }
@@ -211,7 +213,7 @@ public class EntertainmentGenerator : mapGenerator
 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
 
-        Insert(asylumCharArr, asylumBoardArr, new int[] {cent, cent+1});
+        Insert(asylumCharArr, asylumBoardArr, new int[] {cent, cent-30});
     }
 
     //INSERT CASINO
@@ -394,15 +396,15 @@ public class EntertainmentGenerator : mapGenerator
             for (int w = 0; w < gridSize; w++)
             {
                 GameObject currentTile = null;
-                if (gridKey[w, h] == 'g')
+                if (gridKey[h, w] == 'g')
                 {
                     currentTile = floor;
                 }
-                else if (gridKey[w, h] == 'w')
+                else if (gridKey[h, w] == 'w')
                 {
                     currentTile = wall;
                 }
-                else if (gridKey[w, h] == '0')
+                else if (gridKey[h, w] == '0')
                 {
                     currentTile = null;
                 }
