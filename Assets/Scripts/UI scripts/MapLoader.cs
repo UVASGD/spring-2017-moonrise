@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using Completed;
 
 /* Treat this script more as an example as to how Large-Menu scripts should be designed.
  * Keep in mind this script is a component of the panel labelled "Expand"
@@ -35,6 +36,7 @@ public class MapLoader : MonoBehaviour
     private Sprite mapSprite;
     private Sprite miniSprite;
     private BoardManager board;
+    private GameManager gm;
     private int[,] boardData;
     private List<Vector2> prevEnemyPositions;
     private Vector2 prevPlayerPosition;
@@ -56,10 +58,9 @@ public class MapLoader : MonoBehaviour
         miniMap = gameObject.transform.FindChild("Contents").gameObject;
         mainMap = gameObject.transform.FindChild("Expand").FindChild("MapMask").gameObject;
         board = (BoardManager)gameManager.GetComponent(typeof(BoardManager));
+        gm = (GameManager)gameManager.GetComponent(typeof(GameManager));
         prevEnemyPositions = new List<Vector2>();
-        boardData = createMapBoard();
-        loadMap();
-        constructMiniMap();
+
         prevUpdate = new Rect();
         curUpdate = new Rect();
         currentzoom = 1;
@@ -397,6 +398,19 @@ public class MapLoader : MonoBehaviour
         if(gameObject.activeInHierarchy)
         {
             //If the UI element needs to repeatedly update: Do it here.
+            if (!gm.finishedSetup)
+            {
+                Debug.Log("Not Ready");
+                return;
+            }
+            if(firstUpdate)
+            {
+
+                boardData = createMapBoard();
+                loadMap();
+                constructMiniMap();
+            }
+
             updateMap();
             UpdateMiniMap();
         }

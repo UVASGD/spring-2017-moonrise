@@ -36,6 +36,7 @@ namespace Completed
 		public Player player;
         private bool enemiesMoving;                             
         private bool doingSetup = true;
+        public bool finishedSetup = false;
 
         private Queue<string> journalQueue;
         private Text CurrencyText;
@@ -105,7 +106,8 @@ namespace Completed
             levelText = GameObject.Find("LevelText").GetComponent<Text>();
 			actionText = GameObject.Find("ActionText").GetComponent<Text>();
             journal = GameObject.Find("JournalContainer").transform.FindChild("Text").GetComponent<JournalManager>();
-
+            finishedSetup = true;
+            Debug.Log("FUCKSTICK");
 
             levelImage.SetActive(true);
 
@@ -151,8 +153,8 @@ namespace Completed
 				boardScript.boardMap = Tileset.instance.boardMap;
 				boardScript.tileMap = Tileset.instance.tileMap;
 
-				//Loops through entire board, creating fog
-				for (x = -1; x < boardScript.boardMap.GetLength(0) + 1; x++)
+                //Loops through entire board, creating fog
+                for (x = -1; x < boardScript.boardMap.GetLength(0) + 1; x++)
 				{
 					for (y = -1; y < boardScript.boardMap.GetLength(1) + 1; y++)
 					{
