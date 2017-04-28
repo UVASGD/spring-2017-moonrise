@@ -58,7 +58,7 @@ public class MapLoader : MonoBehaviour
         miniMap = gameObject.transform.FindChild("Contents").gameObject;
         mainMap = gameObject.transform.FindChild("Expand").FindChild("MapMask").gameObject;
         board = (BoardManager)gameManager.GetComponent(typeof(BoardManager));
-        gm = (GameManager)gameManager.GetComponent(typeof(GameManager));
+        gm = GameManager.instance;
         prevEnemyPositions = new List<Vector2>();
 
         prevUpdate = new Rect();

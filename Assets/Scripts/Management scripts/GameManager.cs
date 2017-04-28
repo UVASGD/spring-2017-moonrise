@@ -107,7 +107,6 @@ namespace Completed
 			actionText = GameObject.Find("ActionText").GetComponent<Text>();
             journal = GameObject.Find("JournalContainer").transform.FindChild("Text").GetComponent<JournalManager>();
             finishedSetup = true;
-            Debug.Log("FUCKSTICK");
 
             levelImage.SetActive(true);
 

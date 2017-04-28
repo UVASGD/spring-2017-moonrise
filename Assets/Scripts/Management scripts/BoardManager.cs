@@ -102,7 +102,7 @@ public class BoardManager : MonoBehaviour, SerialOb {
     /// </summary>
     void BoardSetup()
     {
-
+        Debug.Log("Starting");
         boardHolder = new GameObject("Board").transform;
 		
 		slumGen = GetComponent<MazeGenerator2>();

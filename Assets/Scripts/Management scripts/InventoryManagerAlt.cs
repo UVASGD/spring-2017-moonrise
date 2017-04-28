@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using Completed;
 using ItemSpace;
 
@@ -32,9 +33,13 @@ namespace Completed
 
         void Awake()
         {
-
-            InventoryManagerAlt.instance = this;
-
+            Debug.Log("BEEP INVENTORY");
+            if (InventoryManagerAlt.instance == null)
+                InventoryManagerAlt.instance = this;
+            else
+            {
+                Destroy(this);
+            }
             player = (Player)GameObject.Find("Player").transform.GetComponent<Player>();
             equipped = player.EquippedItems;
             inventory = player.Inventory;
@@ -50,7 +55,23 @@ namespace Completed
             active = false;
         }
 
+        public void reload()
+        {
+            player = (Player)GameObject.Find("Player").transform.GetComponent<Player>();
+            equipped = player.EquippedItems;
+            inventory = player.Inventory;
+            InventoryUI = GameObject.Find("Inventory");
+            inventoryExpand = InventoryUI.transform.FindChild("Expand").gameObject;
+            inventoryMini = InventoryUI.transform.FindChild("Contents").gameObject;
+            InventoryContainer = inventoryExpand.transform.FindChild("InventoryStore").gameObject;
 
+            inventoryMini.transform.FindChild("WeaponText").GetChild(0).GetComponent<Text>().text = noWeapon;
+            inventoryMini.transform.FindChild("ArmorText").GetChild(0).GetComponent<Text>().text = noArmor;
+
+            InventoryManagerAlt.instance.RefreshEquippedItems();
+            active = false;
+        }
+        
         // Update is called once per frame
         void Update()
         {
@@ -170,8 +191,11 @@ namespace Completed
             // reinitialize equipped items
             Weapon weapon = equipped.Weapon;
             Armor armor = equipped.Armor;
-            inventoryMini.transform.FindChild("WeaponText").GetChild(0).GetComponent<Text>().text = weapon != null ? weapon.Name : noWeapon;
-            inventoryMini.transform.FindChild("ArmorText").GetChild(0).GetComponent<Text>().text = armor != null ? armor.Name : noArmor;
+            if (inventoryMini != null)
+            {
+                inventoryMini.transform.FindChild("WeaponText").GetChild(0).GetComponent<Text>().text = weapon != null ? weapon.Name : noWeapon;
+                inventoryMini.transform.FindChild("ArmorText").GetChild(0).GetComponent<Text>().text = armor != null ? armor.Name : noArmor;
+            }
         }
     }
 

@@ -542,6 +542,7 @@ namespace Completed
 				GameManager.instance.Save();
 				dataSlave.instance.newGame = false;
 				SceneManager.LoadScene(((ExitPos)(other.GetComponent<ExitPos>())).getTarget());
+                InventoryManagerAlt.instance.reload();
                 //Invoke("Restart", restartLevelDelay);
                 enabled = false;
             }
@@ -725,7 +726,7 @@ namespace Completed
             //TODO Switch this to images
             if (GameManager.instance.isWerewolf)
             {
-                skillsContainer.transform.FindChild("FormIndicator").FindChild("Text").GetComponent<Text>().text = "W";
+                skillsContainer.transform.FindChild("FormIndicator").GetComponent<Image>().sprite = tabScript.indicator[1];
 
                 skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill1").GetComponent<Image>().sprite = tabScript.skillImages[4];
                 skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill2").GetComponent<Image>().sprite = tabScript.skillImages[5];
@@ -735,7 +736,7 @@ namespace Completed
             }
             else
             {
-                skillsContainer.transform.FindChild("FormIndicator").FindChild("Text").GetComponent<Text>().text = "H";
+                skillsContainer.transform.FindChild("FormIndicator").GetComponent<Image>().sprite = tabScript.indicator[0];
 
                 skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill1").GetComponent<Image>().sprite = tabScript.skillImages[0];
                 skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill2").GetComponent<Image>().sprite = tabScript.skillImages[1];

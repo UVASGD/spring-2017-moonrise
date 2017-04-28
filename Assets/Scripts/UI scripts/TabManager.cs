@@ -27,6 +27,7 @@ public class TabManager : MonoBehaviour {
     private Text opacityText;
     public Sprite[] skillImages = new Sprite[8]; // Used to store changing sprites for Skills.
     public Sprite[] moon;
+    public Sprite[] indicator;
 
 
     private bool currentExpansion = false;
