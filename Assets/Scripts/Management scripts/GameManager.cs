@@ -242,7 +242,6 @@ namespace Completed
 
         public void GameOver()
         {
-            levelText.text = "After " + level + " days, you died.";
 
             levelImage.SetActive(true);
 

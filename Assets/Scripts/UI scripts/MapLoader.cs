@@ -38,6 +38,7 @@ public class MapLoader : MonoBehaviour
     private BoardManager board;
     private GameManager gm;
     private int[,] boardData;
+    private GameObject[,] fog;
     private List<Vector2> prevEnemyPositions;
     private Vector2 prevPlayerPosition;
     private int currentzoom;
@@ -113,6 +114,7 @@ public class MapLoader : MonoBehaviour
         mapTex.SetPixel(0,0,Color.magenta);
         mapTex.Apply();
 
+        fog = createFogTile();
         mapSprite = Sprite.Create(mapTex, new Rect(0, 0, mapTex.width, mapTex.height), new Vector2(0.5f, 0.5f),16.0f);
         var mapTransform = mainMap.transform.FindChild("MapStore").GetComponent<RectTransform>();
         Debug.Log(mapTex.width + ", " + mapTex.height);
@@ -125,7 +127,6 @@ public class MapLoader : MonoBehaviour
     /// </summary>
     private void updateMap()
     { 
-        GameObject[,] fog = createFogTile();
         Vector2 playerPos = getPlayerPosition();
         List<Vector2> enemies = GetEnemyPositions();
         int sightRange = 20;
@@ -273,7 +274,6 @@ public class MapLoader : MonoBehaviour
     {
         Vector2 playerPos = getPlayerPosition();
         List<Vector2> enemies = GetEnemyPositions();
-        GameObject[,] fog = createFogTile();
 
         boardData[(int)prevPlayerPosition.x, (int)prevPlayerPosition.y] = 0;
         foreach (Vector2 v in prevEnemyPositions)
