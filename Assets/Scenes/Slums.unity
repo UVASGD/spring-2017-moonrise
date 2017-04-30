@@ -16225,6 +16225,16 @@ Prefab:
       propertyPath: tabScript
       value: 
       objectReference: {fileID: 966317218}
+    - target: {fileID: 11460302, guid: 5249b9519bdbed8439af5818a81ec0d6, type: 2}
+      propertyPath: highlightedRed
+      value: 
+      objectReference: {fileID: 21300000, guid: af8631685258b84419d2a63433c00781,
+        type: 3}
+    - target: {fileID: 11460302, guid: 5249b9519bdbed8439af5818a81ec0d6, type: 2}
+      propertyPath: highlightedGreen
+      value: 
+      objectReference: {fileID: 21300000, guid: 5d161f83383c6be4f8d438ce22932d0d,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5249b9519bdbed8439af5818a81ec0d6, type: 2}
   m_IsPrefabParent: 0

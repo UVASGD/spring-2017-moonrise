@@ -21,6 +21,7 @@ namespace Completed
         public float turnDelay = 0.1f;                          
         public int playerGoldPoints = 100;
 		public bool isWerewolf = false;
+		public bool rangeHighlighted = false;
         public static GameManager instance = null;              
         [HideInInspector]
         public bool playersTurn = true;     
@@ -162,7 +163,7 @@ namespace Completed
 						f.transform.SetParent(this.transform);
 					}
 				}
-
+				//enemy data loaded
 				XElement enemyElements = areaData[1];
 				foreach(XElement e in enemyElements.Elements()){
 

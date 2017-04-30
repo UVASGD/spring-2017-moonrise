@@ -37,6 +37,9 @@ public class StartGame : MonoBehaviour {
 		foreach (string fileName in files)
 		{
 			string[] name = fileName.Split('\\');
+			if (name.Length == 1)
+				name = fileName.Split ('/');
+			//Debug.Log (name [name.Length - 1]);
 			if(name[name.Length-1] == "save.xml" && !dataSlave.instance.newGame){
 				XElement doc = XElement.Load(fileName);
 
@@ -54,6 +57,7 @@ public class StartGame : MonoBehaviour {
 					print(i.ToString());
 				}
 				dataSlave.instance.curLoc = info[0];
+				Debug.Log (dataSlave.instance.curLoc);
 				dataSlave.instance.playerSave = info[1];
 				dataSlave.instance.market = info[2];
 				if(info.Count > 3)

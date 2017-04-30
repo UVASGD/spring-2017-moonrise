@@ -72,21 +72,21 @@ namespace Completed
 		/// Reduces enemy's HP when clicked and in range
 		/// </summary>
 		void OnMouseDown() {
-			if (GameManager.instance.playersTurn) {
+			if (GameManager.instance.playersTurn && GameManager.instance.rangeHighlighted) {
+				Debug.Log ("Range Highlighted: " + GameManager.instance.rangeHighlighted); 
 				GameManager.instance.clearLog();
 				float distance = Mathf.Sqrt (Mathf.Pow (target.position.x - this.transform.position.x, 2) + Mathf.Pow (target.position.y - this.transform.position.y, 2));
 				if(!GameManager.instance.isWerewolf){
 					// Ranged attack (hoo-man)
 					if (distance <= player.Range) {
 						GameManager.instance.enemyClicked = true;
-						int damage = player.RangedAttack (this);
-						if(damage > 0){
-							GameManager.instance.print ("Ranged damage: " + damage + ". HP remaining: "+currentHP);
-						}
-						else
-							GameManager.instance.print ("You miss!");
+							int damage = player.RangedAttack (this);
+							if (damage > 0) {
+								GameManager.instance.print ("Ranged damage: " + damage + ". HP remaining: " + currentHP);
+							} else
+								GameManager.instance.print ("You miss!");
 					} else {
-						GameManager.instance.print("Enemy out of range");
+							GameManager.instance.print("Enemy out of range");
 					}
 				} else {
 					// Melee attack (werewolf who is both were and a wolf)
