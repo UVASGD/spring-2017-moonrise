@@ -81,8 +81,8 @@ namespace Completed
 				weaponMin = myWeapon.AttackMinMax [0];
 				weaponMax = myWeapon.AttackMinMax [1];
 			} else {
-				weaponMin = 3;
-				weaponMax = 6;
+				weaponMin = (int)this.rangedDamage;
+				weaponMax = (int)this.rangedDamage + 3;
 			}
 
 			Debug.Log (weaponMin + " " + weaponMax);
@@ -108,9 +108,21 @@ namespace Completed
 		public int MeleeAttack(Character target) {
 			//Weapon weap = (Weapon)(equippedItems.Get (ItemClass.Weapon));
 		
-			// Placeholder weapon values
-			int weaponMin = 3;
-			int weaponMax = 5;
+			AttackItem myWeapon = this.EquippedItems.Weapon;
+
+			if (this is Player && GameManager.instance.isWerewolf)
+				myWeapon = this.equippedItems.Talisman;
+
+			int weaponMin;
+			int weaponMax;
+
+			if (myWeapon != null) {
+				weaponMin = myWeapon.AttackMinMax [0];
+				weaponMax = myWeapon.AttackMinMax [1];
+			} else {
+				weaponMin = (int)this.meleeDamage;
+				weaponMax = (int)this.meleeDamage + 3;
+			}
 
 			// If distance is 1, use melee values instead of ranged values
 			double accuracyValue = this.RangedAccuracy / 2 + this.MeleeAccuracy;

@@ -7,13 +7,13 @@ using System.Linq;
 
 namespace ItemSpace
 {
-	public class Weapon : AttackItem, SerialOb
+	public class Talisman: AttackItem, SerialOb
 	{
-		private WeaponType type;
-		private WeaponWeight weight;
-		private WeaponPrefix prefix;
-		private WeaponInfix infix;
-		private WeaponSuffix suffix;
+		private TalismanType type;
+		private TalismanWeight weight;
+		private TalismanPrefix prefix;
+		private TalismanInfix infix;
+		private TalismanSuffix suffix;
 
 		private int range;
 
@@ -45,29 +45,29 @@ namespace ItemSpace
 			30, 0, 0, 0, 0, 0, 0, 12, 8, 3, 12, 8, 3, 12, 8, 3, 1	
 		});
 
-		private static List<WeaponPrefix> prefixApostrophes = new List<WeaponPrefix>( new[] {
-			WeaponPrefix.Soldier, WeaponPrefix.Knight, WeaponPrefix.Captain, 
-			WeaponPrefix.Ogre, WeaponPrefix.Titan, WeaponPrefix.Dragon, 
-			WeaponPrefix.Medic, WeaponPrefix.Doctor, WeaponPrefix.Surgeon,
-			WeaponPrefix.Duke, WeaponPrefix.Lord, WeaponPrefix.King
+		private static List<TalismanPrefix> prefixApostrophes = new List<TalismanPrefix>( new[] {
+			TalismanPrefix.Soldier, TalismanPrefix.Knight, TalismanPrefix.Captain, 
+			TalismanPrefix.Ogre, TalismanPrefix.Titan, TalismanPrefix.Dragon, 
+			TalismanPrefix.Medic, TalismanPrefix.Doctor, TalismanPrefix.Surgeon,
+			TalismanPrefix.Duke, TalismanPrefix.Lord, TalismanPrefix.King
 		});
 
-		private static List<WeaponSuffix> suffixNoThes = new List<WeaponSuffix>( new[] {
-			WeaponSuffix.Sight, WeaponSuffix.Strength, WeaponSuffix.Might, WeaponSuffix.Power, WeaponSuffix.Destruction
+		private static List<TalismanSuffix> suffixNoThes = new List<TalismanSuffix>( new[] {
+			TalismanSuffix.Sight, TalismanSuffix.Strength, TalismanSuffix.Might, TalismanSuffix.Power, TalismanSuffix.Destruction
 		});
 
-		public Weapon(WeaponType type, WeaponWeight weight, WeaponPrefix prefix, WeaponInfix infix, WeaponSuffix suffix)
+		public Talisman(TalismanType type, TalismanWeight weight, TalismanPrefix prefix, TalismanInfix infix, TalismanSuffix suffix)
 		{
 			//if(this.type == null)	
 			setup(type,  weight,  prefix,  infix,  suffix);
 		}
 
-		public Weapon(){
-
+		public Talisman(){
+			
 		}
 
-		private void setup(WeaponType type, WeaponWeight weight, WeaponPrefix prefix, WeaponInfix infix, WeaponSuffix suffix){
-			this.itemClass = ItemClass.Weapon;
+		private void setup(TalismanType type, TalismanWeight weight, TalismanPrefix prefix, TalismanInfix infix, TalismanSuffix suffix){
+			this.itemClass = ItemClass.Talisman;
 			this.type = type;
 			this.weight = weight;
 			this.prefix = prefix;
@@ -80,76 +80,76 @@ namespace ItemSpace
 			hpBonus = 0;
 
 			switch (prefix) {
-			case WeaponPrefix.Great:
+			case TalismanPrefix.Great:
 				attackMult = 1.15;
 				break;
-			case WeaponPrefix.Mighty:
+			case TalismanPrefix.Mighty:
 				attackMult = 1.25;
 				break;
-			case WeaponPrefix.Masterful:
+			case TalismanPrefix.Masterful:
 				attackMult = 1.4;
 				break;
-			case WeaponPrefix.Soldier:
+			case TalismanPrefix.Soldier:
 				attackMult = 1.2;
 				break;
-			case WeaponPrefix.Knight:
+			case TalismanPrefix.Knight:
 				attackMult = 1.3;
 				break;
-			case WeaponPrefix.Captain:
+			case TalismanPrefix.Captain:
 				attackMult = 1.45;
 				break;
-			case WeaponPrefix.Ogre:
+			case TalismanPrefix.Ogre:
 				attackMult = 1.3;
 				break;
-			case WeaponPrefix.Titan:
+			case TalismanPrefix.Titan:
 				attackMult = 1.4;
 				break;
-			case WeaponPrefix.Dragon:
+			case TalismanPrefix.Dragon:
 				attackMult = 1.6;
 				break;
-			case WeaponPrefix.Medic:
+			case TalismanPrefix.Medic:
 				hpBonus = 20;
 				break;
-			case WeaponPrefix.Doctor:
+			case TalismanPrefix.Doctor:
 				hpBonus = 30;
 				break;
-			case WeaponPrefix.Surgeon:
+			case TalismanPrefix.Surgeon:
 				hpBonus = 40;
 				break;
 			}
 
 			switch (infix) {
-			case WeaponInfix.Bronze:
+			case TalismanInfix.Bronze:
 				attackBonus = 10;
 				break;
-			case WeaponInfix.Steel:
+			case TalismanInfix.Steel:
 				attackBonus = 15;
 				break;
-			case WeaponInfix.Silver:
+			case TalismanInfix.Silver:
 				attackBonus = 20;
 				break;
-			case WeaponInfix.Platinum:
+			case TalismanInfix.Platinum:
 				attackBonus = 25;
 				break;
-			case WeaponInfix.Titanium:
+			case TalismanInfix.Titanium:
 				attackBonus = 30;
 				break;
-			case WeaponInfix.Diamond:
+			case TalismanInfix.Diamond:
 				attackBonus = 35;
 				break;
-			case WeaponInfix.Obsidian:
+			case TalismanInfix.Obsidian:
 				attackBonus = 40;
 				break;
 			}
 
 			switch (suffix) {
-			case WeaponSuffix.Wind:
+			case TalismanSuffix.Wind:
 				speedMult = 1.15;
 				break;
-			case WeaponSuffix.Gale:
+			case TalismanSuffix.Gale:
 				speedMult = 1.2;
 				break;
-			case WeaponSuffix.Storm:
+			case TalismanSuffix.Storm:
 				speedMult = 1.25;
 				break;
 			}
@@ -157,15 +157,15 @@ namespace ItemSpace
 			name = CreateName (type, weight, prefix, infix, suffix);
 		}
 
-		public static string CreateName(WeaponType type, WeaponWeight weight, WeaponPrefix prefix, WeaponInfix infix, WeaponSuffix suffix) {
+		public static string CreateName(TalismanType type, TalismanWeight weight, TalismanPrefix prefix, TalismanInfix infix, TalismanSuffix suffix) {
 			string weightStr, prefixStr, infixStr, typeStr, suffixStr;
 
-			if (weight == WeaponWeight.Medium)
+			if (weight == TalismanWeight.Medium)
 				weightStr = "";
 			else
 				weightStr = weight.ToString () + " ";
 
-			if (prefix == WeaponPrefix.None)
+			if (prefix == TalismanPrefix.None)
 				prefixStr = "";
 			else {
 				prefixStr = prefix.ToString ();
@@ -175,18 +175,18 @@ namespace ItemSpace
 					prefixStr += " ";
 			}
 
-			if (infix == WeaponInfix.None)
+			if (infix == TalismanInfix.None)
 				infixStr = "";
 			else
 				infixStr = infix.ToString () + " ";
 
 			typeStr = type.ToString ();
 
-			if (suffix == WeaponSuffix.None)
+			if (suffix == TalismanSuffix.None)
 				suffixStr = "";
 			else {
 				suffixStr = suffix.ToString ();
-				if (suffix == WeaponSuffix.Sight)
+				if (suffix == TalismanSuffix.Sight)
 					suffixStr = "True " + suffixStr;
 				if (suffixNoThes.Contains (suffix))
 					suffixStr = " of " + suffixStr;
@@ -198,25 +198,25 @@ namespace ItemSpace
 			return weightStr + prefixStr + infixStr + typeStr + suffixStr;
 		}
 
-		public static new Weapon RandomWeapon() {
-			WeaponType type = WeaponType.Crossbow;
-			WeaponWeight weight = (WeaponWeight)RandomEnum (weightProbs);
+		public static new Item RandomTalisman() {
+			TalismanType type = TalismanType.Talisman;
+			TalismanWeight weight = (TalismanWeight)RandomEnum (weightProbs);
 			List<int> prefixProbs, suffixProbs;
-			if (weight == WeaponWeight.Light) {
+			if (weight == TalismanWeight.Light) {
 				prefixProbs = lightPrefixProbs;
 				suffixProbs = lightSuffixProbs;
-			} else if (weight == WeaponWeight.Medium) {
+			} else if (weight == TalismanWeight.Medium) {
 				prefixProbs = mediumPrefixProbs;
 				suffixProbs = mediumSuffixProbs;
 			} else {
 				prefixProbs = heavyPrefixProbs;
 				suffixProbs = heavySuffixProbs;
 			}
-			WeaponPrefix prefix = (WeaponPrefix)RandomEnum (prefixProbs);
-			WeaponInfix infix = (WeaponInfix)RandomEnum (infixProbs);
-			WeaponSuffix suffix = (WeaponSuffix)RandomEnum (suffixProbs);
+			TalismanPrefix prefix = (TalismanPrefix)RandomEnum (prefixProbs);
+			TalismanInfix infix = (TalismanInfix)RandomEnum (infixProbs);
+			TalismanSuffix suffix = (TalismanSuffix)RandomEnum (suffixProbs);
 
-			return new Weapon (type, weight, prefix, infix, suffix);
+			return new Talisman (type, weight, prefix, infix, suffix);
 		}
 
 		private static int RandomEnum(List<int> probs) {
@@ -245,13 +245,13 @@ namespace ItemSpace
 		public int[] AttackMinMax {
 			get {
 				double mult;
-				if (this.weight == WeaponWeight.Light)
+				if (this.weight == TalismanWeight.Light)
 					mult = 0.9;
-				else if (this.weight == WeaponWeight.Medium)
+				else if (this.weight == TalismanWeight.Medium)
 					mult = 0.8;
 				else 
 					mult = 0.7;
-				
+
 				return new int[] {(int)(attackMult * attackBonus * mult), (int)(attackMult*attackBonus)};
 			}
 		}
@@ -281,32 +281,29 @@ namespace ItemSpace
 
 		virtual public bool deserialize(XElement s){
 			List<XElement> info = s.Descendants().ToList();
-			setup((WeaponType)Convert.ToDouble(info[0].Value),
-				(WeaponWeight)Convert.ToDouble(info[1].Value),
-				(WeaponPrefix)Convert.ToDouble(info[2].Value),
-				(WeaponInfix)Convert.ToDouble(info[3].Value),
-				(WeaponSuffix)Convert.ToDouble(info[4].Value));
+			setup((TalismanType)Convert.ToDouble(info[0].Value),
+				(TalismanWeight)Convert.ToDouble(info[1].Value),
+				(TalismanPrefix)Convert.ToDouble(info[2].Value),
+				(TalismanInfix)Convert.ToDouble(info[3].Value),
+				(TalismanSuffix)Convert.ToDouble(info[4].Value));
 
 			return true;
 		}
 	}
 
-	// by default, enums have int values and start at 0; 
-	// some code in this file relies on this default behavior
-
-	public enum WeaponType
+	public enum TalismanType
 	{
-		Crossbow
+		Talisman
 	}
 
-	public enum WeaponWeight
+	public enum TalismanWeight
 	{
 		Light,
 		Medium,
 		Heavy
 	}
 
-	public enum WeaponPrefix
+	public enum TalismanPrefix
 	{
 		None,
 		Great,
@@ -331,7 +328,7 @@ namespace ItemSpace
 		Ultimate
 	}
 
-	public enum WeaponInfix
+	public enum TalismanInfix
 	{
 		None,
 		Bronze,
@@ -343,26 +340,21 @@ namespace ItemSpace
 		Obsidian
 	}
 
-	public enum WeaponSuffix
+	public enum TalismanSuffix
 	{
 		None,
-
 		Wind,
 		Gale,
 		Storm,
-
 		Rogue,
 		Assassin,
 		Shadow,
-
 		Seer,
 		Thief,
 		Sniper,
-
 		Eagle,
 		Hawk,
 		Sight,
-
 		Strength,
 		Might,
 		Power,
