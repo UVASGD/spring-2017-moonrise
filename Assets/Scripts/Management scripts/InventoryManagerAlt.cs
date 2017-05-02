@@ -29,7 +29,7 @@ namespace Completed
         private EquippedItemSet equipped;
         private Inventory inventory;
 
-        private static string noWeapon = "no weapon", noArmor = "no armor";
+        private static string noWeapon = "No Weapon", noArmor = "No Armor", noTalisman = "No Talisman";
 
         void Awake()
         {
@@ -146,6 +146,34 @@ namespace Completed
             }
         }
 
+        public void EquipTalisman(int index)
+        {
+            player.UnequipItem(ItemClass.Talisman);
+            player.EquipItem(inventory.Items[index]);
+            Refresh();
+        }
+
+        /// <summary>
+        /// This script is injected into buttons that are created. Allows for selling and equipping.
+        /// </summary>
+        /// <param name="index">The item index from inventory.</param>
+        public void TalismanButton(int index)
+        {
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            {
+                int value = 100; //TODO: Get a means of calculating item value.
+                GameManager.instance.print("Offered " + inventory.Items[index].Name + " for " + value + " silver.");
+                inventory.RemoveItem(inventory.Items[index]);
+                GameManager.instance.playerGoldPoints += value;
+                GameManager.instance.CurrencyCheck();
+                Refresh();
+            }
+            else if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift))
+            {
+                EquipTalisman(index);
+            }
+        }
+
         /// <summary>
         /// Refreshed the inventory layout.
         /// </summary>
@@ -175,6 +203,11 @@ namespace Completed
                         itemObj.transform.GetChild(0).GetComponent<Text>().text = item.Name;
                         itemObj.GetComponent<Button>().onClick.AddListener(delegate { ArmorButton(inventory.Items.IndexOf(item)); });
                         break;
+                    case ItemClass.Talisman:
+                        itemObj.transform.SetParent(InventoryContainer.transform.FindChild("Talismans").FindChild("Content"));
+                        itemObj.transform.GetChild(0).GetComponent<Text>().text = item.Name;
+                        itemObj.GetComponent<Button>().onClick.AddListener(delegate { TalismanButton(inventory.Items.IndexOf(item)); });
+                        break;
                     default:
                         Debug.Log("What the shit?"); //TODO: Figure out what all is in the game.
                         break;
@@ -191,10 +224,12 @@ namespace Completed
             // reinitialize equipped items
             Weapon weapon = equipped.Weapon;
             Armor armor = equipped.Armor;
+            Talisman talisman = equipped.Talisman;
             if (inventoryMini != null)
             {
                 inventoryMini.transform.FindChild("WeaponText").GetChild(0).GetComponent<Text>().text = weapon != null ? weapon.Name : noWeapon;
                 inventoryMini.transform.FindChild("ArmorText").GetChild(0).GetComponent<Text>().text = armor != null ? armor.Name : noArmor;
+                inventoryMini.transform.FindChild("TalismanText").GetChild(0).GetComponent<Text>().text = talisman != null ? talisman.Name : noTalisman;
             }
         }
     }
