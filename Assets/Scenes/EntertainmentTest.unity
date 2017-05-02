@@ -121,8 +121,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floor: {fileID: 170992, guid: b021cef5c367b884387065f8bae5ef1e, type: 2}
   wall: {fileID: 141938, guid: 65923a9620d79894d8a5cbd1ecaceba7, type: 2}
-  buildings: []
-  mainBuilding: {fileID: 0}
+  casinoFloor: {fileID: 1000014030491502, guid: 81d74d78ed6893641bd4fcb29fa65289,
+    type: 2}
+  casinoWall: {fileID: 1000013580863626, guid: 81d74d78ed6893641bd4fcb29fa65289, type: 2}
+  asylumFloor: {fileID: 1000014030491502, guid: 81d74d78ed6893641bd4fcb29fa65289,
+    type: 2}
+  asylumWall: {fileID: 1000013580863626, guid: 81d74d78ed6893641bd4fcb29fa65289, type: 2}
   debugging: 0
   gridSize: 120
 --- !u!4 &609305118
