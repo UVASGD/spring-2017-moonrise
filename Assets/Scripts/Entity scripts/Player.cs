@@ -76,7 +76,7 @@ namespace Completed
 
 		//checks if range is currently higlighted
 		private Boolean refreshHighlight = false;
-
+	
 		// Use this for initialization
 		protected override void Start ()
 		{
@@ -142,11 +142,19 @@ namespace Completed
 				
 				sneaking = true;
 				TotalSpeed *= (0.4);
+				Color temp = this.gameObject.GetComponent<SpriteRenderer> ().color;
+				temp.a *= 0.5f;
+				this.gameObject.GetComponent<SpriteRenderer> ().color = temp;
 			} else if (sneaking) {
 				sneaking = false;
+				Color temp = this.gameObject.GetComponent<SpriteRenderer> ().color;
+				temp.a *= 2.0f;
+				this.gameObject.GetComponent<SpriteRenderer> ().color = temp;
 				TotalSpeed /= (0.4);
 			}
 		}
+			
+			
 
 		public void UpdateText (String message = "")
 		{
@@ -247,7 +255,9 @@ namespace Completed
 				//shoot
 				toggleHighlightRange();
 			} else if (Input.GetKeyDown (KeyCode.Keypad2) || Input.GetKeyDown (KeyCode.Alpha2)) {
-				ToggleSneak (); //sneak
+				if(!GameManager.instance.isWerewolf) {
+				 ToggleSneak (); //sneak
+				}
 				Debug.Log(sneaking ? "sneaky and slow" : "stompy and fast"); 
 			} else if (Input.GetKeyDown (KeyCode.Keypad3) || Input.GetKeyDown (KeyCode.Alpha3)) {
 				 //charm
@@ -755,8 +765,12 @@ namespace Completed
 			
 			GameManager.instance.isWerewolf = !GameManager.instance.isWerewolf;
 			if (GameManager.instance.isWerewolf) {
+				if(sneaking) {
+					ToggleSneak ();
+				}
 				this.TotalHP *= 2;
 				this.CurrentHP *= 2;
+				sneaking = false;
 				animator.runtimeAnimatorController = Resources.Load ("transform") as RuntimeAnimatorController;
 			} else {
 				this.TotalHP /= 2;
