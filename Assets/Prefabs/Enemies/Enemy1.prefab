@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 21249280}
   - component: {fileID: 6178754}
   - component: {fileID: 5065896}
-  - component: {fileID: 114012437705189968}
+  - component: {fileID: 11459282}
   m_Layer: 8
-  m_Name: NPC
+  m_Name: Enemy1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,6 +66,37 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Size: {x: 0.9, y: 0.9}
+--- !u!114 &11459282
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 122792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb3d72eecbee6d14bb0147d485140821, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0.75
+  AP: 0
+  moveTime: 0
+  blockingLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  impassable:
+    serializedVersion: 2
+    m_Bits: 0
+  orientation: 0
+  healPerCycle: 0
+  healCycle: 8
+  healTurn: 0
+  playerDamage: 2
+  indicator: {fileID: 1000013966800682, guid: 38d7c28b8e2bad64cbe045e0164934db, type: 2}
+  sightRange: 5
+  looterFront: {fileID: 21300000, guid: 71bf8611ad708474385ec5ba585d3c00, type: 3}
+  looterBack: {fileID: 21300000, guid: 71bf8611ad708474385ec5ba585d3c00, type: 3}
+  looterLeft: {fileID: 21300000, guid: be287904170f07f42859dd8c33ffb08f, type: 3}
+  looterRight: {fileID: 21300000, guid: c21e47e0bfa80b04f9fcde44f4c539e7, type: 3}
 --- !u!212 &21249280
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -98,7 +129,7 @@ SpriteRenderer:
   m_SortingLayerID: 1923248533
   m_SortingOrder: -5
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0.6184838, g: 0.98140395, b: 1, a: 1}
+  m_Color: {r: 0.6691177, g: 0.6691177, b: 0.6691177, a: 1}
   m_FlipX: 0
   m_FlipY: 0
 --- !u!1001 &100100000
@@ -136,31 +167,3 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 122792}
   m_IsPrefabParent: 1
---- !u!114 &114012437705189968
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 122792}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53319f089eaa1184b9a6c616e7550707, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 1
-  AP: 0
-  moveTime: 0.1
-  blockingLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  impassable:
-    serializedVersion: 2
-    m_Bits: 256
-  orientation: 2
-  playerDamage: 0
-  indicator: {fileID: 0}
-  sightRange: 3
-  looterFront: {fileID: 21300000, guid: 0feece4e8dcb45840a8593963756555f, type: 3}
-  looterBack: {fileID: 21300000, guid: 510ebccd9a058cd44a0f283f71b0127a, type: 3}
-  looterLeft: {fileID: 21300000, guid: 7bb49624eca304444b42f92ad52fb70e, type: 3}
-  looterRight: {fileID: 21300000, guid: 8b529ca3fd76dc741a7922e084e2ecc5, type: 3}
