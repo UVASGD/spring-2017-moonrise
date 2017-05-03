@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-
+using Completed;
 
 public class optionSelect : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,IPointerDownHandler {
 	EncounterInstance instance;
@@ -29,7 +29,7 @@ public class optionSelect : MonoBehaviour,IPointerEnterHandler,IPointerExitHandl
 		if(this.GetComponent<Text>().text == "" || this.disabled)
 			return;
 		this.instance.choice(this.optionNum);
-
+		GameManager.instance.player.UpdateText();
 	}
 
 	public void setInstance(EncounterInstance e){

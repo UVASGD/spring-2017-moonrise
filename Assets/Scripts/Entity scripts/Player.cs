@@ -869,6 +869,9 @@ namespace Completed
 			case "health":
 				return currentHP;
 				break;
+			case "shoot":
+				return shoot;
+				break;
 			case "sneak":
 				return sneak;
 				break;

@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class EncounterManager : MonoBehaviour {
 
 	public GameObject dialoguePrefab, NPCPrefab;
 	private GameObject Canvas;
 	private GameObject dialogueBox;
+	private List<Encounter> encounters = new List<Encounter>();
 
 	// Use this for initialization
 	void Start () {
@@ -31,8 +33,29 @@ public class EncounterManager : MonoBehaviour {
 		e.setDialogueBox(dialogueBox);
 	}
 
-	public void makeEncounter(){
-		Encounter e = new Encounter("Encounters/exampleEncounter.xml");
-		EncounterInstance eI = new EncounterInstance(e,new Vector2(60,64),NPCPrefab, dialogueBox);
+
+
+	/// <summary>
+	/// Loads all encounters, this will probably be a high runtime function pls run only at boot
+	/// </summary>
+	public void loadEncounters(){
+		var files = Directory.GetFiles(Directory.GetCurrentDirectory()+"\\Encounters");
+		foreach (string fileName in files)
+		{
+			Debug.Log(fileName);
+			string[] name = fileName.Split('\\');
+			Encounter e = new Encounter("Encounters/"+name[name.Length-1]);
+			encounters.Add(e);
+		}
+	}
+
+
+	public EncounterInstance makeEncounter(Vector2 pos){
+		//Encounter e = new Encounter("Encounters/testEncounter.xml");
+		int encounterIndex = Random.Range(0,encounters.Count);
+		Debug.Log(encounterIndex);
+		Encounter e = encounters[encounterIndex];
+		EncounterInstance eI = new EncounterInstance(e,pos,NPCPrefab, dialogueBox);
+		return eI;
 	}
 }

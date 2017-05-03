@@ -13,9 +13,11 @@ public class Encounter {
 
 	public Encounter(string eName){
 		XElement encounter = XElement.Load(eName);
+		Debug.Log(eName);
 		List<XElement> data = encounter.Elements().ToList<XElement>();
 		//should be flags - type - requirements - dialogue/options
-		for(int i = 3; i < data.Count; i ++){
+		for(int i = 0; i < data.Count; i ++){
+			Debug.Log(data[i].Elements().ToList<XElement>().Count);
 			string key = data[i].Elements().ToList<XElement>()[0].Value;
 			Branch b = new Branch(data[i]);
 			branches.Add(key,b);
@@ -24,6 +26,9 @@ public class Encounter {
 		Debug.Log(branches.Count);
 	}
 
+	public Branch getBranch(string path){
+		return(branches[path]);
+	}
 
 	public int displayBranch(string path, GameObject dialogueBox){
 		string[] keys = branches.Keys.ToArray();
@@ -87,9 +92,6 @@ public class Encounter {
 				op3.GetComponent<optionSelect>().disable();
 			}
 
-			foreach(ResultApply r in b.results){
-				r.apply(GameManager.instance.player);
-			}
 			return 1;
 		}else{
 			GameObject.Destroy(dialogueBox);

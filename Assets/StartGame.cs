@@ -13,6 +13,7 @@ public class StartGame : MonoBehaviour {
 	static int continueArea;
 
 	void Start(){
+		dataSlave.instance.gameObject.GetComponent<EncounterManager>().loadEncounters();
 		File.Delete("save.xml");
 		//load();
 	}

@@ -16,5 +16,9 @@ public class NPC : Enemy {
 		this.e = e;
 	}
 
+	public void makeAggressive(){
+		this.aggressive = true;
+	}
+
 	public EncounterInstance getEncounter(){return this.e;}
 }

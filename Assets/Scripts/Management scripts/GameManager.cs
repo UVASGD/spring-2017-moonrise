@@ -88,7 +88,7 @@ namespace Completed
 				}
             }
 
-			GameObject.Find("dataSlave").GetComponent<EncounterManager>().makeEncounter();
+			//GameObject.Find("dataSlave").GetComponent<EncounterManager>().makeEncounter(new Vector2(60,65));
 
             doingSetup = true;
 

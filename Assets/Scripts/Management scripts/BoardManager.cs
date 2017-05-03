@@ -190,8 +190,9 @@ public class BoardManager : MonoBehaviour, SerialOb {
 		Vector2 randomPosition = Vector2.zero;
 		while (repeat) {
 			randomPosition = new Vector2 (Random.Range (0, rows), Random.Range (0, columns));
-			RaycastHit2D hit = Physics2D.Raycast (randomPosition, Vector2.up, 0.1f, blockingLayer);
-			if (hit.collider == null) {
+			//RaycastHit2D hit = Physics2D.Raycast (randomPosition, Vector2.up, 0.1f, blockingLayer);
+
+			if (boardMap[(int)randomPosition.x,(int)randomPosition.y] == 0) {
 				repeat = false;
 			} else {
 				
@@ -226,6 +227,24 @@ public class BoardManager : MonoBehaviour, SerialOb {
         }
     }
 
+	/// <summary>
+	/// Lays out the encounters.
+	/// </summary>
+	/// <param name="locations">Possible encounter locations, 2D array [X,2]</param>
+	/// <param name="min">Min number of encounters</param>
+	/// <param name="max">Max number of encounters</param>
+	void layoutEncounters(int[,] locations, int min, int max){
+		int encounterNum = Random.Range(min,max);
+		List<int> usedLocs = new List<int>();
+		for(int i = 0; i < encounterNum; i++){
+			int loc = Random.Range(0,locations.GetLength(0));
+			while(usedLocs.Contains(loc))
+				loc = Random.Range(0,locations.GetLength(0));
+			usedLocs.Add(loc);
+			GameObject.Find("dataSlave").GetComponent<EncounterManager>().makeEncounter(new Vector2(locations[loc,0],locations[loc,1]));
+		}
+	}
+
 
    public void SetupScene (int level)
     {
@@ -238,6 +257,20 @@ public class BoardManager : MonoBehaviour, SerialOb {
         LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount);                   //Place enemies
 
 		BuildExits();
+
+		if(area == areas.Market){
+			int head = 0;
+			int[,] positions = new int[20,2];
+
+			while(head < 20){
+				Vector2 rLoc = RandomPosition();
+				positions[head,0] = (int)Math.Floor(rLoc.x);
+				positions[head,1] = (int)Math.Floor(rLoc.y);
+				head++;
+			}
+
+			layoutEncounters(positions,10,20);
+		}
 
 
 

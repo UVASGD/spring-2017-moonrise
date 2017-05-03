@@ -14,4 +14,8 @@ public class ResultApply {
 	public void apply(Player p){
 		p.applyEffect(this.key,this.value);
 	}
+
+	public bool isAggro(){
+		return(this.key == "aggressive");
+	}
 }

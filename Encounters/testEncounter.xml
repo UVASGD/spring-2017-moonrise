@@ -1,0 +1,48 @@
+<encounter>
+	<dialog>
+		<dialogpath></dialogpath>
+		<name>Man selling</name>
+		<description>heyo this guy wants to sell you a potion</description>
+		<option>
+			<optionNum>1</optionNum>
+			<opTXT>lmao nice let's buy it</opTXT>
+			<requirement>silver:20</requirement>
+			<reward>health:20_silver:-20</reward>
+		</option>
+		<option>
+			<optionNum>2</optionNum>
+			<opTXT>lmao no way jose how bout i just take it</opTXT>
+			<requirement>growl:2</requirement>
+			<reward>health:50</reward>
+		</option>
+		<option>
+			<optionNum>3</optionNum>
+			<opTXT>lmao weirdo go away</opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+	</dialog>
+	<dialog>
+		<dialogpath>1</dialogpath>
+		<name>Man selling</name>
+		<description>you purchase the potion</description>
+		<option>
+			<optionNum>1</optionNum>
+			<opTXT>[walk away]</opTXT>
+			<requirement></requirement>
+			<reward></reward>
+		</option>
+		<option>
+			<optionNum>2</optionNum>
+			<opTXT></opTXT>
+			<requirement>growl:2</requirement>
+			<reward>health:50</reward>
+		</option>
+		<option>
+			<optionNum>3</optionNum>
+			<opTXT></opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+	</dialog>
+</encounter>
