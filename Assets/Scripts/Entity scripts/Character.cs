@@ -11,14 +11,14 @@ namespace Completed
 	{
 		//leveled up with magic character points
 		protected int baseHP = 0;
-		protected double rangedBlock = 0;
-		protected double meleeBlock = 0;
-		protected double rangedDamage = 0;
+		protected double rangedBlock = 10;
+		protected double meleeBlock = 10;
+		protected double rangedDamage = 3;
 		protected double meleeDamage = 5;
 		protected double rangedMult = 1;
 		protected double meleeMult = 1;
-		protected double rangedAccuracy = 0;
-		protected double meleeAccuracy = 0;
+		protected double rangedAccuracy = 10;
+		protected double meleeAccuracy = 10;
 
 		//affected by items
 		protected int totalHP;
@@ -145,7 +145,7 @@ namespace Completed
 			double blockValue = target.RangedBlock / 2 + target.MeleeBlock;
 
 			if (accuracyValue - blockValue > UnityEngine.Random.Range (0.0f, 100.0f)) {
-				int damage = (int)((this.RangedDamage/2 + this.MeleeDamage) / 1.5) * (UnityEngine.Random.Range (weaponMin, weaponMax+1));
+				int damage = (int)(((this.RangedDamage/2 + this.MeleeDamage) / 1.5) * (this.meleeDamage + UnityEngine.Random.Range (weaponMin, weaponMax+1)));
 				target.LoseHp(damage);
 				GameManager.instance.player.UpdateText ();
 				Debug.Log(damage);
@@ -188,12 +188,9 @@ namespace Completed
 				equippable = (EquipItem)item;
 				if (RemoveItem (equippable)) {
 					Debug.Log ("successfully removed item during equip");
-					UpdateStats (equipped: false, item: equippable);
-					Item unequipped = equippedItems.Unequip (equippable.ItemClass);
-					if (equippable != null) {
-						if(unequipped != null)
-						inventory.AddItem (unequipped);
-					}
+
+					UnequipItem (equippable.ItemClass);
+
 					equippedItems.Equip (equippable);
 					UpdateStats (equipped: true, item: equippable);
 				} else {
@@ -251,6 +248,7 @@ namespace Completed
 		protected virtual void KillObject()
 		{
 		}
+
 		/// <summary>
 		/// Unequip the item and add it to the inventory.
 		/// </summary>
@@ -258,7 +256,10 @@ namespace Completed
 		public void UnequipItem(ItemClass ic)
 		{
 			Item unequipped = equippedItems.Unequip (ic);
-			AddItem (unequipped);
+			if (unequipped != null) {
+				UpdateStats (equipped: false, item: (EquipItem)unequipped);
+				inventory.AddItem (unequipped);
+			}
 		}
 
 		#region properties	
