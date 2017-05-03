@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 using System.Xml.Linq;
 using System.Linq;
 using Completed;
@@ -92,16 +93,22 @@ namespace ItemSpace
 			int attrSeed = UnityEngine.Random.Range (0, 12);
 			if (attrSeed % 2 == 0) {
 				attr = attrSeed / 2;
-				int tierSeed = UnityEngine.Random.Range (0, 12);
-				if (tierSeed < 6) {
+
+				int currentLevel = GameManager.instance.level;
+				double fractionTimeLeft = GameManager.instance.timeLeft / 4320.0;
+				double determiner = Math.Floor (currentLevel + (1 / fractionTimeLeft) * 2);
+
+				if (determiner <= 8)
 					tier = 0;
-				} else if (tierSeed < 9) {
+				else if (determiner <= 14)
 					tier = 1;
-				} else if (tierSeed < 11) {
+				else if (determiner <= 23)
 					tier = 2;
-				} else {
+				else
 					tier = 3;
-				}
+
+				Debug.Log ("curLvl:" + currentLevel + "  fractTime: " + fractionTimeLeft + "  det: " + determiner + "  tier: " + tier);
+
 			} else {
 				attr = 6;
 				tier = 0;
@@ -114,7 +121,7 @@ namespace ItemSpace
 
 		public double AttackMult {
 			get {
-				return attackMult;
+				return this.attackMult;
 			}
 		}
 

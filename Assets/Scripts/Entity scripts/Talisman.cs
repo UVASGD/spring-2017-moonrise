@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Completed;
 using UnityEngine;
@@ -64,7 +64,7 @@ namespace ItemSpace
 				return types;
 			}
 		}
-
+	
 		protected override string[] Weights {
 			get {
 				return weights;

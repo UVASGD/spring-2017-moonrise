@@ -60,8 +60,8 @@ namespace ItemSpace
 				val = armor;
 				armor = null;
 			} else if (ic == ItemClass.Talisman) {
-		val = talisman;
-		talisman = null;
+				val = talisman;
+				talisman = null;
 			}
 			return val;
 		}
