@@ -119,7 +119,7 @@ namespace Completed
 		/// <summary>
 		///	This is where the enemy logic goes, for the base class should be a basic line of sight = attack processing.
 		/// </summary>
-        public bool takeTurn(bool init)
+        public virtual bool takeTurn(bool init)
         {
 			if (player.isTransforming) {
 				return false;

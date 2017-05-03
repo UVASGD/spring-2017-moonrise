@@ -6,11 +6,6 @@ namespace ItemSpace
 	{
 		protected int calories, portions;
 
-		public Food()
-		{
-			itemClass = ItemClass.Food;
-		}
-
 		public bool Consumed()
 		{
 			return portions == 0;
@@ -22,6 +17,12 @@ namespace ItemSpace
 				return 0;
 			portions -= 1;
 			return calories;
+		}
+
+		public override ItemClass ItemClass {
+			get {
+				return ItemClass.Food;
+			}
 		}
 	}
 }

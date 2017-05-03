@@ -18,7 +18,7 @@ namespace Completed
 		public int baseSneak = 3;
 		public float sightRange = 12f;
 
-        private int totalTime = 0;
+        private double totalTime = 0;
         
 		// Sprites
 		public Sprite werewolfFront;
@@ -42,6 +42,7 @@ namespace Completed
 		public int lunge;
 		public int growl;
 		public int fortify;
+
 
 		// Abilities
 		private bool willLunge = false;
@@ -84,11 +85,8 @@ namespace Completed
 			speed = 1;
 			orientation = Orientation.North;
 			original = this.gameObject.GetComponent<SpriteRenderer> ().color;
-			timeLeft = "Time Left: " + GameManager.instance.timeLeft;
+
             totalTime = GameManager.instance.timeLeft;
-            goldText = "Silver: " + GameManager.instance.playerGoldPoints;
-			hpText = "HP: " + this.CurrentHP;
-			levelText = "Level: " + GameManager.instance.level;
 			UpdateText ();
 		
 			animator = GetComponent<Animator> ();
@@ -100,7 +98,7 @@ namespace Completed
 
 			//Equip a crossbow
 			if(equippedItems.Weapon == null){
-				ItemSpace.Weapon w = new ItemSpace.Weapon(ItemSpace.WeaponType.Crossbow,ItemSpace.WeaponWeight.Medium,ItemSpace.WeaponPrefix.None,ItemSpace.WeaponInfix.None,ItemSpace.WeaponSuffix.None);
+				ItemSpace.Weapon w = new ItemSpace.Weapon();
 				equippedItems.Equip(w);
                 InventoryManagerAlt.instance.RefreshEquippedItems();
             }
@@ -160,6 +158,8 @@ namespace Completed
 		{
 			levelText = "Level: " + GameManager.instance.level;
 			hpText = "HP: " + CurrentHP;
+			goldText = "Silver: " + GameManager.instance.playerGoldPoints;
+			timeLeft = "Time Left: " + (int) GameManager.instance.timeLeft;
 			displayText.text = timeLeft + " | " + goldText + " | " + hpText + " | " + levelText;
 			Vector3 scale = hpBar.transform.localScale;
 			scale.x = ((float)currentHP / (float)totalHP);
@@ -212,7 +212,9 @@ namespace Completed
 					GameObject.FindGameObjectWithTag ("transformbg").GetComponent<Renderer> ().enabled = false;
 					GetComponent<SpriteRenderer> ().sortingLayerName = "Units";
 					UpdateSprite ();
-					refreshHighlightRange ();
+					if (GameManager.instance.rangeHighlighted) {
+						refreshHighlightRange ();
+					}
 					GameManager.instance.playersTurn = false;
 				}
 				return;
@@ -454,7 +456,7 @@ namespace Completed
 				case 1:
 					if (this.shoot < 5) {
 						this.shoot += 1;
-						this.rangedDamage *= 1.1;
+						this.rangedMult *= 1.1;
 						this.rangedAccuracy *= 1.05;
 						GameManager.instance.print ("Upgraded shoot to level " + this.shoot + "!");
 						upgradedSkill = true;
@@ -479,7 +481,7 @@ namespace Completed
 				case 4:
 					if (this.dodge < 5) {
 						this.dodge += 1;
-						this.rangedBlock += dodge == 4 ? 16.5 : 4.5;
+						this.rangedBlock += dodge == 5 ? 16.5 : 4.5;
 						GameManager.instance.print ("Upgraded dodge to level " + this.dodge + "!");
 						upgradedSkill = true;
                         }
@@ -488,7 +490,7 @@ namespace Completed
 					if (this.bite < 5) {
 						this.bite += 1;
 						this.meleeAccuracy *= 1.1;
-						this.meleeDamage *= 1.1;
+						this.meleeMult *= 1.1;
 						GameManager.instance.print ("Upgraded bite to level " + this.bite + "!");
 						upgradedSkill = true;
                         }
@@ -511,7 +513,7 @@ namespace Completed
 				case 8:
 					if (this.fortify < 5) {
 						this.fortify += 1;
-						this.meleeBlock += fortify == 7 ? 16.5 : 4.5;
+						this.meleeBlock += fortify == 5 ? 16.5 : 4.5;
 						GameManager.instance.print ("Upgraded fortify to level " + this.fortify + "!");
 						upgradedSkill = true;
                         }
@@ -587,11 +589,29 @@ namespace Completed
 			EndTurn ();
 		}
 
+		protected void Heal ()
+		{
+			if (healPerCycle <= 0)
+				return;
+			healTurn++;
+			if (currentHP >= totalHP) {
+				healTurn = 0;
+			} else if (healTurn >= healCycle) {
+				this.CurrentHP += healPerCycle;
+				if (currentHP > totalHP) {
+					currentHP = totalHP;
+				}
+				healTurn -= healCycle;
+				GameManager.instance.print ("You were slowly healed!");
+			}
+		}
+
 		protected void EndTurn ()
 		{
-			GameManager.instance.timeLeft--;
+			GameManager.instance.timeLeft -= 1 / totalSpeed;
 			this.lungeCooldown--;
-			timeLeft = "Time Left: " + GameManager.instance.timeLeft;
+			this.Heal ();
+
 			UpdateText ();
             UpdateClock();
 
@@ -621,7 +641,6 @@ namespace Completed
 				case "Gold1":
 					GameManager.instance.print ("Picked up " + pointsPerGold + " silver");
 					GameManager.instance.playerGoldPoints += pointsPerGold;
-					goldText = "Silver: " + GameManager.instance.playerGoldPoints;
 					message = "+" + pointsPerGold + " Silver";
 					UpdateText ();
 					other.gameObject.SetActive (false);
@@ -636,7 +655,6 @@ namespace Completed
 				default:
 					GameManager.instance.print ("Picked up " + pointsPerGold + " silver");
 					GameManager.instance.playerGoldPoints += pointsPerGold;
-					goldText = "Silver: " + GameManager.instance.playerGoldPoints;
 					message = "+" + pointsPerGold + " Silver";
 					UpdateText ();
 					other.gameObject.SetActive (false);
@@ -653,12 +671,16 @@ namespace Completed
 		protected override void OnCantMove (Transform transform)
 		{
 			Character character = transform.GetComponent<Character> ();
-			if (character is Enemy) {
+			if (character is NPC){
+				GameObject.Find("dataSlave").GetComponent<EncounterManager>().openEncounter(((NPC)character).getEncounter());
+			}
+			else if (character is Enemy) {
 				
 			} else if (character is Chest) {
 				Chest chest = (Chest)character;
-				AddItem (chest.item);
-				GameManager.instance.print ("A " + chest.item.Name + " was added to inventory");
+				ItemSpace.Item item = ItemSpace.Item.RandomItem ();
+				AddItem (item);
+				GameManager.instance.print ("A " + item.Name + " was added to inventory");
                 GameObject.Find("Map").GetComponent<MapLoader>().cleanPixel((int)chest.transform.position.x,(int)chest.transform.position.y);
                 Destroy (chest.gameObject);
 			}
@@ -684,7 +706,6 @@ namespace Completed
 			} else {
 				message = "+" + loss + " HP";
 			}*/
-			hpText = "HP: " + this.CurrentHP;
 			UpdateText ();
 			CheckIfGameOver ();
 		}
@@ -697,7 +718,6 @@ namespace Completed
 			} else if (gain > 0) {
 				GameManager.instance.print ("Picked up " + gain + " gold");
 			}
-			goldText = "Silver: " + GameManager.instance.playerGoldPoints;
 			UpdateText ();
 		}
 
@@ -762,7 +782,6 @@ namespace Completed
 		//Switchs form (human or werewolf); updates hp and sprite
 		private void switchForm ()
 		{
-			
 			GameManager.instance.isWerewolf = !GameManager.instance.isWerewolf;
 			if (GameManager.instance.isWerewolf) {
 				if(sneaking) {
@@ -782,7 +801,6 @@ namespace Completed
 			isTransforming = true;
 			animator.enabled = true;
 			transformationCounter = Time.time + 5.25f;
-			hpText = "HP: " + this.CurrentHP;
 			UpdateText ();
 			UpdateSprite ();
             UpdateIndicator();
@@ -939,6 +957,10 @@ namespace Completed
 				XElement armor = new XElement("armor",this.equippedItems.Armor.serialize());
 				equipNode.Add(armor);
 			}
+			if(this.equippedItems.Talisman != null){
+				XElement talisman = new XElement("talisman",this.equippedItems.Talisman.serialize());
+				equipNode.Add(talisman);
+			}
 			node.Add(equipNode);
 
 			node.Add(new XElement("gold", GameManager.instance.playerGoldPoints));
@@ -965,7 +987,7 @@ namespace Completed
 			growl = Convert.ToInt32(info[10].Value);
 			fortify = Convert.ToInt32(info[11].Value);
 			GameManager.instance.level = Convert.ToInt32(info[12].Value);
-			GameManager.instance.timeLeft = Convert.ToInt32(info[13].Value);
+			GameManager.instance.timeLeft = Convert.ToDouble(info[13].Value);
 			GameManager.instance.playerGoldPoints = Convert.ToInt32(info[16].Value);
 
 			XElement inventoryEle = info[14];
@@ -992,6 +1014,82 @@ namespace Completed
 		}
 
 		#endregion
+
+
+		public int getSkill(string s){
+			switch(s){
+			case "health":
+				return currentHP;
+				break;
+			case "shoot":
+				return shoot;
+				break;
+			case "sneak":
+				return sneak;
+				break;
+			case "charm":
+				return charm;
+				break;
+			case "dodge":
+				return dodge;
+				break;
+			case "bite":
+				return bite;
+				break;
+			case "lunge":
+				return lunge;
+				break;
+			case "growl":
+				return growl;
+				break;
+			case "fortify":
+				return fortify;
+				break;
+			case "silver":
+				return GameManager.instance.playerGoldPoints;
+				break;
+			}
+			return 0;
+		}
+
+		public void applyEffect(string s, int val){
+			switch(s){
+			case "health":
+				currentHP += val;
+				if(currentHP > totalHP)
+					currentHP = totalHP;
+				break;
+			case "sneak":
+				sneak += val;
+				break;
+			case "charm":
+				charm += val;
+				break;
+			case "dodge":
+				dodge += val;
+				break;
+			case "bite":
+				bite += val;
+				break;
+			case "lunge":
+				lunge += val;
+				break;
+			case "growl":
+				growl += val;
+				break;
+			case "fortify":
+				fortify += val;
+				break;
+			case "silver":
+				GameManager.instance.playerGoldPoints += val;
+				break;
+			case "form":
+				var isWolf = val==1?true:false;
+				if(isWolf != GameManager.instance.isWerewolf)
+					switchForm();
+				break;
+			}
+		}
 	}
 
 	public enum Orientation

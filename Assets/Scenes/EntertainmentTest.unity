@@ -119,14 +119,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e55bdabba6a4e408c59939d964f43d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floor: {fileID: 170992, guid: b021cef5c367b884387065f8bae5ef1e, type: 2}
-  wall: {fileID: 141938, guid: 65923a9620d79894d8a5cbd1ecaceba7, type: 2}
-  casinoFloor: {fileID: 1000014030491502, guid: 81d74d78ed6893641bd4fcb29fa65289,
+  floor: {fileID: 1076556290550182, guid: 48af6109c0327e44789d4f5ce7b5d48e, type: 2}
+  wall: {fileID: 1812297932148458, guid: 12534291b65535146ac6aabc3836027e, type: 2}
+  casinoFloor: {fileID: 1853646107865114, guid: a80aed762b08da04586867318ba8450a,
     type: 2}
-  casinoWall: {fileID: 1000013580863626, guid: 81d74d78ed6893641bd4fcb29fa65289, type: 2}
-  asylumFloor: {fileID: 1000014030491502, guid: 81d74d78ed6893641bd4fcb29fa65289,
+  casinoWall: {fileID: 1951758545711250, guid: 61c51a5028ee6e64cbb9e855a32f6998, type: 2}
+  asylumFloor: {fileID: 1296084814113496, guid: 07d0015a7db3918468942c87e8e64c8d,
     type: 2}
-  asylumWall: {fileID: 1000013580863626, guid: 81d74d78ed6893641bd4fcb29fa65289, type: 2}
+  asylumWall: {fileID: 1569115055495668, guid: 154f8f97bf52fbf48b1d976b563d9ee5, type: 2}
+  door: {fileID: 166078, guid: 82394ce74612ab245aebfb3f6781624f, type: 2}
+  b1: {fileID: 1750628924062586, guid: 673d3c1204a48f84fa95734301ec7771, type: 2}
+  b5: {fileID: 1525546355181080, guid: b9701b8b7b855504d927041a5d4da405, type: 2}
+  b6: {fileID: 1182641324646884, guid: 543cafaa07b28c94f86c283eaa133c66, type: 2}
+  b7: {fileID: 1270855225581324, guid: 744f135f243a0bf43b4099f3568b93bd, type: 2}
+  b8: {fileID: 1306386113535008, guid: 6fcfd6ffca44d754eb29c1fe50614913, type: 2}
   debugging: 0
   gridSize: 120
 --- !u!4 &609305118

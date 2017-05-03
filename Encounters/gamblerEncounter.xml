@@ -1,0 +1,11 @@
+<encounter>
+	<dialog>
+		<dialogpath></dialogpath>
+		<name>Begin</name>
+		<description>A man dressed in tuxedo and tophat stands in front of you. When you approach he says "Do you know why the moonlight district is so beautiful? Its made of dreams. People come here with their day's earnings and hope they can make so much more. It inspires a kind of madness. "</description>
+		<option>
+			<optionNum>1</optionNum>
+			<opTXT>Walk Away.</opTXT>
+		</option>
+	</dialog>
+</encounter>

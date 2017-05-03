@@ -10,7 +10,8 @@ namespace Completed {
 		void Start () {
 			CurrentHP = 1;
 			playerTransform = GameObject.FindGameObjectWithTag ("Player").transform;
-			item = Item.RandomItem ();
+			//item = Item.RandomItem ();
+			//replaced by call at destruction.
 		}
 
 	
