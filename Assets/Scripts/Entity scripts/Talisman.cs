@@ -15,10 +15,9 @@ namespace ItemSpace
 		private TalismanInfix infix;
 		private TalismanSuffix suffix;
 
-		private int range;
-
-		private int attackBonus, hpBonus;
-		private double attackMult, speedMult;
+		//private int range;
+		private int attackBonus;
+		private double attackMult;
 
 		private static List<int> weightProbs = new List<int> (new[] {
 			30, 40, 30
