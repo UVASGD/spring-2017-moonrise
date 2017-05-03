@@ -308,7 +308,7 @@ public class MazeGenerator2 : mapGenerator {
 		}*/
 
 		//Add Doors
-		for (int x = 2; x < radius * 3; x += (radius-1) * 3) {
+		/*for (int x = 2; x < radius * 3; x += (radius-1) * 3) {
 			for (int y = 58; y <= 61; y++) {
 				Destroy (grid [x, y].obj);
 				grid[x,y].obj = Instantiate (exitDoor, new Vector3 (x, y, 0f), Quaternion.identity) as GameObject;
@@ -324,10 +324,15 @@ public class MazeGenerator2 : mapGenerator {
 			tileMap [x, 2] = 'e';
 			grid[x,2].obj = Instantiate (exitDoor, new Vector3 (x, 0f, 0f), Quaternion.identity) as GameObject;
 			grid[x,2].obj.GetComponent<ExitPos> ().setTarget ("Central");
-		}
+		}*/
 
 
 		return boardMap;
+	}
+
+
+	char[,] getTileMap(){
+		return null;
 	}
 }
 

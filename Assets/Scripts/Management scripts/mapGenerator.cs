@@ -7,5 +7,8 @@ public abstract class mapGenerator : MonoBehaviour{
 	public virtual int[,] init(){
 		return null;
 	}
-
+	public char[,] getTileMap(){
+		Debug.Log (tileMap);
+		return tileMap;
+	}
 }

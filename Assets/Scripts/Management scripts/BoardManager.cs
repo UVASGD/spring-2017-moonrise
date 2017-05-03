@@ -25,34 +25,40 @@ public class BoardManager : MonoBehaviour, SerialOb {
 	public enum areas{
 		Market,
 		Slums,
-		Entertainment_NI,
-		Government_NI,
+		Entertainment,
+		Government,
 		Temple_NI,
 		University,
-		Estates_NI
+		Manor
 	}
 
 	public Dictionary<string,areas> areaLookup = new Dictionary<string, areas>{
 		{"Market", areas.Market},
 		{"Slums", areas.Slums},
-		{"University", areas.University}
+		{"University", areas.University},
+		{"Government", areas.Government},
+		{"Manor", areas.Manor}
 	};
 
 	public Dictionary<areas,string> reverseAreaLookup = new Dictionary<areas, string>{
 		{areas.Market, "Market"},
-		{areas.Slums, "Slums"}
+		{areas.Slums, "Slums"},
+		{areas.Government, "Government"},
+		{areas.Manor, "Manor"}
 	};
 
 	//References to the map generators
 	private MazeGenerator2 slumGen;
 	private GenerateMarket marketGen;
 	private UniversityGenerator universityGen;
+	private GovernmentGenerator governmentGen;
 	private Dictionary<areas,mapGenerator> generators = new Dictionary<areas,mapGenerator>();
 	public areas area = areas.Market;
 	private Dictionary<areas,int[]> startLocs = new Dictionary<areas,int[]>{
 		{areas.Market, new int[2]{60,60}},
 		{areas.University, new int[2]{60,20}},
-		{areas.Slums, new int[2]{4,4}}
+		{areas.Slums, new int[2]{4,4}},
+		{areas.Government, new int[2]{1,50}}
 	};
 
 	public Dictionary<areas,int[]> entries = new Dictionary<areas,int[]>{
@@ -108,15 +114,20 @@ public class BoardManager : MonoBehaviour, SerialOb {
 		slumGen = GetComponent<MazeGenerator2>();
 		marketGen = GetComponent<GenerateMarket>();
 		universityGen = GetComponent<UniversityGenerator> ();
+		governmentGen = GetComponent<GovernmentGenerator> ();
 
 		generators.Add(areas.Market, marketGen);
 		generators.Add(areas.Slums, slumGen);
 		generators.Add (areas.University, universityGen);
+		generators.Add (areas.Government, governmentGen);
 
 		mapGenerator generator = generators[area];
 
 		boardMap = generator.init();
 		tileMap = generator.tileMap;
+		if (tileMap == null) {
+			tileMap = generator.getTileMap ();
+		}
 
 		rows = boardMap.GetLength(0);
 		columns = boardMap.GetLength(1);
@@ -166,17 +177,32 @@ public class BoardManager : MonoBehaviour, SerialOb {
 		int entry = 0;
 		switch(area){
 		case areas.Market:
+			for (int y = 0; y < boardMap.GetLength (1); y++) {
+				int[] start = new int[2];
+				start [0] = 1;
+				if (boardMap [0, y] == 0) {
+					entry++;
+					if (entry == 1) {
+						start [1] = y;
+						entries [areas.Slums] = start;
+					}
+					GameObject ob = (GameObject)Instantiate (door1, new Vector2 (0, y), Quaternion.identity);//Create the floor exit
+					((ExitPos)ob.GetComponent<ExitPos> ()).setTarget ("Slums");
+				}
+			}
+			entry = 0;
 			for(int y = 0; y < boardMap.GetLength(1); y++){
 				int[] start = new int[2];
-				start[0] = 1;
-				if(boardMap[0,y] == 0){
+				start[0] = boardMap.GetLength(0)-2;
+				if(boardMap[boardMap.GetLength(0)-1,y] == 0){
 					entry++;
 					if(entry == 1){
 						start[1] = y;
-						entries[areas.Slums] = start;
+						Debug.Log("made Government entrance");
+						entries[areas.Government] = start;
 					}
-					GameObject ob = (GameObject)Instantiate(door1, new Vector2(0, y), Quaternion.identity);//Create the floor exit
-					((ExitPos)ob.GetComponent<ExitPos>()).setTarget("Slums");
+					GameObject ob = (GameObject)Instantiate(door1, new Vector2(boardMap.GetLength(1)-1, y), Quaternion.identity);//Create the floor exit
+					((ExitPos)ob.GetComponent<ExitPos>()).setTarget("Government");
 				}
 			}
 			break;
@@ -198,6 +224,36 @@ public class BoardManager : MonoBehaviour, SerialOb {
 			}
 			break;
 		case areas.University:
+			break;
+		case areas.Government:
+			for (int y = 0; y < boardMap.GetLength (1); y++) {
+				int[] start = new int[2];
+				start [0] = 1;
+				if (boardMap [0, y] == 0) {
+					entry++;
+					if (entry == 1) {
+						start [1] = y;
+						entries [areas.Market] = start;
+					}
+					GameObject ob = (GameObject)Instantiate (door1, new Vector2 (0, y), Quaternion.identity);//Create the floor exit
+					((ExitPos)ob.GetComponent<ExitPos> ()).setTarget ("Market");
+				}
+			}
+			entry = 0;
+			for(int y = 0; y < boardMap.GetLength(1); y++){
+				int[] start = new int[2];
+				start[0] = boardMap.GetLength(0)-2;
+				if(boardMap[boardMap.GetLength(0)-1,y] == 0){
+					entry++;
+					if(entry == 1){
+						start[1] = y;
+						entries[areas.Manor] = start;
+					}
+					GameObject ob = (GameObject)Instantiate(door1, new Vector2(boardMap.GetLength(1)-1, y), Quaternion.identity);//Create the floor exit
+					((ExitPos)ob.GetComponent<ExitPos>()).setTarget("Manor");
+				}
+			}
+			break;
 			break;
 		}
 	}
@@ -411,6 +467,7 @@ public class BoardManager : MonoBehaviour, SerialOb {
 		}
 
 		XElement entryPoints = new XElement("entries");
+		Debug.Log ("keys -" + entries.Keys.Count.ToString());
 		foreach(areas areaCode in entries.Keys){
 			XElement startLoc = new XElement(areaCode.ToString(), entries[areaCode][0]+","+entries[areaCode][1]);
 			entryPoints.Add(startLoc);

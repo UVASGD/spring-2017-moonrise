@@ -154,6 +154,8 @@ namespace Completed
 				boardScript.boardMap = Tileset.instance.boardMap;
 				boardScript.tileMap = Tileset.instance.tileMap;
 
+				boardScript.fogTiles = new GameObject[boardScript.boardMap.GetLength(0) + 2, boardScript.boardMap.GetLength(1) + 2];
+
                 //Loops through entire board, creating fog
                 for (x = -1; x < boardScript.boardMap.GetLength(0) + 1; x++)
 				{
@@ -162,6 +164,8 @@ namespace Completed
 
 						GameObject f = Instantiate(boardScript.fog, new Vector2(x,y), Quaternion.identity) as GameObject;
 						f.transform.SetParent(this.transform);
+
+						boardScript.fogTiles[x + 1, y + 1] = f;
 					}
 				}
 				//enemy data loaded
@@ -205,6 +209,7 @@ namespace Completed
 
 				if(dataSlave.instance.curLoc.Value != boardScript.reverseAreaLookup[boardScript.area]){
 					string fromArea = dataSlave.instance.curLoc.Value;
+					Debug.Log (fromArea);
 					int[] pos  = boardScript.entries[boardScript.areaLookup[fromArea]];
 					player.transform.position = new Vector3(pos[0],pos[1],0);
 				}

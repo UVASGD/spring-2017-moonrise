@@ -27,7 +27,7 @@ public class GovernmentGenerator : mapGenerator {
 	//Keeping range so it looks pretty
 	[Range(0,200)]
 	public int gridSize = 122; //DO NOT CHANGE THIS, THE CODE IS not SCALABLE AND THE GRID SIZE MUST BE 122
-	private char[,] gridKey; //A 2D array of characters that tells the script what tile to print where
+	//public char[,] tileMap = new char[122, 122]; //A 2D array of characters that tells the script what tile to print where
 
 	//####################################
 	//Board Map not yet implemented
@@ -37,8 +37,7 @@ public class GovernmentGenerator : mapGenerator {
 	public override int[,] init () {
 	//public void Start() {
 		boardMap = new int[gridSize, gridSize];
-		gridKey = new char[gridSize, gridSize];
-
+		this.tileMap = new char[122, 122];
 		//Initialize region list, 
 		for (int i = 0; i < 24; i++) {
 			regions.Add (new Rect (0, 0, 0, 0));
@@ -48,9 +47,9 @@ public class GovernmentGenerator : mapGenerator {
 		for (int h = 0; h < gridSize; h++) {
 			for (int w = 0; w < gridSize; w++) {
 				if (w == 0 || w == gridSize - 1 || h == 0 || h == gridSize - 1) {
-					gridKey [w, h] = 'w';
+					this.tileMap [w, h] = 'w';
 				} else {
-					gridKey [w, h] = 'r';
+					this.tileMap [w, h] = 'r';
 				}
 			}
 		}
@@ -72,7 +71,7 @@ public class GovernmentGenerator : mapGenerator {
 						(x == (int)regions [i].xMax && y <= (int)regions [i].yMax && y >= (int)regions [i].yMin - 1) ||
 						(y == (int)regions [i].yMin - 1 && x <= (int)regions [i].xMax && x >= (int)regions [i].xMin - 1) ||
 						(y == (int)regions [i].yMax && x <= (int)regions [i].xMax && x >= (int)regions [i].xMin - 1)) {
-						gridKey [x, y] = 's';
+						this.tileMap [x, y] = 's';
 					}
 				}
 			}
@@ -87,27 +86,27 @@ public class GovernmentGenerator : mapGenerator {
 						if ((w >= paint [b].x && w <= paint [b].xMax && h >= paint [b].y && h <= paint [b].yMax) && paint [b].width != 0) {
 							build = false;
 						} else {
-							gridKey [w, h] = 'g';
+							this.tileMap [w, h] = 'g';
 						}
 					}
 					if (build) {
-						gridKey [w, h] = 'b';
+						this.tileMap [w, h] = 'b';
 					}
 				}	
 			}
 			for (int d = 0; d < 4; d++) {
 				switch (Random.Range(0,4 + d)) {
 				case 0:
-					gridKey [(int)(regions[i].x + (regions [i].xMax - regions [i].x) / 2), (int)regions [i].y] = 'd';
+					this.tileMap [(int)(regions[i].x + (regions [i].xMax - regions [i].x) / 2), (int)regions [i].y] = 'd';
 					break;
 				case 1:
-					gridKey [(int)(regions[i].x + (regions [i].xMax - regions [i].x) / 2), (int)regions [i].yMax-1] = 'd';
+					this.tileMap [(int)(regions[i].x + (regions [i].xMax - regions [i].x) / 2), (int)regions [i].yMax-1] = 'd';
 					break;
 				case 2:
-					gridKey [(int)regions [i].x, (int)(regions[i].y + (regions [i].yMax - regions [i].y) / 2)] = 'd';
+					this.tileMap [(int)regions [i].x, (int)(regions[i].y + (regions [i].yMax - regions [i].y) / 2)] = 'd';
 					break;
 				case 3:
-					gridKey [(int)regions [i].xMax-1, (int)(regions[i].y + (regions [i].yMax - regions [i].y) / 2)] = 'd';
+					this.tileMap [(int)regions [i].xMax-1, (int)(regions[i].y + (regions [i].yMax - regions [i].y) / 2)] = 'd';
 					break;
 				default:
 					break;
@@ -117,18 +116,18 @@ public class GovernmentGenerator : mapGenerator {
 
 		//List building interior grid spaces
 		List<Vector2> buildingInteriors = new List<Vector2>(0);
-		for (int h = 1; h < gridKey.GetLength(1)-1; h++) {
-			for (int w = 1; w < gridKey.GetLength(0)-1; w++) {
+		for (int h = 1; h < this.tileMap.GetLength(1)-1; h++) {
+			for (int w = 1; w < this.tileMap.GetLength(0)-1; w++) {
 				//It is only interior if it is fully encased in walls and doors
-				if ((gridKey [w, h] == 'b' || gridKey [w, h] == 'd') && 
-					(gridKey [w - 1, h] == 'b' || gridKey [w - 1, h] == 'd') && 
-					(gridKey [w, h - 1] == 'b' || gridKey [w, h - 1] == 'd') && 
-					(gridKey [w + 1, h] == 'b' || gridKey [w + 1, h] == 'd') && 
-					(gridKey [w, h + 1] == 'b' || gridKey [w, h + 1] == 'd') && 
-					(gridKey [w + 1, h + 1] == 'b' || gridKey [w + 1, h + 1] == 'd') && 
-					(gridKey [w - 1, h + 1] == 'b' || gridKey [w - 1, h + 1] == 'd') && 
-					(gridKey [w - 1, h - 1] == 'b' || gridKey [w - 1, h - 1] == 'd') && 
-					(gridKey [w + 1, h - 1] == 'b' || gridKey [w + 1, h - 1] == 'd')) {
+				if ((this.tileMap [w, h] == 'b' || this.tileMap [w, h] == 'd') && 
+					(this.tileMap [w - 1, h] == 'b' || this.tileMap [w - 1, h] == 'd') && 
+					(this.tileMap [w, h - 1] == 'b' || this.tileMap [w, h - 1] == 'd') && 
+					(this.tileMap [w + 1, h] == 'b' || this.tileMap [w + 1, h] == 'd') && 
+					(this.tileMap [w, h + 1] == 'b' || this.tileMap [w, h + 1] == 'd') && 
+					(this.tileMap [w + 1, h + 1] == 'b' || this.tileMap [w + 1, h + 1] == 'd') && 
+					(this.tileMap [w - 1, h + 1] == 'b' || this.tileMap [w - 1, h + 1] == 'd') && 
+					(this.tileMap [w - 1, h - 1] == 'b' || this.tileMap [w - 1, h - 1] == 'd') && 
+					(this.tileMap [w + 1, h - 1] == 'b' || this.tileMap [w + 1, h - 1] == 'd')) {
 					buildingInteriors.Add (new Vector2(w,h));
 				}
 			}
@@ -136,31 +135,41 @@ public class GovernmentGenerator : mapGenerator {
 
 		//Hollow out building
 		for (int i = 0; i < buildingInteriors.Count; i++) {
-			gridKey [(int)buildingInteriors[i].x, (int)buildingInteriors[i].y] = 'f';
+			this.tileMap [(int)buildingInteriors[i].x, (int)buildingInteriors[i].y] = 'f';
 		}
 
 		//Add Doors
 		for (int x = 0; x < gridSize; x += gridSize-1) {
 			for (int y = 59; y <= 62; y++) {
-				gridKey [x, y] = 'e';
+				this.tileMap [x, y] = 'r';
 				GameObject currentDoor = Instantiate (exitDoor, new Vector3 (x, y, 0f), Quaternion.identity) as GameObject;
-				if (x == 0) {
-					currentDoor.GetComponent<ExitPos> ().setTarget ("Manor");
-				} else {
+				/*if (x == 0) {
 					currentDoor.GetComponent<ExitPos> ().setTarget ("Market");
-				}
+				} else {
+					currentDoor.GetComponent<ExitPos> ().setTarget ("Manor");
+				}*/
 
 			}
 		}
-		for (int x = 59; x <= 62; x++) {
-			gridKey [x, 0] = 'e';
+		/*for (int x = 59; x <= 62; x++) {
+			this.tileMap [x, 0] = 'e';
 			GameObject currentDoor = Instantiate (exitDoor, new Vector3 (x, 0f, 0f), Quaternion.identity) as GameObject;
 			currentDoor.GetComponent<ExitPos> ().setTarget ("Central");
+		}*/
+
+
+
+		GenerateGridFromKey(this.tileMap); //generate initial grid (keep at bottom of function)
+
+		//flip the tile map
+		char[,] flipMap = new char[122,122];
+		for (int x = 0; x < 122; x++) {
+			for (int y = 0; y < 122; y++) {
+				flipMap [x, y] = this.tileMap [y, x];
+			}
 		}
+		this.tileMap = flipMap;
 
-
-
-		GenerateGridFromKey(gridKey); //generate initial grid (keep at bottom of function)
 		return boardMap;
 	}
 
@@ -207,7 +216,7 @@ public class GovernmentGenerator : mapGenerator {
 			for (int h = 0; h < gridSize; h++) {
 				string ans = "";
 				for (int w = 0; w < gridSize; w++) {
-					ans += gridKey [w, h] + " ";
+					ans += this.tileMap [w, h] + " ";
 				}
 				print (ans);
 			}
@@ -217,25 +226,25 @@ public class GovernmentGenerator : mapGenerator {
 		for (int h = 0; h < gridSize; h++) {
 			for (int w = 0; w < gridSize; w++) {
 				GameObject currentTile = null;
-				if (gridKey [w, h] == 'r') {
+				if (this.tileMap [w, h] == 'r') {
 					boardMap [w, h] = 0;
 					currentTile = road;
-				} else if (gridKey [w, h] == 'g') {
+				} else if (this.tileMap [w, h] == 'g') {
 					boardMap [w, h] = 0;
 					currentTile = grass;
-				} else if (gridKey [w, h] == 's') {
+				} else if (this.tileMap [w, h] == 's') {
 					boardMap [w, h] = 0;
 					currentTile = sidewalk;
-				} else if (gridKey [w, h] == 'w') {
+				} else if (this.tileMap [w, h] == 'w') {
 					boardMap [w, h] = 1;
 					currentTile = wall;
-				} else if (gridKey [w, h] == 'b') {
+				} else if (this.tileMap [w, h] == 'b') {
 					boardMap [w, h] = 1;
 					currentTile = buildingWall;
-				} else if (gridKey [w, h] == 'f') {
-					boardMap [w, h] = 1;
+				} else if (this.tileMap [w, h] == 'f') {
+					boardMap [w, h] = 0;
 					currentTile = buildingFloor;
-				} else if (gridKey [w, h] == 'd') {
+				} else if (this.tileMap [w, h] == 'd') {
 					boardMap [w, h] = 0;
 					currentTile = buildingDoor;
 				}
@@ -244,5 +253,10 @@ public class GovernmentGenerator : mapGenerator {
 				}
 			}
 		}
+	}
+
+	char[,] getTileMap(){
+		Debug.Log (this.tileMap);
+		return this.tileMap;
 	}
 }

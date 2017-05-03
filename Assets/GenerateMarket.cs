@@ -10,4 +10,7 @@ public class GenerateMarket : mapGenerator {
 		tileMap = ActualMarketGeneration.tileMap;
 		return board;
 	}
+	char[,] getTileMap(){
+		return null;
+	}
 }

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Tileset : MonoBehaviour {
 
-	public GameObject[] northWalls, roofs, walls, floors;
+	public GameObject[] northWalls, roads, walls, floors,grass,sidewalk,buildingwall,door;
 	public char[,] tileMap;
 	public int[,] boardMap;
 
@@ -33,9 +33,9 @@ public class Tileset : MonoBehaviour {
 					boardMap[x,y] = 1;
 					break;
 				case 'r':
-					tileChoice = roofs[Random.Range(0, roofs.Length)];
+					tileChoice = roads[Random.Range(0, roads.Length)];
 
-					boardMap[x,y] = 1;
+					boardMap[x,y] = 0;
 					break;
 				case 'w':
 					tileChoice = walls[Random.Range(0, walls.Length)];
@@ -46,6 +46,26 @@ public class Tileset : MonoBehaviour {
 					break;
 				case 'f':
 					tileChoice = floors[Random.Range(0, floors.Length)];
+					boardMap[x,y] = 0;
+
+					break;
+				case 'g':
+					tileChoice = grass[Random.Range(0, floors.Length)];
+					boardMap[x,y] = 0;
+
+					break;
+				case 'b':
+					tileChoice = buildingwall[Random.Range(0, floors.Length)];
+					boardMap[x,y] = 1;
+
+					break;
+				case 'd':
+					tileChoice = door[Random.Range(0, floors.Length)];
+					boardMap[x,y] = 0;
+
+					break;
+				case 's':
+					tileChoice = sidewalk[Random.Range(0, floors.Length)];
 					boardMap[x,y] = 0;
 
 					break;

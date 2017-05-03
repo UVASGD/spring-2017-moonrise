@@ -13243,6 +13243,7 @@ MonoBehaviour:
   water: {fileID: 1000011018570536, guid: 4f7d8814b3aa6462aa09e23bfeb7d9b8, type: 2}
   dock: {fileID: 1000012502378080, guid: c099afcb8607d483a9695a17d402ae84, type: 2}
   boat: {fileID: 1000011486126448, guid: a598c960bc7a649c4bbd9b9119a55403, type: 2}
+  exitDoor: {fileID: 0}
   radius: 21
   speed: 1
   minRoomCount: 5
@@ -16235,6 +16236,10 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 5d161f83383c6be4f8d438ce22932d0d,
         type: 3}
+    - target: {fileID: 146232, guid: 5249b9519bdbed8439af5818a81ec0d6, type: 2}
+      propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5249b9519bdbed8439af5818a81ec0d6, type: 2}
   m_IsPrefabParent: 0

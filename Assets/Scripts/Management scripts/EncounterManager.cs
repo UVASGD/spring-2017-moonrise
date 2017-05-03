@@ -44,7 +44,7 @@ public class EncounterManager : MonoBehaviour {
 		{
 			Debug.Log(fileName);
 			string[] name = fileName.Split('\\');
-			Encounter e = new Encounter("Encounters/"+name[name.Length-1]);
+			Encounter e = new Encounter("Encounters\\"+name[name.Length-1]);
 			encounters.Add(e);
 		}
 	}
