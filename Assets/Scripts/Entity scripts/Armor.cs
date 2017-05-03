@@ -9,153 +9,88 @@ namespace ItemSpace
 {
 	public class Armor : EquipItem, SerialOb
 	{
-		private ArmorType type;
-		private ArmorWeight weight;
-		private ArmorPrefix prefix;
-		private ArmorInfix infix;
-		private ArmorSuffix suffix;
+		private static readonly string[] types = new string[] {
+			"Armor"	
+		}, weights = new string[] {
+			"Light", "Heavy"
+		}, prefixes = new string[] {
+			"Yelling", "Shouting", "Screaming", "Bellowing",
+			"Lucky", "Fortunate", "Incredible", "Legendary",
+			"Strengthening", "Aggressive", "Empowering", "Herculean",
+			"Refreshing", "Invigorating", "Restoring", "Undying",
+			"Dodgy", "Evasive", "Side-stepping", "Untouchable",
+			"Enveloping", "Protecting", "Shielding", "Impenetrable",
+			""
+		}, infixes = new string[] {
+			"Prince's", "King's", "Emperor's", "Deity's",
+			"Thief's", "Rogue's", "Assassin's", "Shadow's",
+			"Peasant's", "Fighter's", "Gladiator's", "Predator's",
+			"Student's", "Scholar's", "Associate's", "Professor's",
+			"Bowman's", "Archer's", "Sniper's", "Deadeye's",
+			"Guard's", "Protector's", "Veteran's", "Savior's",
+			""
+		}, suffixes = new string[] {
+			"of Fierceness", "of Viciousness", "of Savagery", "of Ruthlessness",
+			"of Swiftness", "of Speed", "of Velocity", "of Haste",
+			"of Strength", "of the Fighter", "of the Champion", "of the Giant",
+			"of Hardiness", "of Survival", "of Life", "of Immortality",
+			"of the Hunter", "of the Lynx", "of the Tempest", "of Shadows",
+			"of Iron", "of Bronze", "of Steel", "of Mithril",
+			""
+		};
 
-
-
-		public Armor(ArmorType type, ArmorWeight weight, ArmorPrefix prefix, ArmorInfix infix, ArmorSuffix suffix)
+		public Armor(int weight, int prefixAttr, int prefixTier, int infixAttr, int infixTier, int suffixAttr, int suffixTier)
 		{
-			setup (type, weight, prefix, infix, suffix);
-		}
-
-		private void setup(ArmorType type, ArmorWeight weight, ArmorPrefix prefix, ArmorInfix infix, ArmorSuffix suffix)
-		{
-			this.itemClass = ItemClass.Armor;
-			this.type = type;
-			this.weight = weight;
-			this.prefix = prefix;
-			this.infix = infix;
-			this.suffix = suffix;
-
-			dodgeBonus = 0;
-			blockBonus = 0;
-
-			name = CreateName (type, weight, prefix, infix, suffix);
+			setup (weight, prefixAttr, prefixTier, infixAttr, infixTier, suffixAttr, suffixTier);
 		}
 
 		public static Armor RandomArmor() {
-			ArmorType type = ArmorType.Armor;
-			ArmorWeight weight = ArmorWeight.Light;
-			ArmorPrefix prefix = ArmorPrefix.Soldier;
-			ArmorInfix infix = ArmorInfix.Bronze;
-			ArmorSuffix suffix = ArmorSuffix.None;
+			int weight, prefixAttr, prefixTier, infixAttr, infixTier, suffixAttr, suffixTier;
 
-			return new Armor(type, weight, prefix, infix, suffix);
+			weight = UnityEngine.Random.Range (0, weights.Length);
+
+			RandomAttr (out prefixAttr, out prefixTier);
+			RandomAttr (out infixAttr, out infixTier);
+			RandomAttr (out suffixAttr, out suffixTier);
+
+			return new Armor(weight, prefixAttr, prefixTier, infixAttr, infixTier, suffixAttr, suffixTier);
 		}
 
-		public static string CreateName(ArmorType type, ArmorWeight weight, ArmorPrefix prefix, ArmorInfix infix, ArmorSuffix suffix) {
-			string weightStr, prefixStr, infixStr, typeStr, suffixStr;
-
-			weightStr = weight.ToString () + " ";
-
-			if (prefix == ArmorPrefix.None)
-				prefixStr = "";
-			else {
-				prefixStr = prefix.ToString ();
-				prefixStr += " ";
-			}
-
-			if (infix == ArmorInfix.None)
-				infixStr = "";
-			else
-				infixStr = infix.ToString () + " ";
-
-			typeStr = type.ToString ();
-
-			if (suffix == ArmorSuffix.None)
-				suffixStr = "";
-			else {
-				suffixStr = suffix.ToString ();
-				suffixStr = " of the " + suffixStr;
-
-			}
-
-			return weightStr + prefixStr + infixStr + typeStr + suffixStr;
-		}
-
-		public int DodgeBonus {
+		protected override string[] Types {
 			get {
-				return dodgeBonus;
+				return types;
 			}
 		}
 
-		public int BlockBonus {
+		protected override string[] Weights {
 			get {
-				return blockBonus;
+				return weights;
 			}
 		}
 
-		virtual public XElement serialize(){
-			XElement node = new XElement("weapon",
-				new XElement("type", (int)this.type),
-				new XElement("weight", (int)this.weight),
-				new XElement("prefix", (int)this.prefix),
-				new XElement("infix", (int)this.infix),
-				new XElement("suffix", (int)this.suffix));
-
-			return node;
+		protected override string[] Prefixes {
+			get {
+				return prefixes;
+			}
 		}
 
-		virtual public bool deserialize(XElement s){
-			List<XElement> info = s.Descendants().ToList();
-			setup((ArmorType)Convert.ToDouble(info[0].Value),
-				(ArmorWeight)Convert.ToDouble(info[1].Value),
-				(ArmorPrefix)Convert.ToDouble(info[2].Value),
-				(ArmorInfix)Convert.ToDouble(info[3].Value),
-				(ArmorSuffix)Convert.ToDouble(info[4].Value));
-
-			return true;
+		protected override string[] Infixes {
+			get {
+				return infixes;
+			}
 		}
-	}
 
-	public enum ArmorType
-	{
-		Armor
-	}
+		protected override string[] Suffixes {
+			get {
+				return suffixes;
+			}
+		}
 
-	public enum ArmorWeight
-	{
-		Light,
-		Heavy
-	}
-
-	public enum ArmorPrefix
-	{
-		None,
-		Bowman,
-		Archer,
-		Sniper,
-		Soldier,
-		Warrior,
-		Knight,
-		Thief,
-		Rogue,
-		Assassin,
-		Living,
-		Immortal,
-		King,
-		Emperor
-	}
-
-	public enum ArmorInfix
-	{
-		None,
-		Bronze,
-		Steel,
-		Silver,
-		Platinum,
-		Titanium,
-		Diamond,
-		Obsidian
-	}
-
-	public enum ArmorSuffix
-	{
-		None
+		public override ItemClass ItemClass {
+			get {
+				return ItemClass.Armor;
+			}
+		}
 	}
 }
 

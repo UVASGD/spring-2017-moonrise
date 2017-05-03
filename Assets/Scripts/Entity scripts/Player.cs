@@ -101,7 +101,7 @@ namespace Completed
 
 			//Equip a crossbow
 			if(equippedItems.Weapon == null){
-				ItemSpace.Weapon w = new ItemSpace.Weapon(ItemSpace.WeaponType.Crossbow,ItemSpace.WeaponWeight.Medium,ItemSpace.WeaponPrefix.None,ItemSpace.WeaponInfix.None,ItemSpace.WeaponSuffix.None);
+				ItemSpace.Weapon w = new ItemSpace.Weapon();
 				equippedItems.Equip(w);
                 InventoryManagerAlt.instance.RefreshEquippedItems();
             }
@@ -594,6 +594,8 @@ namespace Completed
 
 		protected void Heal ()
 		{
+			if (healPerCycle <= 0)
+				return;
 			healTurn++;
 			if (currentHP >= totalHP) {
 				healTurn = 0;
