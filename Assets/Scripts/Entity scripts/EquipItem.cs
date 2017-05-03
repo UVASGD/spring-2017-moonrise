@@ -20,7 +20,7 @@ namespace ItemSpace
 			attackMult = speedMult = dodgeBonus = fortifyBonus = 1;
 			attackBonus = hpBonus = 0;
 
-			this.weight = weight;
+			BuffWeight (weight);
 
 			BuffAttr (prefixAttr, prefixTier);
 			BuffAttr (infixAttr, infixTier);

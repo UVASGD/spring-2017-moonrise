@@ -18,7 +18,7 @@ namespace Completed
 		public int baseSneak = 3;
 		public float sightRange = 12f;
 
-        private int totalTime = 0;
+        private double totalTime = 0;
         
 		// Sprites
 		public Sprite werewolfFront;
@@ -159,7 +159,7 @@ namespace Completed
 			levelText = "Level: " + GameManager.instance.level;
 			hpText = "HP: " + CurrentHP;
 			goldText = "Silver: " + GameManager.instance.playerGoldPoints;
-			timeLeft = "Time Left: " + GameManager.instance.timeLeft;
+			timeLeft = "Time Left: " + (int) GameManager.instance.timeLeft;
 			displayText.text = timeLeft + " | " + goldText + " | " + hpText + " | " + levelText;
 			Vector3 scale = hpBar.transform.localScale;
 			scale.x = ((float)currentHP / (float)totalHP);
@@ -602,13 +602,13 @@ namespace Completed
 					currentHP = totalHP;
 				}
 				healTurn -= healCycle;
-				GameManager.instance.print ("passive heal");
+				GameManager.instance.print ("You were slowly healed!");
 			}
 		}
 
 		protected void EndTurn ()
 		{
-			GameManager.instance.timeLeft--;
+			GameManager.instance.timeLeft -= 1 / totalSpeed;
 			this.lungeCooldown--;
 			this.Heal ();
 
@@ -987,7 +987,7 @@ namespace Completed
 			growl = Convert.ToInt32(info[10].Value);
 			fortify = Convert.ToInt32(info[11].Value);
 			GameManager.instance.level = Convert.ToInt32(info[12].Value);
-			GameManager.instance.timeLeft = Convert.ToInt32(info[13].Value);
+			GameManager.instance.timeLeft = Convert.ToDouble(info[13].Value);
 			GameManager.instance.playerGoldPoints = Convert.ToInt32(info[16].Value);
 
 			XElement inventoryEle = info[14];

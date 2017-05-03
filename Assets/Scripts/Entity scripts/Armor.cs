@@ -27,7 +27,7 @@ namespace ItemSpace
 			"Peasant's", "Fighter's", "Gladiator's", "Predator's",
 			"Student's", "Scholar's", "Associate's", "Professor's",
 			"Bowman's", "Archer's", "Sniper's", "Deadeye's",
-			"Guard's", "Protector's", "Veteran's", "Savior's",
+			"Guard's", "Defender's", "Veteran's", "Savior's",
 			""
 		}, suffixes = new string[] {
 			"of Fierceness", "of Viciousness", "of Savagery", "of Ruthlessness",

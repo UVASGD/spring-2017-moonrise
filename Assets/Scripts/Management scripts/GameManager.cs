@@ -15,7 +15,7 @@ namespace Completed
     public class GameManager : MonoBehaviour
     {
 
-		public int timeLeft = 4320; // 30 days * 24 hours * 6 10-minute periods
+		public double timeLeft = 4320; // 30 days * 24 hours * 6 10-minute periods
 		public const int initialTime = 4320;
         public float levelStartDelay = 2f;                      
         public float turnDelay = 0.1f;                          
