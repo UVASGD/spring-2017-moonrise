@@ -16,7 +16,7 @@ namespace Completed
 
 		private GameObject inventoryBox;
 		private Text inventoryText, bagText;
-		private GameObject weaponBox, armorBox, bag, itemGrid;
+		private GameObject weaponBox, armorBox, talisBox, bag, itemGrid;
 
 		private bool active;
 
@@ -24,7 +24,7 @@ namespace Completed
 		private EquippedItemSet equipped;
 		private Inventory inventory;
 
-		private static string noWeapon = "no weapon", noArmor = "no armor";
+		private static string noWeapon = "no weapon", noArmor = "no armor", noTalisman = "no talisman";
 
 		void Awake(){
 

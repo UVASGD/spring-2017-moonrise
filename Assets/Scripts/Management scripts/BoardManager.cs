@@ -82,6 +82,8 @@ public class BoardManager : MonoBehaviour, SerialOb {
 	public GameObject[] chestTiles;
     public GameObject[] outerWallTiles;
 
+    public GameObject[,] fogTiles;
+
     
     /// <summary>
     /// 2D array of the board, to be pulled for pathfinding, etc.
@@ -100,7 +102,7 @@ public class BoardManager : MonoBehaviour, SerialOb {
     /// </summary>
     void BoardSetup()
     {
-
+        Debug.Log("Starting");
         boardHolder = new GameObject("Board").transform;
 		
 		slumGen = GetComponent<MazeGenerator2>();
@@ -119,8 +121,9 @@ public class BoardManager : MonoBehaviour, SerialOb {
 		rows = boardMap.GetLength(0);
 		columns = boardMap.GetLength(1);
 
+        fogTiles = new GameObject[columns + 2, rows + 2];
 
-		Vector3 loc = new Vector3(startLocs[area][0],startLocs[area][1],0);
+        Vector3 loc = new Vector3(startLocs[area][0],startLocs[area][1],0);
 		Debug.Log(loc);
 		player.transform.localPosition = loc;
 
@@ -133,14 +136,33 @@ public class BoardManager : MonoBehaviour, SerialOb {
                 
 				GameObject f = Instantiate(fog, new Vector2(x,y), Quaternion.identity) as GameObject;
 				f.transform.SetParent(this.transform);
+                fogTiles[x + 1, y + 1] = f;
             }
         }
     }
 
-	/// <summary>
-	/// Depending on the area, parses the map and creates exits to other zones
-	/// </summary>
-	public void BuildExits(){
+    /// <summary>
+    /// Grabs a copy of the boardMap for mapping purposes
+    /// </summary>
+    /// <returns></returns>
+    public int[,] getBoard()
+    {
+        int[,] returnBoard = (int[,])boardMap.Clone(); //To ensure nothing is changed in the array by accident.
+        return returnBoard;
+    }
+    /// <summary>
+    /// Grabs all fog tiles for mapping purposes
+    /// </summary>
+    /// <returns></returns>
+    public GameObject[,] getFogTiles()
+    {
+        GameObject[,] returnBoard = (GameObject[,])fogTiles.Clone();
+        return returnBoard;
+    }
+    /// <summary>
+    /// Depending on the area, parses the map and creates exits to other zones
+    /// </summary>
+    public void BuildExits(){
 		int entry = 0;
 		switch(area){
 		case areas.Market:
@@ -208,7 +230,7 @@ public class BoardManager : MonoBehaviour, SerialOb {
     /// <param name="tileArray">Array of tiles to select from</param>
     /// <param name="minimum">Minimum number of tiles to place</param>
     /// <param name="maximum">Maximum number of tiles to place</param>
-	void LayoutObjectAtRandom(GameObject[] tileArray, int minimum, int maximum, bool blocking = false)
+	void LayoutObjectAtRandom(GameObject[] tileArray, int minimum, int maximum,int tiletype, bool blocking = false)
     {
         int objectCount = Random.Range(minimum, maximum + 1);
 
@@ -217,8 +239,10 @@ public class BoardManager : MonoBehaviour, SerialOb {
             Vector2 randomPosition = RandomPosition();
 			while(boardMap[(int)randomPosition.x,(int)randomPosition.y] > 0)
 				randomPosition = RandomPosition();
-			if(blocking)
-				boardMap[(int)randomPosition.x,(int)randomPosition.y] = 1;
+            if (blocking)
+                boardMap[(int)randomPosition.x, (int)randomPosition.y] = 1;
+            else
+                boardMap[(int)randomPosition.x, (int)randomPosition.y] = tiletype;
             GameObject tileChoice = tileArray[Random.Range(0, tileArray.Length)];
 			GameObject ob = (GameObject)Instantiate(tileChoice, randomPosition, Quaternion.identity);
 			ob.transform.SetParent(boardHolder.transform);
@@ -231,11 +255,11 @@ public class BoardManager : MonoBehaviour, SerialOb {
     {
         BoardSetup();           //Initialize board with floor/outer wall tiles
         //LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum);      //Place wall tiles
-        LayoutObjectAtRandom(goldTiles, goldCount.minimum, goldCount.maximum);      //Place gold tiles
-		int chestCount = 7;
-		LayoutObjectAtRandom (chestTiles, chestCount, chestCount);
+        LayoutObjectAtRandom(goldTiles, goldCount.minimum, goldCount.maximum,10);      //Place gold tiles
+		int chestCount = 70;
+		LayoutObjectAtRandom (chestTiles, chestCount, chestCount,15);
         int enemyCount = 18;//(int)Mathf.Log(level, 2f);
-        LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount);                   //Place enemies
+        LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount,0);                   //Place enemies
 
 		BuildExits();
 
@@ -251,9 +275,9 @@ public class BoardManager : MonoBehaviour, SerialOb {
     }
 
 	public void LayoutGoodies(){
-		LayoutObjectAtRandom(goldTiles, goldCount.minimum, goldCount.maximum);      //Place gold tiles
+		LayoutObjectAtRandom(goldTiles, goldCount.minimum, goldCount.maximum, 10);      //Place gold tiles
 		int chestCount = 7;
-		LayoutObjectAtRandom (chestTiles, chestCount, chestCount);
+		LayoutObjectAtRandom (chestTiles, chestCount, chestCount, 15);
 	}
 
 

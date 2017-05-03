@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace ItemSpace
 {
-	public class Weapon : EquipItem, SerialOb
+	public class Weapon : AttackItem, SerialOb
 	{
 		private WeaponType type;
 		private WeaponWeight weight;
@@ -198,7 +198,7 @@ namespace ItemSpace
 			return weightStr + prefixStr + infixStr + typeStr + suffixStr;
 		}
 
-		public static new Item RandomItem() {
+		public static new Weapon RandomWeapon() {
 			WeaponType type = WeaponType.Crossbow;
 			WeaponWeight weight = (WeaponWeight)RandomEnum (weightProbs);
 			List<int> prefixProbs, suffixProbs;
@@ -346,18 +346,23 @@ namespace ItemSpace
 	public enum WeaponSuffix
 	{
 		None,
+
 		Wind,
 		Gale,
 		Storm,
+
 		Rogue,
 		Assassin,
 		Shadow,
+
 		Seer,
 		Thief,
 		Sniper,
+
 		Eagle,
 		Hawk,
 		Sight,
+
 		Strength,
 		Might,
 		Power,
