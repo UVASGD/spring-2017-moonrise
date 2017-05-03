@@ -198,7 +198,7 @@ namespace ItemSpace
 			return weightStr + prefixStr + infixStr + typeStr + suffixStr;
 		}
 
-		public static new Weapon RandomWeapon() {
+		public static Weapon RandomWeapon() {
 			WeaponType type = WeaponType.Crossbow;
 			WeaponWeight weight = (WeaponWeight)RandomEnum (weightProbs);
 			List<int> prefixProbs, suffixProbs;

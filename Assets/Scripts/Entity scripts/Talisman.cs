@@ -198,7 +198,7 @@ namespace ItemSpace
 			return weightStr + prefixStr + infixStr + typeStr + suffixStr;
 		}
 
-		public static new Item RandomTalisman() {
+		public static Item RandomTalisman() {
 			TalismanType type = TalismanType.Talisman;
 			TalismanWeight weight = (TalismanWeight)RandomEnum (weightProbs);
 			List<int> prefixProbs, suffixProbs;

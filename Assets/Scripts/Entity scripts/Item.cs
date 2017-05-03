@@ -11,14 +11,17 @@ namespace ItemSpace
 		protected ItemClass itemClass;
 
 		public static Item RandomItem() {
-			int rand = UnityEngine.Random.Range (0, 2);
+			int rand = UnityEngine.Random.Range (0, 3);
 			Debug.Log ("Random Item");
 			if (rand == 0) {
 				Debug.Log ("Random weapon");
 				return Weapon.RandomWeapon ();
-			} else {
+			} else if (rand == 1) {
 				Debug.Log ("Random tal");
 				return Talisman.RandomTalisman ();
+			} else {
+				Debug.Log ("Random armor");
+				return Armor.RandomArmor ();
 			}
 		}
 
