@@ -46,11 +46,6 @@ namespace ItemSpace
 			setup (weight, prefixAttr, prefixTier, infixAttr, infixTier, suffixAttr, suffixTier);
 		}
 
-		protected override void BuffWeight (int weight)
-		{
-			
-		}
-
 		public static Weapon RandomWeapon() {
 			int weight, prefixAttr, prefixTier, infixAttr, infixTier, suffixAttr, suffixTier;
 

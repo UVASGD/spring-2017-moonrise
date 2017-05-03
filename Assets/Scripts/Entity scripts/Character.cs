@@ -15,6 +15,8 @@ namespace Completed
 		protected double meleeBlock = 0;
 		protected double rangedDamage = 0;
 		protected double meleeDamage = 5;
+		protected double rangedMult = 1;
+		protected double meleeMult = 1;
 		protected double rangedAccuracy = 0;
 		protected double meleeAccuracy = 0;
 
@@ -22,6 +24,10 @@ namespace Completed
 		protected int totalHP;
 		protected float range;
 		protected int currentHP;
+
+		public int healPerCycle = 0;
+		public int healCycle = 3;
+		public int healTurn = 0;
 
 		protected double baseSpeed;
 		protected double totalSpeed;
@@ -60,6 +66,21 @@ namespace Completed
 			inventory = new Inventory ();
 		}
 
+		public void AttackBounds(bool ranged, out int weaponMin, out int weaponMax) {
+			double baseDamage, attackMult;
+
+			if (ranged) {
+				baseDamage = rangedDamage;
+				attackMult = rangedMult;
+			} else {
+				baseDamage = meleeDamage;
+				attackMult = meleeMult;
+			}
+
+			weaponMin = (int)(baseDamage * attackMult);
+			weaponMax = (int)((baseDamage + 3) * attackMult);
+		}
+
 		/// <summary>
 		/// Ranged attack function
 		/// </summary>
@@ -76,14 +97,8 @@ namespace Completed
 
 			int weaponMin;
 			int weaponMax;
-
-			if (myWeapon != null) {
-				weaponMin = myWeapon.AttackMinMax [0];
-				weaponMax = myWeapon.AttackMinMax [1];
-			} else {
-				weaponMin = (int)this.rangedDamage;
-				weaponMax = (int)this.rangedDamage + 3;
-			}
+	
+			AttackBounds (true, out weaponMin, out weaponMax);
 
 			Debug.Log (weaponMin + " " + weaponMax);
 
@@ -120,21 +135,9 @@ namespace Completed
 			int weaponMax;
 
 			if (this is Player && GameManager.instance.isWerewolf) {
-				if (myTalisman != null) {
-					weaponMin = myTalisman.AttackMinMax [0];
-					weaponMax = myTalisman.AttackMinMax [1];
-				} else {
-					weaponMin = (int)this.meleeDamage;
-					weaponMax = (int)this.meleeDamage + 3;
-				}
+				AttackBounds (false, out weaponMin, out weaponMax);
 			} else {
-				if (myWeapon != null) {
-					weaponMin = myWeapon.AttackMinMax [0];
-					weaponMax = myWeapon.AttackMinMax [1];
-				} else {
-					weaponMin = (int)this.meleeDamage;
-					weaponMax = (int)this.meleeDamage + 3;
-				}
+				AttackBounds (true, out weaponMin, out weaponMax);
 			}
 
 			// If distance is 1, use melee values instead of ranged values
@@ -194,21 +197,34 @@ namespace Completed
 					UpdateStats (equipped: true, item: equippable);
 				}
 			}
-			// TODO: update stats based on changed items
 		}
 
 		public void UpdateStats(bool equipped, EquipItem item) {
 			if (equipped) {
-				this.baseHP += item.HpBonus;
+				if (!(item is Weapon)) {
+					this.meleeDamage += item.AttackBonus;
+					this.meleeMult *= item.AttackMult;
+				} else if (!(item is Talisman)) {
+					this.rangedDamage += item.AttackBonus;
+					this.rangedMult *= item.AttackMult;
+				}
+				this.healPerCycle += item.HpBonus;
 				this.baseSpeed *= item.SpeedMult;
-				this.rangedBlock += item.DodgeBonus;
-				this.meleeBlock += item.BlockBonus;
+				this.rangedBlock *= item.DodgeBonus;
+				this.meleeBlock *= item.BlockBonus;
 			}
-			else {//unequipped
-					this.baseHP -= item.HpBonus;
-					this.baseSpeed /= item.SpeedMult;
-					this.rangedBlock -= item.DodgeBonus;
-					this.meleeBlock -= item.BlockBonus;
+			else { //unequipped
+				if (!(item is Weapon)) {
+					this.meleeDamage -= item.AttackBonus;
+					this.meleeMult /= item.AttackMult;
+				} else if (!(item is Talisman)) {
+					this.rangedDamage -= item.AttackBonus;
+					this.rangedMult /= item.AttackMult;
+				}
+				this.healPerCycle -= item.HpBonus;
+				this.baseSpeed /= item.SpeedMult;
+				this.rangedBlock /= item.DodgeBonus;
+				this.meleeBlock /= item.BlockBonus;
 			}
 		}
 

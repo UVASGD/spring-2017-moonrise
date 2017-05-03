@@ -18,10 +18,6 @@ namespace Completed
 		public int baseSneak = 3;
 		public float sightRange = 12f;
 
-		public int healPerCycle = 0;
-		public int healCycle = 3;
-		public int healTurn = 0;
-
         private int totalTime = 0;
         
 		// Sprites
@@ -459,7 +455,7 @@ namespace Completed
 				case 1:
 					if (this.shoot < 5) {
 						this.shoot += 1;
-						this.rangedDamage *= 1.1;
+						this.rangedMult *= 1.1;
 						this.rangedAccuracy *= 1.05;
 						GameManager.instance.print ("Upgraded shoot to level " + this.shoot + "!");
 						upgradedSkill = true;
@@ -484,7 +480,7 @@ namespace Completed
 				case 4:
 					if (this.dodge < 5) {
 						this.dodge += 1;
-						this.rangedBlock += dodge == 4 ? 16.5 : 4.5;
+						this.rangedBlock += dodge == 5 ? 16.5 : 4.5;
 						GameManager.instance.print ("Upgraded dodge to level " + this.dodge + "!");
 						upgradedSkill = true;
                         }
@@ -493,7 +489,7 @@ namespace Completed
 					if (this.bite < 5) {
 						this.bite += 1;
 						this.meleeAccuracy *= 1.1;
-						this.meleeDamage *= 1.1;
+						this.meleeMult *= 1.1;
 						GameManager.instance.print ("Upgraded bite to level " + this.bite + "!");
 						upgradedSkill = true;
                         }
@@ -516,7 +512,7 @@ namespace Completed
 				case 8:
 					if (this.fortify < 5) {
 						this.fortify += 1;
-						this.meleeBlock += fortify == 7 ? 16.5 : 4.5;
+						this.meleeBlock += fortify == 5 ? 16.5 : 4.5;
 						GameManager.instance.print ("Upgraded fortify to level " + this.fortify + "!");
 						upgradedSkill = true;
                         }
