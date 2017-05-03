@@ -1,0 +1,25 @@
+<encounter>
+	<dialog>
+		<dialogpath></dialogpath>
+		<name>studentFlavor</name>
+		<description>A child moping around in the street looks up at you and squints, ready to sprint. He relaxes, and says "I used to pull a lot of pranks around town. You know, simple things like lubricating door handles or tying scarves to posts. But nowadays people freak out about just about everything.  Apparently all the guards are under a lot of stress. "</description>
+		<option>
+			<optionNum>1</optionNum>
+			<opTXT>Walk away.</opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+		<option>
+			<optionNum>2</optionNum>
+			<opTXT></opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+		<option>
+			<optionNum>3</optionNum>
+			<opTXT>Attack.</opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+	</dialog>
+</encounter>

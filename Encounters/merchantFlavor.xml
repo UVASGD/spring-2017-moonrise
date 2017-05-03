@@ -1,0 +1,25 @@
+<encounter>
+	<dialog>
+		<dialogpath></dialogpath>
+		<name>merchantFlavor</name>
+		<description>A merchant selling his wares waves you over and presents a set of beaten up plate armor: "Lots of folks are splurging on tough leather. Maybe they think that it will protect them from a bite or two. A mature werewolf can bite clean throught this stuff! What you need is plate... or at least a lot of layers. When I tell them that they think I'm just shooting for a little more coin. Fools. "</description>
+		<option>
+			<optionNum>1</optionNum>
+			<opTXT>Walk away.</opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+		<option>
+			<optionNum>2</optionNum>
+			<opTXT></opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+		<option>
+			<optionNum>3</optionNum>
+			<opTXT>Attack.</opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+	</dialog>
+</encounter>

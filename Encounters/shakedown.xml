@@ -1,0 +1,25 @@
+<encounter>
+	<dialog>
+		<dialogpath></dialogpath>
+		<name>Shakedown</name>
+		<description>A large burly man with a crude image of a flayed werewolf tattooed on his arm approaches you, casually picking his teeth with a large knife. He stares at you for a few moments, and for a moment you fear that he can sense the virus within you. Eventually, he growls "30 silver."</description>
+		<option>
+			<optionNum>1</optionNum>
+			<opTXT>Hand over 30 silver.</opTXT>
+			<requirement>silver:30</requirement>
+			<reward>silver:-30</reward>
+		</option>
+		<option>
+			<optionNum>2</optionNum>
+			<opTXT>Try and convince him that you're not worth his time.</opTXT>
+			<requirement>charm:2</requirement>
+			<reward></reward>
+		</option>
+		<option>
+			<optionNum>3</optionNum>
+			<opTXT>Attack.</opTXT>
+			<requirement>none</requirement>
+			<reward>aggression:1</reward>
+		</option>
+	</dialog>
+</encounter>

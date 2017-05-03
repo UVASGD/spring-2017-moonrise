@@ -1,0 +1,25 @@
+<encounter>
+	<dialog>
+		<dialogpath></dialogpath>
+		<name>Playwright</name>
+		<description>A lone man dressed in shabby yet flamboyant clothes stands in front of you. When you approach he says "In all my years in the moonlight district, I've never actually seen a real life werewolf. How can my patron expect me to write a play about something I've yet to see? "</description>
+		<option>
+			<optionNum>1</optionNum>
+			<opTXT>Walk away.</opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+		<option>
+			<optionNum>2</optionNum>
+			<opTXT></opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+		<option>
+			<optionNum>3</optionNum>
+			<opTXT>Attack.</opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+	</dialog>
+</encounter>

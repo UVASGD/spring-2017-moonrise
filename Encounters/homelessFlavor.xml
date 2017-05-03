@@ -1,0 +1,25 @@
+<encounter>
+	<dialog>
+		<dialogpath></dialogpath>
+		<name>homelessFlavor</name>
+		<description>A kindly but dirty old man grabs your hand as you walk by: "If you ever end up on the streets, make sure to go under the biggest bridge in town once the moon starts to wax. We can go begging on our own during the day but at night... Well, there's strength in numbers. A board and a few nails can make something that hurts quite a bit!"</description>
+		<option>
+			<optionNum>1</optionNum>
+			<opTXT>Walk away.</opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+		<option>
+			<optionNum>2</optionNum>
+			<opTXT></opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+		<option>
+			<optionNum>3</optionNum>
+			<opTXT>Attack.</opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+	</dialog>
+</encounter>

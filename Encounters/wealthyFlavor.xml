@@ -1,0 +1,25 @@
+<encounter>
+	<dialog>
+		<dialogpath></dialogpath>
+		<name>wealthyFlavor</name>
+		<description>A haughty man wearing rich clothes approaches and speaks to you on a whim " I personally think this is all a big conspiracy, all a set up by the government. They set the wolves free, hope that a few people of my means are bitten  then declare us all afflicted then seize our property. My butler Sebastian confirmed that two houses of my noble stature have already fallen to the wolves and their lands claimed! " then walks away without waiting for a response.</description>
+		<option>
+			<optionNum>1</optionNum>
+			<opTXT>Walk away.</opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+		<option>
+			<optionNum>2</optionNum>
+			<opTXT></opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+		<option>
+			<optionNum>3</optionNum>
+			<opTXT>Attack.</opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+	</dialog>
+</encounter>

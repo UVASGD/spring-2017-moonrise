@@ -1,0 +1,25 @@
+<encounter>
+	<dialog>
+		<dialogpath></dialogpath>
+		<name>sailor2Flavor</name>
+		<description>A strange looking sailor grabs you by the arm and looks into your eyes and says in a deep gravelly voice: "Before every outing, the captain has all of us strip so we can be checked for bites. There's not much space to run or to fight on board a ship.  My good friend John once had to be brought aboard in an iron cage because he was bit by some mutt in the markets. You should have seen his face when his chamber pot turned over after a storm! " </description>
+		<option>
+			<optionNum>1</optionNum>
+			<opTXT>Walk away.</opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+		<option>
+			<optionNum>2</optionNum>
+			<opTXT></opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+		<option>
+			<optionNum>3</optionNum>
+			<opTXT>Attack.</opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+	</dialog>
+</encounter>

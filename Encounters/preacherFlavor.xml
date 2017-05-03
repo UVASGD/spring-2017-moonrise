@@ -1,0 +1,25 @@
+<encounter>
+	<dialog>
+		<dialogpath></dialogpath>
+		<name>preacherFlavor</name>
+		<description>As you approach, you hear a loud voice crying through the street "The werewolves are just the beginning! Do you not notice the tides rising higher than normal? Beasts from the sea are slowly coming closer and closer to our great city! Hear me my fellow citizens, Bat People from across the borders are coming and they want our blood! These creatures too are strengthened by the moon.  Our salvation is not through a werewolf cure. No that won't solve a thing! We must act to eliminate all three problems in one fell swoop! Let us destroy the moon! " </description>
+		<option>
+			<optionNum>1</optionNum>
+			<opTXT>Walk away.</opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+		<option>
+			<optionNum>2</optionNum>
+			<opTXT></opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+		<option>
+			<optionNum>3</optionNum>
+			<opTXT>Attack.</opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+	</dialog>
+</encounter>

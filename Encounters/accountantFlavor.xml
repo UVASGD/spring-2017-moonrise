@@ -1,0 +1,25 @@
+<encounter>
+	<dialog>
+		<dialogpath></dialogpath>
+		<name>accountantFlavor</name>
+		<description>As you walk along, you overhear a conversation between two government employees. "Why is it that we have to keep all our records in triplicate? So when the prison gets broken into and our University taken over we still have a copy on hand! Unfortunately, we have a few jokers in the department who didn't think that it mattered. Now we have a book keeping problem on top of a mutt problem! Spirits, they just have to make my job harder. "</description>
+		<option>
+			<optionNum>1</optionNum>
+			<opTXT>Walk away.</opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+		<option>
+			<optionNum>2</optionNum>
+			<opTXT></opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+		<option>
+			<optionNum>3</optionNum>
+			<opTXT>Attack.</opTXT>
+			<requirement>none</requirement>
+			<reward>none</reward>
+		</option>
+	</dialog>
+</encounter>
