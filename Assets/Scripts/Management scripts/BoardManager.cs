@@ -382,7 +382,7 @@ public class BoardManager : MonoBehaviour, SerialOb {
 
 		BuildExits();
 
-		if(area == areas.Market){
+		if(area == areas.Market || area == areas.Slums || area == areas.Government){
 			int head = 0;
 			int[,] positions = new int[20,2];
 
