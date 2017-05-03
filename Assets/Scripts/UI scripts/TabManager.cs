@@ -137,21 +137,21 @@ public class TabManager : MonoBehaviour {
             else
                 expandTab();
         }
-        else if (Input.GetKeyUp(KeyCode.J))
+        else if (Input.GetKeyUp(KeyCode.C))
         {
             if (uiTab != 1)
                 switchTabs(1);
             else
                 expandTab();
         }
-        else if (Input.GetKeyUp(KeyCode.K))
+        else if (Input.GetKeyUp(KeyCode.I))
         {
             if (uiTab != 2)
                 switchTabs(2);
             else
                 expandTab();
         }
-        else if (Input.GetKeyUp(KeyCode.L))
+        else if (Input.GetKeyUp(KeyCode.P))
         {
             if (uiTab != 3)
                 switchTabs(3);

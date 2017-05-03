@@ -15,10 +15,10 @@ namespace ItemSpace
 		private WeaponInfix infix;
 		private WeaponSuffix suffix;
 
-		private int range;
-
-		private int attackBonus, hpBonus;
-		private double attackMult, speedMult;
+		//private int range;
+		//add these to equipitem to be accessed for alll items that are equipped
+		private double attackMult;
+		private int attackBonus;
 
 		private static List<int> weightProbs = new List<int> (new[] {
 			30, 40, 30

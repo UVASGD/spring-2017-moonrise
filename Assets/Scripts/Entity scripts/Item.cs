@@ -14,7 +14,6 @@ namespace ItemSpace
 			int rand = UnityEngine.Random.Range (0, 3);
 			Debug.Log ("Random Item");
 			if (rand == 0) {
-				Debug.Log ("Random weapon");
 				return Weapon.RandomWeapon ();
 			} else if (rand == 1) {
 				Debug.Log ("Random tal");

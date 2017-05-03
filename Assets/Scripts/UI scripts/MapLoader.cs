@@ -111,7 +111,6 @@ public class MapLoader : MonoBehaviour
                     mapTex.SetPixel(i, j, Color.white);
             }
         }
-        mapTex.SetPixel(0,0,Color.magenta);
         mapTex.Apply();
 
         fog = createFogTile();

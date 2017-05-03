@@ -52,6 +52,10 @@ namespace Completed
             inventoryMini.transform.FindChild("ArmorText").GetChild(0).GetComponent<Text>().text = noArmor;
             itemGrid = new List<GameObject>();
 
+            inventoryExpand.transform.FindChild("CurWep").GetComponent<Button>().onClick.AddListener(delegate { UnEquipCurrent(ItemClass.Weapon); });
+            inventoryExpand.transform.FindChild("CurArm").GetComponent<Button>().onClick.AddListener(delegate { UnEquipCurrent(ItemClass.Armor); });
+            inventoryExpand.transform.FindChild("CurTals").GetComponent<Button>().onClick.AddListener(delegate { UnEquipCurrent(ItemClass.Talisman); });
+
             active = false;
         }
 
@@ -174,6 +178,12 @@ namespace Completed
             }
         }
 
+
+        public void UnEquipCurrent(ItemClass item)
+        {
+            player.UnequipItem(item);
+            Refresh();
+        }
         /// <summary>
         /// Refreshed the inventory layout.
         /// </summary>
@@ -230,6 +240,10 @@ namespace Completed
                 inventoryMini.transform.FindChild("WeaponText").GetChild(0).GetComponent<Text>().text = weapon != null ? weapon.Name : noWeapon;
                 inventoryMini.transform.FindChild("ArmorText").GetChild(0).GetComponent<Text>().text = armor != null ? armor.Name : noArmor;
                 inventoryMini.transform.FindChild("TalismanText").GetChild(0).GetComponent<Text>().text = talisman != null ? talisman.Name : noTalisman;
+
+                inventoryExpand.transform.FindChild("CurWep").GetChild(0).GetComponent<Text>().text = weapon != null ? weapon.Name : noWeapon;
+                inventoryExpand.transform.FindChild("CurArm").GetChild(0).GetComponent<Text>().text = armor != null ? armor.Name : noArmor;
+                inventoryExpand.transform.FindChild("CurTals").GetChild(0).GetComponent<Text>().text = talisman != null ? talisman.Name : noTalisman;
             }
         }
     }

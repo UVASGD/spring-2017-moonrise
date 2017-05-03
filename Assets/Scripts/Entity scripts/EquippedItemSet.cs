@@ -38,8 +38,8 @@ namespace ItemSpace
 				}
 			} else if (item is Talisman) {
 				if(talisman == null) {
-				talisman = (Talisman)item;
-						return true;
+					talisman = (Talisman)item;
+					return true;
 					}
 				}
 			return false;

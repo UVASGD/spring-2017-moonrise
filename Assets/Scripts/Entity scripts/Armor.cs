@@ -15,7 +15,7 @@ namespace ItemSpace
 		private ArmorInfix infix;
 		private ArmorSuffix suffix;
 
-		private int dodgeBonus, blockBonus;
+
 
 		public Armor(ArmorType type, ArmorWeight weight, ArmorPrefix prefix, ArmorInfix infix, ArmorSuffix suffix)
 		{
