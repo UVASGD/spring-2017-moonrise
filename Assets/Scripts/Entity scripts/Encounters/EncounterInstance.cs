@@ -21,10 +21,12 @@ public class EncounterInstance {
 	public void choice(string s){
 		Branch b = this.instanceOf.getBranch(path);
 		List<ResultApply> r = b.results[int.Parse(s)-1];
+		bool stay = false;
 		foreach(ResultApply result in r){
-			if(result.isAggro())
-				NPCObject.GetComponent<NPC>().makeAggressive();
-			else
+			if (result.isAggro ()) {
+				NPCObject.GetComponent<NPC> ().makeAggressive ();
+				stay = true;
+			}else
 				result.apply(GameManager.instance.player);
 		}
 		path = path+s;
@@ -32,7 +34,8 @@ public class EncounterInstance {
 		if(success == -1){
 			path = "";
 			GameManager.instance.getEnemies().Remove(NPCObject.GetComponent<NPC>());
-			GameObject.Destroy(NPCObject);
+			if(!stay)
+				GameObject.Destroy(NPCObject);
 		}
 	}
 
