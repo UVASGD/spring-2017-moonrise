@@ -21,38 +21,53 @@ namespace ItemSpace
 		private double [,] bonuses = new double[,]
 		
 		{
-			{3,		6,		12,		25	}, //0: attack bonus
-			{1.1,	1.25,	1.5,	2.0	}, //1: attack multiplier
-			{1.1,	1.25,	1.5,	2.0	}, //2: speed multiplier
-			{2,		5,		10,		15	}, //3: hp bonus
-			{1.1,	1.25,	1.5,	2.0	}, //4: dodge
-			{1.1,	1.25,	1.5,	2.0	}  //5: block
+			{3,		6,		12,		25,		0}, //0: attack bonus
+			{1.1,	1.25,	1.5,	2.0,	1}, //1: attack multiplier
+			{1.1,	1.25,	1.5,	2.0,	1}, //2: speed multiplier
+			{2,		5,		10,		15,		0}, //3: hp bonus
+			{1.1,	1.25,	1.5,	2.0,	0}, //4: dodge
+			{1.1,	1.25,	1.5,	2.0,	0}  //5: block
 		};
 
 		private string[,,] labels = new string[,,] {
 			{//prefix
-				{"Chilling", 	"Fiery", 		"Shocking", 	"Toxic"},
-				{"Bewitched", 	"Sacrilegious", "Murderous", 	"Splendid"},
-				{"Shimmering", 	"Glimmering", 	"Flashing", 	"Radiant"},
-				{"Mysterious", 	"Mystical", 	"Sacred", 		"Ancient"},
-				{"Restoring", 	"Healing", 		"Rejuvenating", "Holy"},
-				{"Energetic", 	"Striking", 	"Bombastic", 	"Enchanted"}
+				{"Chilling ",  	"Fiery ",  		"Shocking ",  	"Toxic"},
+				{"Bewitched ",  	"Sacrilegious ",  "Murderous ",  	"Splendid "},
+				{"Shimmering ",  	"Glimmering ",  	"Flashing ",  	"Radiant "},
+				{"Mysterious ",  	"Mystical ",  	"Sacred ",  		"Ancient "},
+				{"Restoring ",  	"Healing ",  		"Rejuvenating ",  "Holy "},
+				{"Energetic ",  	"Striking ",  	"Bombastic ",  	"Enchanted "},
+				{"","","",""},
+				{"","","",""},
+				{"","","",""},
+				{"","","",""},
+				{"","","",""}
 			},
 			{//infix
-				{"Hunter\'s",  "Soldier\'s",  "Barbarian\'s",  "Champion\'s"},
-				{"Murderer\'s",  "Captain\'s",  "Mystic\'s",  "Shaman\'s"},
-				{"Coward\'s",  "Bandit\'s",  "Herald\'s",  "Spy\'s"},
-				{"Defender\'s",  "Poet\'s",  "Mother\'s",  "Ancient\'s"},
-				{"Child\'s",  "Lover\'s",  "Doctor\'s",  "Priest\'s"},
-				{"Thief\'s",  "Athlete\'s",  "Sprinter\'s",  "Clairvoyant\'s"}
+				{"Hunter\'s ",   "Soldier\'s ",   "Barbarian\'s ",   "Champion\'s "},
+				{"Murderer\'s ",   "Captain\'s ",   "Mystic\'s ",   "Shaman\'s "},
+				{"Coward\'s ",   "Bandit\'s ",   "Herald\'s ",   "Spy\'s "},
+				{"Defender\'s ",   "Poet\'s ",   "Mother\'s ",   "Ancient\'s "},
+				{"Child\'s ",   "Lover\'s ",   "Doctor\'s ",   "Priest\'s "},
+				{"Thief\'s ",   "Athlete\'s ",   "Sprinter\'s ",   "Clairvoyant\'s "},
+				{"","","",""},
+				{"","","",""},
+				{"","","",""},
+				{"","","",""},
+				{"","","",""}
 			},
 			{//suffix
-				{"of Bruising",  "of Anger",  "of Murder",  "of Power"},
-				{"of Destruction",  "of Maiming",  "of the Inferno",  "of Hell"},
-				{"of the Lizard",  "of the Shark",  "of the Gorilla",  "of Lamentation"},
-				{"of the Panther",  "of the Cockroach",  "of the Beetle",  "of the Rhino"},
-				{"of the Fox",  "of the Wolf",  "of the Turtle",  "of Light"},
-				{"of Far-Sight",  "of the Falcon",  "of the Cheetah",  "of Lightning"}
+				{ " of Bruising",   " of Anger",   " of Murder",   " of Power"},
+				{ " of Destruction",   " of Maiming",   " of the Inferno",   " of Hell"},
+				{ " of the Lizard",   " of the Shark",   " of the Gorilla",   " of Lamentation"},
+				{ " of the Panther",   " of the Cockroach",   " of the Beetle",   " of the Rhino"},
+				{ " of the Fox",   " of the Wolf",   " of the Turtle",   " of Light"},
+				{ " of Far-Sight",   " of the Falcon",   " of the Cheetah",   " of Lightning"},
+				{"","","",""},
+				{"","","",""},
+				{"","","",""},
+				{"","","",""},
+				{"","","",""}
 			}
 			};
 
@@ -99,10 +114,12 @@ namespace ItemSpace
 			this.itemClass = ItemClass.Talisman;
 			this.type = TalismanType.Talisman;
 
+			Debug.Log ("prefix vals" + prefix[0] + prefix[1] + "infix vals" + infix[0] +infix[1] + "suffix vals" + suffix[0] + suffix[1]);
+
 			this.weight = weight;
-			this.prefix = labels[1, prefix[0], prefix[1]];
-			this.infix = labels[2, infix[0], infix[1]];
-			this.suffix = labels[3, suffix[0], suffix[1]];
+			this.prefix = labels[0, prefix[0], prefix[1]];
+			this.infix = labels[1, infix[0], infix[1]];
+			this.suffix = labels[2, suffix[0], suffix[1]];
 
 			attackBonus = 0;
 			attackMult = 1;
@@ -115,7 +132,9 @@ namespace ItemSpace
 			int[][] fixes = { prefix, infix, suffix };
 
 			foreach (int [] fix in fixes) {
-				if (fix [0] == 0)
+				if (fix [1] >= 6)
+					break;
+				else if (fix [0] == 0)
 					attackBonus += (int)bonuses [0, fix [1]];
 				else if (fix [0] == 1)
 					attackMult *= bonuses [1, fix [1]];
@@ -129,7 +148,7 @@ namespace ItemSpace
 					blockBonus += (int)bonuses [5, fix [1]];
 			}
 
-			name = this.prefix + " " + this.infix + " Talisman " + this.suffix;
+			name = this.prefix + "" + this.infix + "Talisman" + this.suffix;
 				
 				
 			//setup(type,  weight,  prefix,  infix,  suffix);
@@ -275,24 +294,26 @@ namespace ItemSpace
 			TalismanWeight weight = (TalismanWeight)RandomEnum (weightProbs);
 
 			int currentLevel = GameManager.instance.level;
-			double fractionTimeLeft = GameManager.instance.timeLeft / GameManager.instance.initialTime;
+			Debug.Log (GameManager.instance.timeLeft);
+			double fractionTimeLeft = GameManager.instance.timeLeft / 4320.0;
 
 			double determiner = Math.Floor (currentLevel + (1 / fractionTimeLeft) * 2);
 			int tier = 0;
 			int[] prefix, infix, suffix;
 
-			if (determiner <= 5)
+			if (determiner <= 8)
 				tier = 0;
-			else if (determiner <= 12)
+			else if (determiner <= 14)
 				tier = 1;
-			else if (determiner <= 19)
+			else if (determiner <= 23)
 				tier = 2;
-			else if (determiner > 19)
+			else if (determiner > 23)
 				tier = 3;
 
-			prefix = new int[] { UnityEngine.Random.Range (0, 4), tier };
-			infix = new int[] { UnityEngine.Random.Range (0, 4), tier };
-			suffix = new int[] { UnityEngine.Random.Range (0, 4), tier };
+			Debug.Log ("curLvl:" + currentLevel + "  fractTime: " + fractionTimeLeft + "  det: " + determiner + "  tier: " + tier);
+			prefix = new int[] { UnityEngine.Random.Range (0, 9), tier };
+			infix = new int[] { UnityEngine.Random.Range (0, 9), tier };
+			suffix = new int[] { UnityEngine.Random.Range (0, 9), tier };
 
 
 			return new Talisman (weight, prefix, infix, suffix);

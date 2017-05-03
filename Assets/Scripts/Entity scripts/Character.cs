@@ -11,12 +11,12 @@ namespace Completed
 	{
 		//leveled up with magic character points
 		protected int baseHP = 0;
-		protected double rangedBlock = 0;
-		protected double meleeBlock = 0;
-		protected double rangedDamage = 0;
+		protected double rangedBlock = 10;
+		protected double meleeBlock = 10;
+		protected double rangedDamage = 3;
 		protected double meleeDamage = 5;
-		protected double rangedAccuracy = 0;
-		protected double meleeAccuracy = 0;
+		protected double rangedAccuracy = 10;
+		protected double meleeAccuracy = 10;
 
 		//affected by items
 		protected int totalHP;
@@ -132,8 +132,8 @@ namespace Completed
 					weaponMin = myWeapon.AttackMinMax [0];
 					weaponMax = myWeapon.AttackMinMax [1];
 				} else {
-					weaponMin = (int)this.meleeDamage;
-					weaponMax = (int)this.meleeDamage + 3;
+					weaponMin = 0;
+					weaponMax = 0;
 				}
 			}
 
@@ -142,7 +142,7 @@ namespace Completed
 			double blockValue = target.RangedBlock / 2 + target.MeleeBlock;
 
 			if (accuracyValue - blockValue > UnityEngine.Random.Range (0.0f, 100.0f)) {
-				int damage = (int)((this.RangedDamage/2 + this.MeleeDamage) / 1.5) * (UnityEngine.Random.Range (weaponMin, weaponMax+1));
+				int damage = (int)(((this.RangedDamage/2 + this.MeleeDamage) / 1.5) * (this.meleeDamage + UnityEngine.Random.Range (weaponMin, weaponMax+1)));
 				target.LoseHp(damage);
 				GameManager.instance.player.UpdateText ();
 				Debug.Log(damage);
