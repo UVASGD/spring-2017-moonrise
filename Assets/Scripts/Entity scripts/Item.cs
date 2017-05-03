@@ -8,10 +8,19 @@ namespace ItemSpace
 	public abstract class Item : SerialOb
 	{
 		protected string name, description;
-		protected ItemClass itemClass;
 
 		public static Item RandomItem() {
-			return Weapon.RandomItem ();
+			int rand = UnityEngine.Random.Range (0, 3);
+			if (rand == 0) {
+				Debug.Log ("Random weapon");
+				return Weapon.RandomWeapon ();
+			} else if (rand == 1) {
+				Debug.Log ("Random talisman");
+				return Talisman.RandomTalisman ();
+			} else {
+				Debug.Log ("Random armor");
+				return Armor.RandomArmor ();
+			}
 		}
 
 		public string Name {
@@ -26,10 +35,8 @@ namespace ItemSpace
 			}
 		}
 
-		public ItemClass ItemClass {
-			get {
-				return itemClass;
-			}
+		public abstract ItemClass ItemClass {
+			get;
 		}
 
 		virtual public XElement serialize(){

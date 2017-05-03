@@ -8,7 +8,8 @@ namespace ItemSpace
 		Helmet,
 		Potion,
 		Weapon,
-		Armor
+		Armor,
+		Talisman
 	}
 }
 

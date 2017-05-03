@@ -16,7 +16,7 @@ namespace Completed
     {
 
 		public int timeLeft = 4320; // 30 days * 24 hours * 6 10-minute periods
-
+		public const int initialTime = 4320;
         public float levelStartDelay = 2f;                      
         public float turnDelay = 0.1f;                          
         public int playerGoldPoints = 0;
@@ -31,13 +31,20 @@ namespace Completed
         private Text levelText, actionText;                                 
         private GameObject levelImage;                        
         private BoardManager boardScript;
-		private InventoryManager inventoryScript;
+		private InventoryManagerAlt inventoryScript;
         public int level = 1;                                  
         private List<Enemy> enemies;
 		public Player player;
         private bool enemiesMoving;                             
-        private bool doingSetup = true;     
-                            
+        private bool doingSetup = true;
+        public bool finishedSetup = false;
+
+        private Queue<string> journalQueue;
+        private Text CurrencyText;
+        private int prevCurrency;
+        public int journalSize = 30;
+        private JournalManager journal;
+
 
 
         /// <summary>
@@ -57,8 +64,12 @@ namespace Completed
             enemies = new List<Enemy>();
 			player = GameObject.Find("Player").GetComponent<Player>();
 
+            journalQueue = new Queue<string>();
+            CurrencyText = GameObject.Find("MenuCanvas").transform.FindChild("CurrencyShow").FindChild("Text").GetComponent<Text>();
+            CurrencyText.text = "" + playerGoldPoints;
+
             boardScript = GetComponent<BoardManager>();
-			inventoryScript = GetComponent<InventoryManager> ();
+			inventoryScript = GetComponent<InventoryManagerAlt> ();
 
             InitGame();
         }
@@ -96,9 +107,8 @@ namespace Completed
 
             levelText = GameObject.Find("LevelText").GetComponent<Text>();
 			actionText = GameObject.Find("ActionText").GetComponent<Text>();
-
-
-            levelText.text = "Day " + level;
+            journal = GameObject.Find("JournalContainer").transform.FindChild("Text").GetComponent<JournalManager>();
+            finishedSetup = true;
 
             levelImage.SetActive(true);
 
@@ -144,8 +154,8 @@ namespace Completed
 				boardScript.boardMap = Tileset.instance.boardMap;
 				boardScript.tileMap = Tileset.instance.tileMap;
 
-				//Loops through entire board, creating fog
-				for (x = -1; x < boardScript.boardMap.GetLength(0) + 1; x++)
+                //Loops through entire board, creating fog
+                for (x = -1; x < boardScript.boardMap.GetLength(0) + 1; x++)
 				{
 					for (y = -1; y < boardScript.boardMap.GetLength(1) + 1; y++)
 					{
@@ -212,7 +222,11 @@ namespace Completed
 
         void Update()
         {
-			if(Input.GetKeyUp(KeyCode.S)){
+            if (Input.GetKeyDown(KeyCode.Delete))
+            {
+                instance.timeLeft -= 100;
+            }
+            if (Input.GetKeyUp(KeyCode.S)){
 				Save();
 			}
             if (playersTurn || enemiesMoving || doingSetup)
@@ -220,6 +234,7 @@ namespace Completed
                 return;
 			
 			StartCoroutine(MoveEnemies());
+            CurrencyCheck();
         }
 
         public void AddEnemyToList(Enemy script)
@@ -230,7 +245,6 @@ namespace Completed
 
         public void GameOver()
         {
-            levelText.text = "After " + level + " days, you died.";
 
             levelImage.SetActive(true);
 
@@ -325,12 +339,30 @@ namespace Completed
 			return null;
 		}
 
+        /// <summary>
+        /// Gets the current game Journal
+        /// </summary>
+        /// <returns></returns>
+        public Queue<string> getJournal()
+        {
+            Queue<string> retJ = journalQueue;
+            return retJ;
+        }
 
-		/// <summary>
-		/// Returns a list of enemies
-		/// </summary>
-		/// <returns>The enemies.</returns>
-		public List<Enemy> getEnemies(){
+        public void CurrencyCheck()
+        {
+            if (playerGoldPoints != prevCurrency)
+            {
+                CurrencyText.text = "" + playerGoldPoints;
+                prevCurrency = playerGoldPoints;
+            }
+        }
+
+        /// <summary>
+        /// Returns a list of enemies
+        /// </summary>
+        /// <returns>The enemies.</returns>
+        public List<Enemy> getEnemies(){
 			return enemies;
 		}
 
@@ -339,8 +371,14 @@ namespace Completed
 		/// </summary>
 		public void print(string s){
 			Debug.Log(s);
-			actionText.text += s+"\n";
-		}
+            actionText.text += s + "\n";
+
+            //Should probably be in its own location, but that would take a lot of effort for little reward.
+            if (journalQueue.Count == journalSize)
+                journalQueue.Dequeue();
+            journalQueue.Enqueue("- " + s);
+            journal.displayJournal();
+        }
 
 
 		public void clearLog(){

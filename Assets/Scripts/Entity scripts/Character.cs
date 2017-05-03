@@ -10,18 +10,24 @@ namespace Completed
     public class Character : MovingObject, SerialOb
 	{
 		//leveled up with magic character points
-		protected int baseHP;
-		protected double rangedBlock;
-		protected double meleeBlock;
-		protected double rangedDamage;
-		protected double meleeDamage;
-		protected double rangedAccuracy;
-		protected double meleeAccuracy;
+		protected int baseHP = 0;
+		protected double rangedBlock = 0;
+		protected double meleeBlock = 0;
+		protected double rangedDamage = 0;
+		protected double meleeDamage = 5;
+		protected double rangedMult = 1;
+		protected double meleeMult = 1;
+		protected double rangedAccuracy = 0;
+		protected double meleeAccuracy = 0;
 
 		//affected by items
 		protected int totalHP;
 		protected float range;
 		protected int currentHP;
+
+		public int healPerCycle = 0;
+		public int healCycle = 3;
+		public int healTurn = 0;
 
 		protected double baseSpeed;
 		protected double totalSpeed;
@@ -60,6 +66,21 @@ namespace Completed
 			inventory = new Inventory ();
 		}
 
+		public void AttackBounds(bool ranged, out int weaponMin, out int weaponMax) {
+			double baseDamage, attackMult;
+
+			if (ranged) {
+				baseDamage = rangedDamage;
+				attackMult = rangedMult;
+			} else {
+				baseDamage = meleeDamage;
+				attackMult = meleeMult;
+			}
+
+			weaponMin = (int)(baseDamage * attackMult);
+			weaponMax = (int)((baseDamage + 3) * attackMult);
+		}
+
 		/// <summary>
 		/// Ranged attack function
 		/// </summary>
@@ -76,14 +97,8 @@ namespace Completed
 
 			int weaponMin;
 			int weaponMax;
-
-			if (myWeapon != null) {
-				weaponMin = myWeapon.AttackMinMax [0];
-				weaponMax = myWeapon.AttackMinMax [1];
-			} else {
-				weaponMin = 3;
-				weaponMax = 6;
-			}
+	
+			AttackBounds (true, out weaponMin, out weaponMax);
 
 			Debug.Log (weaponMin + " " + weaponMax);
 
@@ -107,10 +122,23 @@ namespace Completed
 		/// <param name="target">Target.</param>
 		public int MeleeAttack(Character target) {
 			//Weapon weap = (Weapon)(equippedItems.Get (ItemClass.Weapon));
-		
-			// Placeholder weapon values
-			int weaponMin = 3;
-			int weaponMax = 5;
+			if(equippedItems.Weapon == null){
+				ItemSpace.Weapon w = new ItemSpace.Weapon();
+				equippedItems.Equip(w);
+				InventoryManagerAlt.instance.RefreshEquippedItems();
+			}
+
+			Weapon myWeapon = equippedItems.Weapon;
+			Talisman myTalisman = equippedItems.Talisman;
+
+			int weaponMin;
+			int weaponMax;
+
+			if (this is Player && GameManager.instance.isWerewolf) {
+				AttackBounds (false, out weaponMin, out weaponMax);
+			} else {
+				AttackBounds (true, out weaponMin, out weaponMax);
+			}
 
 			// If distance is 1, use melee values instead of ranged values
 			double accuracyValue = this.RangedAccuracy / 2 + this.MeleeAccuracy;
@@ -120,6 +148,7 @@ namespace Completed
 				int damage = (int)((this.RangedDamage/2 + this.MeleeDamage) / 1.5) * (UnityEngine.Random.Range (weaponMin, weaponMax+1));
 				target.LoseHp(damage);
 				GameManager.instance.player.UpdateText ();
+				Debug.Log(damage);
 
 				return damage;
 			}
@@ -159,12 +188,44 @@ namespace Completed
 				equippable = (EquipItem)item;
 				if (RemoveItem (equippable)) {
 					Item unequipped = equippedItems.Unequip (equippable.ItemClass);
-					if (equippable != null)
+					if (equippable != null) {
+						if(unequipped != null)
+						UpdateStats (equipped: false, item: (EquipItem)unequipped);
 						inventory.AddItem (unequipped);
+					}
 					equippedItems.Equip (equippable);
+					UpdateStats (equipped: true, item: equippable);
 				}
 			}
-			// TODO: update stats based on changed items
+		}
+
+		public void UpdateStats(bool equipped, EquipItem item) {
+			if (equipped) {
+				if (!(item is Weapon)) {
+					this.meleeDamage += item.AttackBonus;
+					this.meleeMult *= item.AttackMult;
+				} else if (!(item is Talisman)) {
+					this.rangedDamage += item.AttackBonus;
+					this.rangedMult *= item.AttackMult;
+				}
+				this.healPerCycle += item.HpBonus;
+				this.baseSpeed *= item.SpeedMult;
+				this.rangedBlock *= item.DodgeBonus;
+				this.meleeBlock *= item.BlockBonus;
+			}
+			else { //unequipped
+				if (!(item is Weapon)) {
+					this.meleeDamage -= item.AttackBonus;
+					this.meleeMult /= item.AttackMult;
+				} else if (!(item is Talisman)) {
+					this.rangedDamage -= item.AttackBonus;
+					this.rangedMult /= item.AttackMult;
+				}
+				this.healPerCycle -= item.HpBonus;
+				this.baseSpeed /= item.SpeedMult;
+				this.rangedBlock /= item.DodgeBonus;
+				this.meleeBlock /= item.BlockBonus;
+			}
 		}
 
 		/// <summary>

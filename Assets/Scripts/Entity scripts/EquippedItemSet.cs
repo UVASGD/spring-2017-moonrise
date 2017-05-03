@@ -10,6 +10,7 @@ namespace ItemSpace
 
 		private Weapon weapon;
 		private Armor armor;
+		private Talisman talisman;
 
 		public EquippedItemSet()
 		{
@@ -35,7 +36,12 @@ namespace ItemSpace
 					armor = (Armor)item;
 					return true;
 				}
-			}
+			} else if (item is Talisman) {
+				if(talisman == null) {
+					talisman = (Talisman)item;
+					return true;
+					}
+				}
 			return false;
 		}
 
@@ -53,6 +59,9 @@ namespace ItemSpace
 			} else if (ic == ItemClass.Armor) {
 				val = armor;
 				armor = null;
+			} else if (ic == ItemClass.Talisman) {
+		val = talisman;
+		talisman = null;
 			}
 			return val;
 		}
@@ -66,6 +75,12 @@ namespace ItemSpace
 		public Armor Armor {
 			get {
 				return armor;
+			}
+		}
+
+		public Talisman Talisman {
+			get {
+				return this.talisman;
 			}
 		}
 	}

@@ -16,12 +16,12 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000014194433104}
-  - 212: {fileID: 212000013401722696}
-  - 61: {fileID: 61000013696604908}
-  - 114: {fileID: 114000012190806042}
+  - component: {fileID: 4000014194433104}
+  - component: {fileID: 212000013401722696}
+  - component: {fileID: 61000013696604908}
+  - component: {fileID: 114000012190806042}
   m_Layer: 8
   m_Name: Chest
   m_TagString: Untagged
@@ -38,10 +38,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &61000013696604908
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -73,6 +73,10 @@ MonoBehaviour:
   blockingLayer:
     serializedVersion: 2
     m_Bits: 0
+  impassable:
+    serializedVersion: 2
+    m_Bits: 0
+  orientation: 0
 --- !u!212 &212000013401722696
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -87,7 +91,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 0
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
@@ -95,14 +101,14 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 1
+  m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 126326867
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 652cfdda89cba094f8866a5a9f1bf7d9, type: 3}
-  m_Color: {r: 0.8455882, g: 0.612837, b: 0.11191604, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 00f252e8b9ad20a49b38539b1e822eac, type: 3}
+  m_Color: {r: 0.7607844, g: 0.7607844, b: 0.7607844, a: 1}
   m_FlipX: 0
   m_FlipY: 0
