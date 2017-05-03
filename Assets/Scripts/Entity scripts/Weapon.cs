@@ -10,7 +10,7 @@ namespace ItemSpace
 	public class Weapon : AttackItem, SerialOb
 	{
 		private static readonly string[] types = new string[] {
-			"Weapon"	
+			"Crossbow"	
 		}, weights = new string[] {
 			"Light", "", "Heavy"
 		}, prefixes = new string[] {
