@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4440425187007622}
   - component: {fileID: 212385639776899270}
   - component: {fileID: 61060357314340676}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: asylum_wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}

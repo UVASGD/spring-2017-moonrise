@@ -920,7 +920,7 @@ namespace Completed
 				new XElement ("growl", growl),
 				new XElement ("fortify", fortify),
 				new XElement ("level", GameManager.instance.level),
-				new XElement ("time", GameManager.instance.timeLeft)
+				new XElement ("time", (int)GameManager.instance.timeLeft)
 
 
 			);
