@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class script : MonoBehaviour {
-
+public class AutoScroller : MonoBehaviour {
+    private bool bottom = false;
+    public float scrollSpeed = 0.01f;
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		
 	}
 	
