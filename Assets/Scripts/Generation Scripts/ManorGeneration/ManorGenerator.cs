@@ -6,8 +6,8 @@ using UnityEngine;
 public class ManorPrefab
 {
     bool built = false;
-    char[,] map;
-    int[,] block;
+    public char[,] map;
+    public int[,] block;
 
     public ManorPrefab(char[,] m, int[,] b)
     {
@@ -276,8 +276,6 @@ public class ManorGenerator : mapGenerator
 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 };
-    Manor[] layout1Manors = { new Manor(48, 12, "down", true), new Manor(33, 48, "right", false), new Manor(75, 48, "left", false) , new Manor(9, 72, "down", false), new Manor(33, 72, "down", false),
-        new Manor(75, 72, "down", false), new Manor(99, 72, "down", false), new Manor(9, 96, "up", false), new Manor(33, 96, "up", false), new Manor(75, 96, "up", false), new Manor(99, 96, "up", false) };
 
     char[,] layout2Map = { { 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'R', 'R', 'R', 'R', 'R', 'R', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'},
 { 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'R', 'R', 'R', 'R', 'R', 'R', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'},
@@ -2333,8 +2331,8 @@ public class ManorGenerator : mapGenerator
 { 'm', 'f', 'f', 'f', 'm', 'm', 'f', 'f', 'f', 'm', 'm', 'm', 'm', 'm', 'm', 'f', 'f', 'f', 'm', 'm', 'f', 'f', 'f', 'm'},
 { 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'g', 'g', 'g', 'g', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm'}
 };
-    char[,] bigManor6 = { { 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'm', 'f', 'f', 'm', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g'},
-{ 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'm', 'm', 'm', 'f', 'f', 'm', 'm', 'g', 'g', 'm', 'm', 'm', 'm', 'm', 'g', 'g', 'g'},
+    char[,] bigManor6 = { { 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'm', 'f', 'f', 'm', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'g'},
+{ 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'm', 'm', 'm', 'm', 'f', 'f', 'm', 'g', 'g', 'm', 'm', 'm', 'm', 'm', 'g', 'g', 'g'},
 { 'g', 'g', 'm', 'm', 'm', 'm', 'm', 'm', 'f', 'f', 'f', 'f', 'f', 'm', 'm', 'm', 'm', 'f', 'f', 'f', 'm', 'g', 'g', 'g'},
 { 'g', 'g', 'm', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'm', 'm', 'g', 'g'},
 { 'g', 'g', 'm', 'f', 'f', 'f', 'm', 'm', 'f', 'L', 'f', 'f', 'f', 'm', 'm', 'm', 'm', 'f', 'H', 'f', 'f', 'm', 'g', 'g'},
@@ -2348,7 +2346,7 @@ public class ManorGenerator : mapGenerator
 { 'g', 'm', 'm', 'f', 'm', 'm', 'm', 'g', 'g', 'g', 'm', 'm', 'm', 'm', 'm', 'f', 'f', 'f', 'f', 'f', 'f', 'm', 'g', 'g'},
 { 'g', 'g', 'm', 'f', 'm', 'm', 'g', 'g', 'g', 'g', 'g', 'm', 'm', 'm', 'm', 'm', 'f', 'f', 'f', 'f', 'm', 'm', 'g', 'g'},
 { 'g', 'm', 'm', 'f', 'm', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'm', 'm', 'm', 'm', 'm', 'm', 'f', 'm', 'm', 'g', 'g', 'g'},
-{ 'g', 'm', 'f', 'f', 'f', 'g', 'g', 'S', 'g', 'g', 'g', 'g', 'f', 'f', 'f', 'f', 'm', 'm', 'f', 'm', 'g', 'g', 'g', 'g'},
+{ 'g', 'm', 'f', 'f', 'f', 'g', 'g', 'O', 'g', 'g', 'g', 'g', 'f', 'f', 'f', 'f', 'm', 'm', 'f', 'm', 'g', 'g', 'g', 'g'},
 { 'g', 'm', 'f', 'm', 'm', 'g', 'g', 'g', 'g', 'g', 'g', 'g', 'm', 'm', 'm', 'f', 'm', 'm', 'f', 'm', 'm', 'm', 'm', 'g'},
 { 'g', 'm', 'f', 'm', 'm', 'm', 'g', 'g', 'g', 'g', 'g', 'm', 'm', 'f', 'f', 'f', 'f', 'm', 'f', 'f', 'f', 'f', 'm', 'g'},
 { 'm', 'm', 'f', 'f', 'm', 'm', 'm', 'g', 'g', 'g', 'm', 'm', 'm', 'f', 'f', 'f', 'f', 'm', 'f', 'f', 'H', 'f', 'm', 'g'},
@@ -2538,10 +2536,17 @@ public class ManorGenerator : mapGenerator
 
     public GameObject shrub;
 
+    public GameObject encounter;
+
     public GameObject[] buildings;
     public GameObject mainBuilding;
 
     private int[,] encounters;
+
+    private List<Vector2> lowEncounterSpots = new List<Vector2>();
+    private List<Vector2> highEncounterSpots = new List<Vector2>();
+
+    private List<Vector2> encounterSpots = new List<Vector2>();
 
     public bool debugging = false;
 
@@ -2560,13 +2565,14 @@ public class ManorGenerator : mapGenerator
         smallManors = new ManorPrefab[18];
         InitializeManorPrefabs();
 
-        encounters = new int[8, 2];
-
         InitializeLayout();
 
         CloseEdges();
 
         GenerateGridFromKey(gridKey); //generate initial grid (keep at bottom of function)
+
+        encounters = ChooseEncounters();
+
         return boardMap;
     }
 
@@ -2597,27 +2603,46 @@ public class ManorGenerator : mapGenerator
             for (int w = 0; w < gridSize; w++)
             {
                 GameObject currentTile = null;
-                switch (gridKey[h, w])
+                bool doItAgain = false;
+                do
                 {
-                    case 'g': currentTile = grass; break;
-                    case 'R': currentTile = road; break;
-                    case 'b': currentTile = road; break;
-                    case 't': currentTile = road; break;
-                    case 'p': currentTile = gardenPath; break;
-                    case 'G': currentTile = gardenTile; break;
-                    case 'f': currentTile = floor; break;
-                    case 'm': currentTile = manorSpace; break;
-                    case 'v': currentTile = hedgeVert; break;
-                    case 'h': currentTile = hedgeLat; break;
-                    case '7': currentTile = hedgeULCorn; break;
-                    case '9': currentTile = hedgeURCorn; break;
-                    case '1': currentTile = hedgeBLCorn; break;
-                    case '3': currentTile = hedgeBRCorn; break;
+                    doItAgain = false;
+                    switch (gridKey[h, w])
+                    {
+                        case 'g': currentTile = grass; break;
+                        case 'R': currentTile = road; break;
+                        case 'b': currentTile = road; break;
+                        case 't': currentTile = road; break;
+                        case 'p': currentTile = gardenPath; break;
+                        case 'G': currentTile = gardenTile; break;
+                        case 'f': currentTile = floor; break;
+                        case 'm': currentTile = manorSpace; break;
+                        case 'v': currentTile = hedgeVert; break;
+                        case 'h': currentTile = hedgeLat; break;
+                        case '7': currentTile = hedgeULCorn; break;
+                        case '9': currentTile = hedgeURCorn; break;
+                        case '1': currentTile = hedgeBLCorn; break;
+                        case '3': currentTile = hedgeBRCorn; break;
 
-                    case 's': currentTile = shrub; break;
+                        case 'H': currentTile = floor; highEncounterSpots.Add(new Vector2(h, w)); break;
+                        case 'L': currentTile = floor; lowEncounterSpots.Add(new Vector2(h, w)); break;
+                        case 'M': currentTile = floor; encounterSpots.Add(new Vector2(h, w)); break;
+                        case 'O': currentTile = grass; encounterSpots.Add(new Vector2(h, w)); break;
 
-                    case '0': currentTile = null; break;
-                }
+                        //case 's': currentTile = shrub; break;
+                        case 'd': InsertManor(h, w, 3, false); doItAgain = true; break;
+                        case 'w': InsertManor(h, w, 2, false); doItAgain = true; break;
+                        case 'a': InsertManor(h, w, 1, false); doItAgain = true; break;
+                        case 's': InsertManor(h, w, 0, false); doItAgain = true; break;
+
+                        case 'D': InsertManor(h, w, 3, true); doItAgain = true; break;
+                        case 'W': InsertManor(h, w, 2, true); doItAgain = true; break;
+                        case 'A': InsertManor(h, w, 1, true); doItAgain = true; break;
+                        case 'S': InsertManor(h, w, 0, true); doItAgain = true; break;
+
+                        case '0': currentTile = null; break;
+                    }
+                } while (doItAgain);
 
                 if ((currentTile == grass || currentTile == gardenTile ) && rand.Next(1,129) % 8 == 0)
                     currentTile = flowers;
@@ -2753,6 +2778,19 @@ public class ManorGenerator : mapGenerator
         }
     }
 
+    void InsertManor(int i, int j, int rotates, bool big)
+    {
+        ManorPrefab M;
+        if (big)
+        {
+            M = bigManors[rand.Next(1, 6)];
+        }
+        else
+            M = smallManors[rand.Next(1, 18)];
+
+        Insert(M.map, M.block, i, j);
+    }
+
     void RotateArrays(char[,] srcC, char[,] destC, int[,] srcI, int[,] destI)
     {
         for (int i = 0; i < gridSize; i++)
@@ -2770,7 +2808,7 @@ public class ManorGenerator : mapGenerator
     { //Function to insert commingled block of characters
         for (int h = 0; h < charArr.GetLength(0); h++)
         {
-            for (int w = 0; w < charArr.GetLength(1) - 1; w++)
+            for (int w = 0; w < charArr.GetLength(1); w++)
             {
                 char c = charArr[h, w];
                 int b = boardArr[h, w];
@@ -2780,5 +2818,40 @@ public class ManorGenerator : mapGenerator
         }
     }
 
+    int[,] ChooseEncounters()
+    {
+        int[,] theEncounters = new int[16, 2];
+
+        int count = 0;
+        for (int i = 0; i < encounterSpots.Count; i++)
+        {
+            theEncounters[i, 0] = (int)encounterSpots[i].x;
+            theEncounters[i, 1] = (int)encounterSpots[i].y;
+            Instantiate(encounter, new Vector3((int)encounterSpots[i].x, (int)encounterSpots[i].y, 0f), Quaternion.identity);
+            count++;
+        }
+
+        for (int i = 0; i < (16 - count) - 4; i++)
+        {
+            int randomNum = rand.Next(1, highEncounterSpots.Count);
+            theEncounters[i, 0] = (int)highEncounterSpots[randomNum].x;
+            theEncounters[i, 1] = (int)highEncounterSpots[randomNum].y;
+            Instantiate(encounter, new Vector3((int)highEncounterSpots[i].x, (int)highEncounterSpots[i].y, 0f), Quaternion.identity);
+            count++;
+        }
+
+        for (int i = 0; i < 5; i ++)
+        {
+            int randomNum = rand.Next(1, lowEncounterSpots.Count);
+            theEncounters[i, 0] = (int)lowEncounterSpots[randomNum].x;
+            theEncounters[i, 1] = (int)lowEncounterSpots[randomNum].y;
+            Instantiate(encounter, new Vector3((int)lowEncounterSpots[i].x, (int)lowEncounterSpots[i].y, 0f), Quaternion.identity);
+            count++;
+        }
+
+        Debug.Log("COUNT"+count.ToString());
+
+        return theEncounters;
+    }
 
 }

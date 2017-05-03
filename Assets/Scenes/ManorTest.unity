@@ -144,6 +144,7 @@ MonoBehaviour:
   hedgeBRCorn: {fileID: 1491977536470446, guid: 5940fe3aeee69e04dba62eff2c7fdc4f,
     type: 2}
   shrub: {fileID: 1491977536470446, guid: 5940fe3aeee69e04dba62eff2c7fdc4f, type: 2}
+  encounter: {fileID: 159468, guid: adcb95610e951554485c508205f418d6, type: 2}
   buildings: []
   mainBuilding: {fileID: 0}
   debugging: 0
