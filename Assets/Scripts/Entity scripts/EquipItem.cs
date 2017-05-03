@@ -16,8 +16,7 @@ namespace ItemSpace
 		protected readonly int[] attackBonusTiers = new int[] {3, 6, 12, 25};
 		protected readonly int[] hpBonusTiers = new int[] {2, 5, 10, 15};
 
-		protected void setup(int weight, int prefixAttr, int prefixTier, int infixAttr, int infixTier, int suffixAttr, int suffixTier)
-		{
+		protected void setup(int weight, int prefixAttr, int prefixTier, int infixAttr, int infixTier, int suffixAttr, int suffixTier) {
 			attackMult = speedMult = dodgeBonus = blockBonus = 1;
 			attackBonus = hpBonus = 0;
 
@@ -29,6 +28,13 @@ namespace ItemSpace
 
 			CreateName (0, weight, AttrIndex (prefixAttr, prefixTier), 
 				AttrIndex (infixAttr, infixTier), AttrIndex (suffixAttr, suffixTier));
+		}
+
+		protected virtual void BuffWeight (int weight) {
+			if (weight == 0)
+				speedMult *= 1.05;
+			else
+				speedMult *= 0.95;
 		}
 
 		public void CreateName (int type, int weight, int prefix, int infix, int suffix) {
@@ -140,6 +146,7 @@ namespace ItemSpace
 		virtual public XElement serialize(){
 			XElement node = new XElement("weapon",
 				new XElement("name", this.name),
+				new XElement("weight", this.weight),
 				new XElement("attackMult", this.attackMult),
 				new XElement("speedMult", this.speedMult),
 				new XElement("attackBonus", this.attackBonus),
@@ -153,12 +160,13 @@ namespace ItemSpace
 		virtual public bool deserialize(XElement s){
 			List<XElement> info = s.Descendants().ToList();
 			name = info [0].Value;
-			attackMult = Convert.ToDouble (info [1].Value);
-			speedMult = Convert.ToDouble (info [2].Value);
-			attackBonus = Convert.ToInt16 (info [3].Value);
-			hpBonus = Convert.ToInt16 (info [4].Value);
-			dodgeBonus = Convert.ToDouble (info [5].Value);
-			blockBonus = Convert.ToDouble (info [6].Value);
+			weight = Convert.ToInt16 (info [1].Value);
+			attackMult = Convert.ToDouble (info [2].Value);
+			speedMult = Convert.ToDouble (info [3].Value);
+			attackBonus = Convert.ToInt16 (info [4].Value);
+			hpBonus = Convert.ToInt16 (info [5].Value);
+			dodgeBonus = Convert.ToDouble (info [6].Value);
+			blockBonus = Convert.ToDouble (info [7].Value);
 
 			return true;
 		}

@@ -6,15 +6,10 @@ namespace ItemSpace
 	{
 		public int[] AttackMinMax {
 			get {
-				double mult;
-				if (this.weight == 0)
-					mult = 0.9;
-				else if (this.weight == 1)
-					mult = 0.8;
-				else 
-					mult = 0.7;
+				int low = 2 + weight + attackBonus;
+				int high = low + 3;
 
-				return new int[] {(int)(attackMult * attackBonus * mult), (int)(attackMult*attackBonus)};
+				return new int[] {(int)(low * attackMult), (int)(high * attackMult)};
 			}
 		}
 	}

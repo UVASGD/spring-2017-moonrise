@@ -12,7 +12,7 @@ namespace ItemSpace
 		private static readonly string[] types = new string[] {
 			"Armor"	
 		}, weights = new string[] {
-			"Light", "Heavy"
+			"Light", "", "Heavy"
 		}, prefixes = new string[] {
 			"Yelling", "Shouting", "Screaming", "Bellowing",
 			"Lucky", "Fortunate", "Incredible", "Legendary",
@@ -42,6 +42,18 @@ namespace ItemSpace
 		public Armor(int weight, int prefixAttr, int prefixTier, int infixAttr, int infixTier, int suffixAttr, int suffixTier)
 		{
 			setup (weight, prefixAttr, prefixTier, infixAttr, infixTier, suffixAttr, suffixTier);
+		}
+
+		protected override void BuffWeight(int weight) {
+			base.BuffWeight (weight);
+			if (weight == 0) {
+				dodgeBonus *= 1.05;
+			} else if (weight == 1) {
+				dodgeBonus *= 1.025;
+				blockBonus *= 1.025;
+			} else {
+				blockBonus *= 1.05;
+			}
 		}
 
 		public static Armor RandomArmor() {
