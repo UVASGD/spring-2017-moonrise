@@ -15,7 +15,9 @@ namespace ItemSpace
 		private string infix;
 		private string suffix;
 
-		//private int range;
+		//NOTE
+		//all the important parts are solely in RandomTalisman and the 4 parameter constructor.
+		// I didn't remove the other stuff so as not to break anything.
 
 
 		private double [,] bonuses = new double[,]
@@ -75,28 +77,28 @@ namespace ItemSpace
 
 		private static List<int> weightProbs = new List<int> (new[] {
 			30, 40, 30
-		}),
-		lightPrefixProbs = new List<int> (new [] {
-			30, 12, 8, 2, 0, 0, 0, 0, 0, 0, 12, 8, 2, 12, 8, 2, 0, 0, 0, 3, 1
-		}),
-		mediumPrefixProbs = new List<int> (new [] {
-			30, 0, 0, 0, 12, 8, 2, 0, 0, 0, 12, 8, 2, 0, 0, 0, 12, 8, 2, 3, 1
-		}),
-		heavyPrefixProbs = new List<int> (new [] {
-			30, 0, 0, 0, 0, 0, 0, 12, 8, 2, 12, 8, 2, 0, 0, 0, 12, 8, 2, 3, 1
-		}),
-		infixProbs = new List<int> (new [] {
-			30, 25, 20, 10, 8, 4, 2, 1
-		}),
-		lightSuffixProbs = new List<int> (new [] {
-			30, 12, 8, 3, 12, 8, 3, 0, 0, 0, 12, 8, 3, 0, 0, 0, 1	
-		}),
-		mediumSuffixProbs = new List<int> (new [] {
-			30, 9, 0, 0, 0, 0, 0, 20, 8, 2, 20, 8, 2, 0, 0, 0, 1	
-		}),
-		heavySuffixProbs = new List<int> (new [] {
-			30, 0, 0, 0, 0, 0, 0, 12, 8, 3, 12, 8, 3, 12, 8, 3, 1	
 		});
+//		lightPrefixProbs = new List<int> (new [] {
+//			30, 12, 8, 2, 0, 0, 0, 0, 0, 0, 12, 8, 2, 12, 8, 2, 0, 0, 0, 3, 1
+//		}),
+//		mediumPrefixProbs = new List<int> (new [] {
+//			30, 0, 0, 0, 12, 8, 2, 0, 0, 0, 12, 8, 2, 0, 0, 0, 12, 8, 2, 3, 1
+//		}),
+//		heavyPrefixProbs = new List<int> (new [] {
+//			30, 0, 0, 0, 0, 0, 0, 12, 8, 2, 12, 8, 2, 0, 0, 0, 12, 8, 2, 3, 1
+//		}),
+//		infixProbs = new List<int> (new [] {
+//			30, 25, 20, 10, 8, 4, 2, 1
+//		}),
+//		lightSuffixProbs = new List<int> (new [] {
+//			30, 12, 8, 3, 12, 8, 3, 0, 0, 0, 12, 8, 3, 0, 0, 0, 1	
+//		}),
+//		mediumSuffixProbs = new List<int> (new [] {
+//			30, 9, 0, 0, 0, 0, 0, 20, 8, 2, 20, 8, 2, 0, 0, 0, 1	
+//		}),
+//		heavySuffixProbs = new List<int> (new [] {
+//			30, 0, 0, 0, 0, 0, 0, 12, 8, 3, 12, 8, 3, 12, 8, 3, 1	
+//		});
 
 		private static List<TalismanPrefix> prefixApostrophes = new List<TalismanPrefix>( new[] {
 			TalismanPrefix.Soldier, TalismanPrefix.Knight, TalismanPrefix.Captain, 
