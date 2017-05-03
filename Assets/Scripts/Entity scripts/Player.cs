@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
@@ -212,7 +212,9 @@ namespace Completed
 					GameObject.FindGameObjectWithTag ("transformbg").GetComponent<Renderer> ().enabled = false;
 					GetComponent<SpriteRenderer> ().sortingLayerName = "Units";
 					UpdateSprite ();
-					refreshHighlightRange ();
+					if (GameManager.instance.rangeHighlighted) {
+						refreshHighlightRange ();
+					}
 					GameManager.instance.playersTurn = false;
 				}
 				return;
@@ -660,10 +662,13 @@ namespace Completed
 				
 			} else if (character is Chest) {
 				Chest chest = (Chest)character;
-				AddItem (chest.item);
-				GameManager.instance.print ("A " + chest.item.Name + " was added to inventory");
-				GameObject.Find ("Map").GetComponent<MapLoader> ().cleanPixel ((int)chest.transform.position.x, (int)chest.transform.position.y);
-				Destroy (chest.gameObject);
+
+				ItemSpace.Item item = ItemSpace.Item.RandomItem ();
+				AddItem (item);
+				GameManager.instance.print ("A " + item.Name + " was added to inventory");
+                GameObject.Find("Map").GetComponent<MapLoader>().cleanPixel((int)chest.transform.position.x,(int)chest.transform.position.y);
+                Destroy (chest.gameObject);
+
 			}
 		}
 
@@ -765,7 +770,6 @@ namespace Completed
 		//Switchs form (human or werewolf); updates hp and sprite
 		private void switchForm ()
 		{
-			
 			GameManager.instance.isWerewolf = !GameManager.instance.isWerewolf;
 			if (GameManager.instance.isWerewolf) {
 				if (sneaking) {

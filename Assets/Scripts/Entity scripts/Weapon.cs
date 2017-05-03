@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Completed;
 using UnityEngine;
@@ -16,7 +16,6 @@ namespace ItemSpace
 		private WeaponSuffix suffix;
 
 		private int range;
-
 
 
 		private static List<int> weightProbs = new List<int> (new[] {
