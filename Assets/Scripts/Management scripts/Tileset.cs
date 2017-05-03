@@ -16,6 +16,7 @@ public class Tileset : MonoBehaviour {
 
 	public void buildMap(char[,] tiles){
 		GameObject tileChoice = null;
+		int[,] ePos = new int[30, 2];
 		tileMap = new char[tiles.GetLength(0),tiles.GetLength(1)-1];
 		boardMap = new int[tiles.GetLength(0),tiles.GetLength(1)-1];
 		Vector2 offset = new Vector2(0,0);
@@ -33,7 +34,9 @@ public class Tileset : MonoBehaviour {
 					boardMap[x,y] = 1;
 					break;
 				case 'r':
-					tileChoice = roads[Random.Range(0, roads.Length)];
+					int rand = Random.Range (0, roads.Length);
+					Debug.Log (rand);
+					tileChoice = roads[rand];
 
 					boardMap[x,y] = 0;
 					break;
@@ -44,28 +47,37 @@ public class Tileset : MonoBehaviour {
 					}
 					boardMap[x,y] = 1;
 					break;
+				case 'e':
+					if (Random.value < 0.5)
+						GameObject.Find ("dataSlave").GetComponent<EncounterManager> ().makeEncounter (new Vector2 (x, y));
+
+					tileChoice = floors [Random.Range (0, floors.Length)];
+					boardMap [x, y] = 0;
+					break;
 				case 'f':
 					tileChoice = floors[Random.Range(0, floors.Length)];
 					boardMap[x,y] = 0;
 
 					break;
 				case 'g':
-					tileChoice = grass[Random.Range(0, floors.Length)];
+					tileChoice = grass[Random.Range(0, grass.Length)];
 					boardMap[x,y] = 0;
 
 					break;
 				case 'b':
-					tileChoice = buildingwall[Random.Range(0, floors.Length)];
+					tileChoice = buildingwall[Random.Range(0, buildingwall.Length)];
 					boardMap[x,y] = 1;
 
 					break;
 				case 'd':
-					tileChoice = door[Random.Range(0, floors.Length)];
+					if (door.Length == 0)
+						break;
+					tileChoice = door[Random.Range(0, door.Length)];
 					boardMap[x,y] = 0;
 
 					break;
 				case 's':
-					tileChoice = sidewalk[Random.Range(0, floors.Length)];
+					tileChoice = sidewalk[Random.Range(0, sidewalk.Length)];
 					boardMap[x,y] = 0;
 
 					break;

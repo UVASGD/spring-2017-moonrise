@@ -486,7 +486,7 @@ Prefab:
         type: 2}
       propertyPath: grass.Array.data[0]
       value: 
-      objectReference: {fileID: 1000013810770954, guid: b8f2a1a7139bf4450a84b3a11048584e,
+      objectReference: {fileID: 1764647640115434, guid: 8c5141dbd4993c54bb1d4f5e1730798e,
         type: 2}
     - target: {fileID: 114000013468570512, guid: fadfe78a7b895c04995ca175329c0a23,
         type: 2}
@@ -540,8 +540,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   road: {fileID: 1076556290550182, guid: 48af6109c0327e44789d4f5ce7b5d48e, type: 2}
-  grass: {fileID: 1000013810770954, guid: b8f2a1a7139bf4450a84b3a11048584e, type: 2}
-  sidewalk: {fileID: 1812297932148458, guid: 12534291b65535146ac6aabc3836027e, type: 2}
+  grass: {fileID: 1764647640115434, guid: 8c5141dbd4993c54bb1d4f5e1730798e, type: 2}
+  sidewalk: {fileID: 1073900422594574, guid: afc5bce0c30b50e488d5678d47ca33b0, type: 2}
   wall: {fileID: 1000010340017046, guid: 417786bae87d641b69409c0496ce833d, type: 2}
   buildingWall: {fileID: 1918663583911054, guid: 0623b5f2a65f30b40a92f110af155a22,
     type: 2}

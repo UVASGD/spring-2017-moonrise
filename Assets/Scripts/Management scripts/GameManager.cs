@@ -155,7 +155,8 @@ namespace Completed
 				boardScript.tileMap = Tileset.instance.tileMap;
 
 				boardScript.fogTiles = new GameObject[boardScript.boardMap.GetLength(0) + 2, boardScript.boardMap.GetLength(1) + 2];
-
+				boardScript.rows = boardScript.boardMap.GetLength (1); 
+				boardScript.columns = boardScript.boardMap.GetLength (0);
                 //Loops through entire board, creating fog
                 for (x = -1; x < boardScript.boardMap.GetLength(0) + 1; x++)
 				{
@@ -258,7 +259,6 @@ namespace Completed
 
 		public void Save(){
 			XElement area = boardScript.serialize();
-
 			XElement saveDoc = new XElement("save",
 				new XElement("curMap",boardScript.area),
 				player.serialize(),

@@ -19,3 +19,5 @@ EditorBuildSettings:
     path: Assets/Scenes/University.unity
   - enabled: 1
     path: Assets/Scenes/Government.unity
+  - enabled: 1
+    path: Assets/Scenes/ManorTest.unity

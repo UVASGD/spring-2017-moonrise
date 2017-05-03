@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Completed;
 
 public class ManorPrefab
 {
@@ -2572,8 +2573,17 @@ public class ManorGenerator : mapGenerator
         GenerateGridFromKey(gridKey); //generate initial grid (keep at bottom of function)
 
         encounters = ChooseEncounters();
+		this.tileMap = gridKey;
 
-        return boardMap;
+		int[,] flipMap = new int[gridSize, gridSize];
+		for (int x = 0; x < gridSize; x++) {
+			for (int y = 0; y < gridSize; y++) {
+				flipMap [x, y] = boardMap [y, x];
+
+			}
+		}
+
+        return flipMap;
     }
 
 
@@ -2606,24 +2616,27 @@ public class ManorGenerator : mapGenerator
                     switch (gridKey[h, w])
                     {
                         case 'g': currentTile = grass; break;
-                        case 'R': currentTile = road; break;
-                        case 'b': currentTile = road; break;
-                        case 't': currentTile = road; break;
-                        case 'p': currentTile = gardenPath; break;
-                        case 'G': currentTile = gardenTile; break;
-                        case 'f': currentTile = floor; break;
-                        case 'm': currentTile = manorSpace; break;
-                        case 'v': currentTile = hedgeVert; break;
-                        case 'h': currentTile = hedgeLat; break;
-                        case '7': currentTile = hedgeULCorn; break;
-                        case '9': currentTile = hedgeURCorn; break;
-                        case '1': currentTile = hedgeBLCorn; break;
-                        case '3': currentTile = hedgeBRCorn; break;
+				case 'R':
+					currentTile = road;
+					gridKey [h, w] = 'r';
+					break;
+						case 'b': currentTile = road; gridKey [h, w] = 'r';break;
+						case 't': currentTile = road; gridKey [h, w] = 'r';break;
+				case 'p': currentTile = gardenPath;gridKey [h, w] = 'g'; break;
+				case 'G': currentTile = gardenTile;gridKey [h, w] = 'g'; break;
+				case 'f': currentTile = floor;gridKey [h, w] = 'f'; break;
+				case 'm': currentTile = manorSpace;gridKey [h, w] = 'w'; break;
+				case 'v': currentTile = hedgeVert; gridKey [h, w] = 'b';break;
+				case 'h': currentTile = hedgeLat; gridKey [h, w] = 'n';break;
+				case '7': currentTile = hedgeULCorn;gridKey [h, w] = 'b'; break;
+				case '9': currentTile = hedgeURCorn;gridKey [h, w] = 'b'; break;
+				case '1': currentTile = hedgeBLCorn;gridKey [h, w] = 'b'; break;
+				case '3': currentTile = hedgeBRCorn;gridKey [h, w] = 'b'; break;
 
-                        case 'H': currentTile = floor; highEncounterSpots.Add(new Vector2(w, h)); break;
-                        case 'L': currentTile = floor; lowEncounterSpots.Add(new Vector2(w, h)); break;
-                        case 'M': currentTile = floor; encounterSpots.Add(new Vector2(w, h)); break;
-                        case 'O': currentTile = grass; encounterSpots.Add(new Vector2(w, h)); break;
+				case 'H': currentTile = floor; highEncounterSpots.Add(new Vector2(w, h));gridKey [h, w] = 'e'; break;
+				case 'L': currentTile = floor; lowEncounterSpots.Add(new Vector2(w, h));gridKey [h, w] = 'e'; break;
+				case 'M': currentTile = floor; encounterSpots.Add(new Vector2(w, h));gridKey [h, w] = 'e'; break;
+				case 'O': currentTile = grass; encounterSpots.Add(new Vector2(w, h));gridKey [h, w] = 'e'; break;
 
                         //case 's': currentTile = shrub; break;
                         case 'd': InsertManor(h, w, 3, false); break;
@@ -2642,9 +2655,9 @@ public class ManorGenerator : mapGenerator
                 if ((currentTile == grass || currentTile == gardenTile ) && rand.Next(1,129) % 8 == 0)
                     currentTile = flowers;
 
-                if (currentTile == road && (h == 0 || w == 0 || h == gridSize-1 || w == gridSize-1))
+				/* if (currentTile == road && (h == 0 || w == 0 || h == gridSize-1 || w == gridSize-1))
                 {
-                    string place = "Center";
+					string place = "Center";
                     GameObject newDoor = Instantiate(door, new Vector3(w, h, 0f), Quaternion.identity) as GameObject;
 
                     if (h == gridSize - 1)
@@ -2654,7 +2667,7 @@ public class ManorGenerator : mapGenerator
                     else if (w == gridSize - 1)
                         place = "Governemnt";
                     newDoor.GetComponent<ExitPos>().setTarget(place);
-                }
+                }*/
 
                 if (currentTile != null)
                 {
@@ -2788,14 +2801,13 @@ public class ManorGenerator : mapGenerator
             case 3: Rotate(M.map, M.block, i, j, 3); break;
             case 2: Rotate(M.map, M.block, i, j, 2) ; break;
             case 1: Rotate(M.map, M.block, i, j, 1); break;
-            case 0: Rotate(M.map, M.block, i, j, 0); Debug.Log("OHOHOHO"); break;
+            case 0: Rotate(M.map, M.block, i, j, 0); break;
         }
         
 
     }
 
     void Rotate(char[,] charArr, int[,] boardArr, int h, int w, int numRotates) {
-        Debug.Log("faaantasy");
         int l = charArr.GetLength(0);
         char[,] ret = new char[l, l];
         int[,] retN = new int[l, l];
@@ -2862,27 +2874,33 @@ public class ManorGenerator : mapGenerator
         int count = 0;
         for (int i = 0; i < encounterSpots.Count; i++)
         {
-            theEncounters[i, 0] = (int)encounterSpots[i].x;
-            theEncounters[i, 1] = (int)encounterSpots[i].y;
-            Instantiate(encounter, new Vector3((int)encounterSpots[i].x, (int)encounterSpots[i].y, 0f), Quaternion.identity);
+            /*theEncounters[i, 0] = (int)encounterSpots[i].x;
+            theEncounters[i, 1] = (int)encounterSpots[i].y;*/
+			if(rand.Next(1) < .5)
+				GameObject.Find ("dataSlave").GetComponent<EncounterManager> ().makeEncounter (encounterSpots [i]);
+            //Instantiate(encounter, new Vector3((int)encounterSpots[i].x, (int)encounterSpots[i].y, 0f), Quaternion.identity);
             count++;
         }
 
         for (int i = 0; i < 8; i++)
         {
             int randomNum = rand.Next(1, highEncounterSpots.Count);
-            theEncounters[i, 0] = (int)highEncounterSpots[randomNum].x;
-            theEncounters[i, 1] = (int)highEncounterSpots[randomNum].y;
-            Instantiate(encounter, new Vector3((int)highEncounterSpots[i].x, (int)highEncounterSpots[i].y, 0f), Quaternion.identity);
+            //theEncounters[i, 0] = (int)highEncounterSpots[randomNum].x;
+			//theEncounters[i, 1] = (int)highEncounterSpots[randomNum].y;*/
+			if(rand.Next(1) < .5)
+				GameObject.Find ("dataSlave").GetComponent<EncounterManager> ().makeEncounter (highEncounterSpots[randomNum]);
+            //Instantiate(encounter, new Vector3((int)highEncounterSpots[i].x, (int)highEncounterSpots[i].y, 0f), Quaternion.identity);
             count++;
         }
 
         for (int i = 0; i < 5; i ++)
         {
             int randomNum = rand.Next(1, lowEncounterSpots.Count);
-            theEncounters[i, 0] = (int)lowEncounterSpots[randomNum].x;
-            theEncounters[i, 1] = (int)lowEncounterSpots[randomNum].y;
-            Instantiate(encounter, new Vector3((int)lowEncounterSpots[i].x, (int)lowEncounterSpots[i].y, 0f), Quaternion.identity);
+            /*theEncounters[i, 0] = (int)lowEncounterSpots[randomNum].x;
+			theEncounters[i, 1] = (int)lowEncounterSpots[randomNum].y;*/
+			if(rand.Next(1) < .5)
+				GameObject.Find ("dataSlave").GetComponent<EncounterManager> ().makeEncounter (lowEncounterSpots[randomNum]);
+            //Instantiate(encounter, new Vector3((int)lowEncounterSpots[i].x, (int)lowEncounterSpots[i].y, 0f), Quaternion.identity);
             count++;
         }
 
