@@ -13,9 +13,9 @@ public class EntertainmentGenerator : mapGenerator
     public GameObject door;
 
     public GameObject b1;
-    public GameObject b2;
-    public GameObject b3;
-    public GameObject b4;
+    //public GameObject b2;
+    //public GameObject b3;
+    //public GameObject b4;
     public GameObject b5;
     public GameObject b6;
     public GameObject b7;
@@ -125,7 +125,8 @@ public class EntertainmentGenerator : mapGenerator
                 {
                     int i = Random.Range(loc[0], loc[0]+3);
                     gridKey[i, j] = 'G';
-                    j += 3;
+                    placeBuilding(j, loc[0]+3);
+                    j += 2;
                 }
             }
 
@@ -555,10 +556,10 @@ public class EntertainmentGenerator : mapGenerator
 
     //PLACE PRETTY BUILDINGS
     void placeBuilding(int w, int h) {
-        int r = Random.Range(49, 58);
+        int r = Random.Range(49, 54);
         char c = (char)r;
         gridKey[h, w] = c;
-    } 
+    }
 
     //THIS CONVERTS THE CHARACTER ARRAY TO AN ARRAY OF TILE OBJECTS IT ALSO ADDS ENCOUNTERS
 
@@ -613,24 +614,22 @@ public class EntertainmentGenerator : mapGenerator
             {
                 GameObject currentTile = null;
                 switch (gridKey[h, w]) {
-                    case 'G': currentTile = casinoWall; addEncounter(h, w); break;
+                    case 'G': currentTile = floor; addEncounter(h, w); break;
                     case 'g': currentTile = floor; break;
                     case 'w': currentTile = wall; break;
-                    case 'v': currentTile = floor; addEncounter(h, w); break;
+                    case 'v': currentTile = casinoFloor; addEncounter(h, w); break;
                     case 'c': currentTile = casinoFloor; break;
                     case 'C': currentTile = casinoWall; break;
-                    case 's': currentTile = wall; addEncounter(h, w); break;
+                    case 's': currentTile = asylumFloor; addEncounter(h, w); break;
                     case 'a': currentTile = asylumFloor; break;
                     case 'A': currentTile = asylumWall; break;
-                    case '1': currentTile = b1; break;
-                    case '2': currentTile = b2; break;
-                    case '3': currentTile = b3; break;
-                    case '4': currentTile = b4; break;
-                    case '5': currentTile = b5; break;
-                    case '6': currentTile = b6; break;
-                    case '7': currentTile = b7; break;
-                    case '8': currentTile = b8; break;
+                    case '1': currentTile = b5; break;
+                    case '2': currentTile = b6; break;
+                    case '3': currentTile = b7; break;
+                    case '4': currentTile = b1; break;
+                    case '5': currentTile = b8; break;
                     case '0': currentTile = null; break;
+                    default : currentTile = b5; break;
                 }
 
                 if (currentTile == floor && (h == 0 || w == 0 || h == gridSize - 1 || w == gridSize - 1)) {
