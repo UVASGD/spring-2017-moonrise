@@ -939,6 +939,10 @@ namespace Completed
 				XElement armor = new XElement("armor",this.equippedItems.Armor.serialize());
 				equipNode.Add(armor);
 			}
+			if(this.equippedItems.Talisman != null){
+				XElement talisman = new XElement("talisman",this.equippedItems.Talisman.serialize());
+				equipNode.Add(talisman);
+			}
 			node.Add(equipNode);
 
 			node.Add(new XElement("gold", GameManager.instance.playerGoldPoints));

@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using Completed;
+using UnityEngine;
+using System.Xml.Linq;
+using System.Linq;
 
 namespace ItemSpace
 {
-	public class Armor : EquipItem
+	public class Armor : EquipItem, SerialOb
 	{
+		private ArmorType type;
 		private ArmorWeight weight;
 		private ArmorPrefix prefix;
 		private ArmorInfix infix;
@@ -13,7 +19,17 @@ namespace ItemSpace
 
 		public Armor(ArmorType type, ArmorWeight weight, ArmorPrefix prefix, ArmorInfix infix, ArmorSuffix suffix)
 		{
+			setup (type, weight, prefix, infix, suffix);
+		}
+
+		private void setup(ArmorType type, ArmorWeight weight, ArmorPrefix prefix, ArmorInfix infix, ArmorSuffix suffix)
+		{
 			this.itemClass = ItemClass.Armor;
+			this.type = type;
+			this.weight = weight;
+			this.prefix = prefix;
+			this.infix = infix;
+			this.suffix = suffix;
 
 			dodgeBonus = 0;
 			blockBonus = 0;
@@ -71,6 +87,28 @@ namespace ItemSpace
 			get {
 				return blockBonus;
 			}
+		}
+
+		virtual public XElement serialize(){
+			XElement node = new XElement("weapon",
+				new XElement("type", (int)this.type),
+				new XElement("weight", (int)this.weight),
+				new XElement("prefix", (int)this.prefix),
+				new XElement("infix", (int)this.infix),
+				new XElement("suffix", (int)this.suffix));
+
+			return node;
+		}
+
+		virtual public bool deserialize(XElement s){
+			List<XElement> info = s.Descendants().ToList();
+			setup((ArmorType)Convert.ToDouble(info[0].Value),
+				(ArmorWeight)Convert.ToDouble(info[1].Value),
+				(ArmorPrefix)Convert.ToDouble(info[2].Value),
+				(ArmorInfix)Convert.ToDouble(info[3].Value),
+				(ArmorSuffix)Convert.ToDouble(info[4].Value));
+
+			return true;
 		}
 	}
 
