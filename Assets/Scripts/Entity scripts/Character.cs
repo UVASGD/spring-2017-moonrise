@@ -186,7 +186,6 @@ namespace Completed
 			EquipItem equippable;
 			if (item is EquipItem) {
 				equippable = (EquipItem)item;
-				// Debug.Log ("remove item should be true:" + RemoveItem (equippable));
 				if (RemoveItem (equippable)) {
 					Debug.Log ("successfully removed item during equip");
 
@@ -216,6 +215,7 @@ namespace Completed
 				this.meleeBlock *= item.BlockBonus;
 			}
 			else { //unequipped
+				Debug.Log("in else of updatestats");
 				if (!(item is Weapon)) {
 					this.meleeDamage -= item.AttackBonus;
 					this.meleeMult /= item.AttackMult;
