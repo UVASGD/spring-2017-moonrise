@@ -50,9 +50,9 @@ namespace ItemSpace
 				dodgeBonus *= 1.05;
 			} else if (weight == 1) {
 				dodgeBonus *= 1.025;
-				blockBonus *= 1.025;
+				fortifyBonus *= 1.025;
 			} else {
-				blockBonus *= 1.05;
+				fortifyBonus *= 1.05;
 			}
 		}
 

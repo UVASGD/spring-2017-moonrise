@@ -8,7 +8,7 @@ namespace ItemSpace
 {
 	public abstract class EquipItem : Item
 	{
-		protected double attackMult, speedMult, dodgeBonus, blockBonus;
+		protected double attackMult, speedMult, dodgeBonus, fortifyBonus;
 		protected int attackBonus, hpBonus;
 		protected int weight;
 
@@ -17,7 +17,7 @@ namespace ItemSpace
 		protected readonly int[] hpBonusTiers = new int[] {2, 5, 10, 15};
 
 		protected void setup(int weight, int prefixAttr, int prefixTier, int infixAttr, int infixTier, int suffixAttr, int suffixTier) {
-			attackMult = speedMult = dodgeBonus = blockBonus = 1;
+			attackMult = speedMult = dodgeBonus = fortifyBonus = 1;
 			attackBonus = hpBonus = 0;
 
 			this.weight = weight;
@@ -139,7 +139,7 @@ namespace ItemSpace
 
 		public double BlockBonus {
 			get {
-				return blockBonus;
+				return fortifyBonus;
 			}
 		}
 
@@ -152,7 +152,7 @@ namespace ItemSpace
 				new XElement("attackBonus", this.attackBonus),
 				new XElement("hpBonus", this.hpBonus),
 				new XElement("dodgeBonus", this.dodgeBonus),
-				new XElement("blockBonus", this.blockBonus));
+				new XElement("blockBonus", this.fortifyBonus));
 
 			return node;
 		}
@@ -166,7 +166,7 @@ namespace ItemSpace
 			attackBonus = Convert.ToInt16 (info [4].Value);
 			hpBonus = Convert.ToInt16 (info [5].Value);
 			dodgeBonus = Convert.ToDouble (info [6].Value);
-			blockBonus = Convert.ToDouble (info [7].Value);
+			fortifyBonus = Convert.ToDouble (info [7].Value);
 
 			return true;
 		}
