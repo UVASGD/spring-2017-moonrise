@@ -212,7 +212,9 @@ namespace Completed
 					GameObject.FindGameObjectWithTag ("transformbg").GetComponent<Renderer> ().enabled = false;
 					GetComponent<SpriteRenderer> ().sortingLayerName = "Units";
 					UpdateSprite ();
-					refreshHighlightRange ();
+					if (GameManager.instance.rangeHighlighted) {
+						refreshHighlightRange ();
+					}
 					GameManager.instance.playersTurn = false;
 				}
 				return;
@@ -762,7 +764,6 @@ namespace Completed
 		//Switchs form (human or werewolf); updates hp and sprite
 		private void switchForm ()
 		{
-			
 			GameManager.instance.isWerewolf = !GameManager.instance.isWerewolf;
 			if (GameManager.instance.isWerewolf) {
 				if(sneaking) {
