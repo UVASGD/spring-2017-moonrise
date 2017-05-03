@@ -11,10 +11,15 @@ namespace ItemSpace
 		protected double attackMult, speedMult, dodgeBonus, fortifyBonus;
 		protected int attackBonus, hpBonus;
 		protected int weight;
+		protected string itemType;
 
 		protected readonly double[] multTiers = new double[] {1.1, 1.25, 1.5, 2};
 		protected readonly int[] attackBonusTiers = new int[] {3, 6, 12, 25};
 		protected readonly int[] hpBonusTiers = new int[] {2, 5, 10, 15};
+
+		protected void setType(string s){
+			itemType = s;
+		}
 
 		protected void setup(int weight, int prefixAttr, int prefixTier, int infixAttr, int infixTier, int suffixAttr, int suffixTier) {
 			attackMult = speedMult = dodgeBonus = fortifyBonus = 1;
@@ -144,7 +149,7 @@ namespace ItemSpace
 		}
 
 		virtual public XElement serialize(){
-			XElement node = new XElement("weapon",
+			XElement node = new XElement(this.itemType,
 				new XElement("name", this.name),
 				new XElement("weight", this.weight),
 				new XElement("attackMult", this.attackMult),
@@ -160,6 +165,7 @@ namespace ItemSpace
 		virtual public bool deserialize(XElement s){
 			List<XElement> info = s.Descendants().ToList();
 			name = info [0].Value;
+			UnityEngine.Debug.Log (info [1].Value);
 			weight = Convert.ToInt16 (info [1].Value);
 			attackMult = Convert.ToDouble (info [2].Value);
 			speedMult = Convert.ToDouble (info [3].Value);

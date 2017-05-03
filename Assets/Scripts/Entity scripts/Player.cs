@@ -943,6 +943,10 @@ namespace Completed
 				XElement item = new XElement("Item");
 				if(this.inventory.Items[i].GetType() == typeof(ItemSpace.Weapon))
 					item = ((ItemSpace.Weapon)this.inventory.Items[i]).serialize();
+				if(this.inventory.Items[i].GetType() == typeof(ItemSpace.Armor))
+					item = ((ItemSpace.Armor)this.inventory.Items[i]).serialize();
+				if(this.inventory.Items[i].GetType() == typeof(ItemSpace.Talisman))
+					item = ((ItemSpace.Talisman)this.inventory.Items[i]).serialize();
 				inventoryNode.Add(item);
 			}
 
@@ -954,11 +958,11 @@ namespace Completed
 				equipNode.Add(weapon);
 			}
 			if(this.equippedItems.Armor != null){
-				XElement armor = new XElement("armor",this.equippedItems.Armor.serialize());
+				XElement armor = ((ItemSpace.Armor)(this.equippedItems.Armor)).serialize();
 				equipNode.Add(armor);
 			}
 			if(this.equippedItems.Talisman != null){
-				XElement talisman = new XElement("talisman",this.equippedItems.Talisman.serialize());
+				XElement talisman = ((ItemSpace.Talisman)(this.equippedItems.Talisman)).serialize();
 				equipNode.Add(talisman);
 			}
 			node.Add(equipNode);
@@ -998,6 +1002,16 @@ namespace Completed
 					w.deserialize(i);
 					inventory.AddItem(w);
 				}
+				if(i.Name.ToString().Equals("armor")){
+					ItemSpace.Armor w = new ItemSpace.Armor();
+					w.deserialize(i);
+					inventory.AddItem(w);
+				}
+				if(i.Name.ToString().Equals("talisman")){
+					ItemSpace.Talisman w = new ItemSpace.Talisman();
+					w.deserialize(i);
+					inventory.AddItem(w);
+				}
 			}
 			XElement equippedEle = info[15];
 			foreach(XElement i in equippedEle.Elements()){
@@ -1008,6 +1022,18 @@ namespace Completed
 					Debug.Log(w.Name);
 					equippedItems.Equip(w);
                     InventoryManagerAlt.instance.RefreshEquippedItems();
+				}
+				if(i.Name.ToString().Equals("armor")){
+					ItemSpace.Armor w = new ItemSpace.Armor();
+					w.deserialize(i);
+					equippedItems.Equip(w);
+					InventoryManagerAlt.instance.RefreshEquippedItems();
+				}
+				if(i.Name.ToString().Equals("talisman")){
+					ItemSpace.Talisman w = new ItemSpace.Talisman();
+					w.deserialize(i);
+					equippedItems.Equip(w);
+					InventoryManagerAlt.instance.RefreshEquippedItems();
 				}
 			}
 			return true;

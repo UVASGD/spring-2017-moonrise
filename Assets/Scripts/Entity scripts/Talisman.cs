@@ -39,9 +39,12 @@ namespace ItemSpace
 			""
 		};
 
+		public Talisman () : this (1, 6, 0, 6, 0, 6, 0) {}
+
 		public Talisman(int weight, int prefixAttr, int prefixTier, int infixAttr, int infixTier, int suffixAttr, int suffixTier)
 		{
 			setup (weight, prefixAttr, prefixTier, infixAttr, infixTier, suffixAttr, suffixTier);
+			setType ("talisman");
 		}
 
 		public static Talisman RandomTalisman() {

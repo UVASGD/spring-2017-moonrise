@@ -9,6 +9,7 @@ namespace ItemSpace
 {
 	public class Armor : EquipItem, SerialOb
 	{
+		
 		private static readonly string[] types = new string[] {
 			"Armor"	
 		}, weights = new string[] {
@@ -38,10 +39,12 @@ namespace ItemSpace
 			"of Iron", "of Bronze", "of Steel", "of Mithril",
 			""
 		};
+		public Armor () : this (1, 6, 0, 6, 0, 6, 0) {}
 
 		public Armor(int weight, int prefixAttr, int prefixTier, int infixAttr, int infixTier, int suffixAttr, int suffixTier)
 		{
 			setup (weight, prefixAttr, prefixTier, infixAttr, infixTier, suffixAttr, suffixTier);
+			setType ("armor");
 		}
 
 		protected override void BuffWeight(int weight) {

@@ -564,7 +564,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 473c8e909aafc1d419af3b3889beb783, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemPrefab: {fileID: 1107974690459170, guid: f08857e54d80942d5bb0695a3a54fa88, type: 2}
+  itemPrefab: {fileID: 1215202161896828, guid: a58507a0db631d24c9f6565ca7feaaf9, type: 2}
 --- !u!114 &933345193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -751,7 +751,7 @@ Prefab:
     - target: {fileID: 224014199200221146, guid: cfbdc5e0d5eaac9499851a73db3c06b6,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 14.966135
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114465382019589760, guid: cfbdc5e0d5eaac9499851a73db3c06b6,
         type: 2}

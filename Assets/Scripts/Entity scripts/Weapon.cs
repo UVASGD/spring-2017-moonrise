@@ -44,6 +44,7 @@ namespace ItemSpace
 		public Weapon(int weight, int prefixAttr, int prefixTier, int infixAttr, int infixTier, int suffixAttr, int suffixTier)
 		{
 			setup (weight, prefixAttr, prefixTier, infixAttr, infixTier, suffixAttr, suffixTier);
+			setType ("weapon");
 		}
 
 		public static Weapon RandomWeapon() {
