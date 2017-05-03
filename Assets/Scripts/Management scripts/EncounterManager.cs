@@ -10,6 +10,8 @@ public class EncounterManager : MonoBehaviour {
 	private GameObject dialogueBox;
 	private List<Encounter> encounters = new List<Encounter>();
 
+	private bool onMac = false;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -39,12 +41,19 @@ public class EncounterManager : MonoBehaviour {
 	/// Loads all encounters, this will probably be a high runtime function pls run only at boot
 	/// </summary>
 	public void loadEncounters(){
-		var files = Directory.GetFiles(Directory.GetCurrentDirectory()+"\\Encounters");
+		string[] files;
+		try {
+			files = Directory.GetFiles(Directory.GetCurrentDirectory()+"\\Encounters");
+		}
+		catch {
+			onMac = true;
+			files = Directory.GetFiles(Directory.GetCurrentDirectory()+"/Encounters");
+		}
 		foreach (string fileName in files)
 		{
 			Debug.Log(fileName);
-			string[] name = fileName.Split('\\');
-			Encounter e = new Encounter("Encounters\\"+name[name.Length-1]);
+			string[] name = onMac ? fileName.Split ('/') : fileName.Split ('\\');
+			Encounter e = new Encounter((onMac ? "Encounters/":"Encounters\\") +name[name.Length-1]+"");
 			encounters.Add(e);
 		}
 	}
@@ -58,4 +67,4 @@ public class EncounterManager : MonoBehaviour {
 		EncounterInstance eI = new EncounterInstance(e,pos,NPCPrefab, dialogueBox);
 		return eI;
 	}
-}
+} 

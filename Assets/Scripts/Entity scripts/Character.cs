@@ -186,6 +186,7 @@ namespace Completed
 			EquipItem equippable;
 			if (item is EquipItem) {
 				equippable = (EquipItem)item;
+				Debug.Log ("remove item should be true:" + RemoveItem (equippable));
 				if (RemoveItem (equippable)) {
 					Item unequipped = equippedItems.Unequip (equippable.ItemClass);
 					if (equippable != null) {
