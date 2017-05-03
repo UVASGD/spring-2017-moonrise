@@ -16,7 +16,7 @@ namespace ItemSpace
 		private WeaponSuffix suffix;
 
 		private int range;
-
+		//add these to equipitem to be accessed for alll items that are equipped
 		private int attackBonus, hpBonus;
 		private double attackMult, speedMult;
 
