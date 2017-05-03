@@ -19,7 +19,7 @@ namespace Completed
 
         public float levelStartDelay = 2f;                      
         public float turnDelay = 0.1f;                          
-        public int playerGoldPoints = 100;
+        public int playerGoldPoints = 0;
 		public bool isWerewolf = false;
 		public bool rangeHighlighted = false;
         public static GameManager instance = null;              
@@ -87,7 +87,8 @@ namespace Completed
 					player.deserialize(dataSlave.instance.playerSave);
 				}
             }
-			
+
+			GameObject.Find("dataSlave").GetComponent<EncounterManager>().makeEncounter();
 
             doingSetup = true;
 
@@ -179,16 +180,17 @@ namespace Completed
 				boardScript.BuildExits();
 				boardScript.LayoutGoodies();
 
-				string logOut = "";
+				//string logOut = "";
+				//
 				int[,] fixMap = new int[charMap.GetLength(0), charMap.GetLength(1)];
-				for(x = 0; x < charMap.GetLength(1); x++){
+				/*for(x = 0; x < charMap.GetLength(1); x++){
 					for(y = 0; y < charMap.GetLength(0); y++){
 						logOut += charMap[y,x]+" ";
 						//		fixMap[x,y] = boardMap[y,x];
 					}
 					logOut += "\n";
 				}
-				Debug.Log(logOut);
+				Debug.Log(logOut);*/
 				//boardMap = fixMap;
 
 				if(dataSlave.instance.curLoc.Value != boardScript.reverseAreaLookup[boardScript.area]){

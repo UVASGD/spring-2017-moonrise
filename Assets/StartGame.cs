@@ -32,7 +32,6 @@ public class StartGame : MonoBehaviour {
 
 	static public void load(){
 		string[] files = null;
-
 		files = Directory.GetFiles(Directory.GetCurrentDirectory());
 		foreach (string fileName in files)
 		{

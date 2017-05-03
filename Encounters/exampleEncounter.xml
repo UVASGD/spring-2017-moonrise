@@ -1,0 +1,66 @@
+<encounter>
+<flags>
+	<areas>MUG</areas>	<!--Single character relating to area-->
+	<hp></hp>			<!--=/>/< number-->
+	<form></form>		<!--human/wolf-->
+	<ability></ability>	<!--AbilityName:level-->
+	<area>1x1</area>	<!--size of the encounter, requires that large of an area to spawn-->
+</flags>
+<type>NPC</type>		<!--NPC, Trigger. NPCs are... NPCs. they'll require a tile image. A trigger will be passable, and the encounter triggers the first -->
+<requirements>
+	<zone>Market</zone>
+	<form>Human</form>
+</requirements>
+<dialogue>
+	<dialoguepath></dialoguepath>
+	<text>A man in a rough tunic stands by a nearly empty box of bottles, filled with a mysterious liquid. He looks up as you approach.
+"Excuse me miss, but would you be interested in buying a cure-all tincture? Only 20 silvers!"</text>
+	<result></result>
+	<option>
+		<optionNum>1</optionNum>
+		<requirements>silver:20</requirements>
+		<text>Purchase the tincture</text>
+	</option>
+	<option>
+		<optionNum>2</optionNum>
+		<requirements></requirements>
+		<text>Refuse the tincture</text>
+	</option>
+	<option>
+		<optionNum>3</optionNum>
+		<requirements>growl:2</requirements>
+		<text>Demand the merchant GIVE you the potion (Requires Growl: 2)</text>
+	</option>
+</dialogue>
+<dialogue>
+	<dialoguepath>1</dialoguepath>
+	<text>The merchant eagerly nods, handing you the potion. "Why thank you, miss. You won't regret your purchase!"</text>
+	<result>health:50_silver:-20</result>
+	<option>
+		<optionNum>1</optionNum>
+		<requirements></requirements>
+		<text>Thanks!</text>
+	</option>
+</dialogue>
+<dialogue>
+	<dialoguepath>2</dialoguepath>
+	<text>The merchant frowns, shaking his head. "Very well, I'll be here if you change your mind."</text>
+	<result></result>
+	<option>
+		<optionNum>2</optionNum>
+		<requirements></requirements>
+		<text>[Walk Away]</text>
+	</option>
+</dialogue>
+<dialogue>
+	<dialoguepath>3</dialoguepath>
+	<text>The merchant cowers in fear, holding out the potion.
+	"J-just take it! Don't kill me, please!"</text>
+	<result>health:20_form:1</result>
+	<option>
+		<optionNum>2</optionNum>
+		<requirements></requirements>
+		<text>Walk Away</text>
+	</option>
+</dialogue>
+</encounter>

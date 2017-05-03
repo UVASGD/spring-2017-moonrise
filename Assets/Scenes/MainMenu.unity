@@ -661,6 +661,7 @@ GameObject:
   m_Component:
   - component: {fileID: 579957707}
   - component: {fileID: 579957706}
+  - component: {fileID: 579957708}
   m_Layer: 0
   m_Name: dataSlave
   m_TagString: Untagged
@@ -693,6 +694,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &579957708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 579957705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 230b4eb4f5db9c14baf7da5812629917, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialoguePrefab: {fileID: 1450931781499038, guid: 7736fe41477133748abd4c9d91e69cc4,
+    type: 2}
+  NPCPrefab: {fileID: 122792, guid: eaf62523fc4534c4194f955f87b15716, type: 2}
 --- !u!1 &1354027880
 GameObject:
   m_ObjectHideFlags: 0

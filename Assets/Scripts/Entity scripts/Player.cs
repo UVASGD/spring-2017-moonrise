@@ -41,6 +41,7 @@ namespace Completed
 		public int growl;
 		public int fortify;
 
+
 		// Abilities
 		private bool willLunge = false;
 		private int lungeCooldown;
@@ -633,14 +634,17 @@ namespace Completed
 		protected override void OnCantMove (Transform transform)
 		{
 			Character character = transform.GetComponent<Character> ();
-			if (character is Enemy) {
+			if (character is NPC){
+				GameObject.Find("dataSlave").GetComponent<EncounterManager>().openEncounter(((NPC)character).getEncounter());
+			}
+			else if (character is Enemy) {
 				
 			} else if (character is Chest) {
 				Chest chest = (Chest)character;
 				AddItem (chest.item);
 				GameManager.instance.print ("A " + chest.item.Name + " was added to inventory");
 				Destroy (chest.gameObject);
-			}
+			} 
 		}
 
 		private void Restart ()
@@ -858,6 +862,79 @@ namespace Completed
 		}
 
 		#endregion
+
+
+		public int getSkill(string s){
+			switch(s){
+			case "health":
+				return currentHP;
+				break;
+			case "sneak":
+				return sneak;
+				break;
+			case "charm":
+				return charm;
+				break;
+			case "dodge":
+				return dodge;
+				break;
+			case "bite":
+				return bite;
+				break;
+			case "lunge":
+				return lunge;
+				break;
+			case "growl":
+				return growl;
+				break;
+			case "fortify":
+				return fortify;
+				break;
+			case "silver":
+				return GameManager.instance.playerGoldPoints;
+				break;
+			}
+			return 0;
+		}
+
+		public void applyEffect(string s, int val){
+			switch(s){
+			case "health":
+				currentHP += val;
+				if(currentHP > totalHP)
+					currentHP = totalHP;
+				break;
+			case "sneak":
+				sneak += val;
+				break;
+			case "charm":
+				charm += val;
+				break;
+			case "dodge":
+				dodge += val;
+				break;
+			case "bite":
+				bite += val;
+				break;
+			case "lunge":
+				lunge += val;
+				break;
+			case "growl":
+				growl += val;
+				break;
+			case "fortify":
+				fortify += val;
+				break;
+			case "silver":
+				GameManager.instance.playerGoldPoints += val;
+				break;
+			case "form":
+				var isWolf = val==1?true:false;
+				if(isWolf != GameManager.instance.isWerewolf)
+					switchForm();
+				break;
+			}
+		}
 	}
 
 	public enum Orientation
