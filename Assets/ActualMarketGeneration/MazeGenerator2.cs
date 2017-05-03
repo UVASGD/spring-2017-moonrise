@@ -9,6 +9,7 @@ public class MazeGenerator2 : mapGenerator {
 	public GameObject water; //water prefab
 	public GameObject dock; //dock prefab
 	public GameObject boat; //boat prefab
+	public GameObject exitDoor; //exit door
 
 	public int radius = 21; //a third of the total width of the square
 	[Range(0.0001f, 1f)]
@@ -305,6 +306,27 @@ public class MazeGenerator2 : mapGenerator {
 					Instantiate (water, new Vector3 (w + 7, h, 0), Quaternion.identity);
 			}
 		}*/
+
+		//Add Doors
+		for (int x = 2; x < radius * 3; x += (radius-1) * 3) {
+			for (int y = 58; y <= 61; y++) {
+				Destroy (grid [x, y].obj);
+				grid[x,y].obj = Instantiate (exitDoor, new Vector3 (x, y, 0f), Quaternion.identity) as GameObject;
+				if (x == 0) {
+					grid[x,y].obj.GetComponent<ExitPos> ().setTarget ("Market");
+				} else {
+					grid[x,y].obj.GetComponent<ExitPos> ().setTarget ("University");
+				}
+
+			}
+		}
+		for (int x = 58; x <= 61; x++) {
+			grid [x, 2] = 'e';
+			grid[x,2].obj = Instantiate (exitDoor, new Vector3 (x, 0f, 0f), Quaternion.identity) as GameObject;
+			grid[x,2].obj.GetComponent<ExitPos> ().setTarget ("Central");
+		}
+
+
 		return boardMap;
 	}
 }
