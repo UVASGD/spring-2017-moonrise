@@ -26,7 +26,7 @@ namespace Completed
 		protected int currentHP;
 
 		public int healPerCycle = 0;
-		public int healCycle = 3;
+		public int healCycle = 8;
 		public int healTurn = 0;
 
 		protected double baseSpeed;
@@ -210,6 +210,7 @@ namespace Completed
 				}
 				this.healPerCycle += item.HpBonus;
 				this.baseSpeed *= item.SpeedMult;
+				this.totalSpeed *= item.SpeedMult;
 				this.rangedBlock *= item.DodgeBonus;
 				this.meleeBlock *= item.BlockBonus;
 			}
@@ -223,6 +224,7 @@ namespace Completed
 				}
 				this.healPerCycle -= item.HpBonus;
 				this.baseSpeed /= item.SpeedMult;
+				this.totalSpeed /= item.SpeedMult;
 				this.rangedBlock /= item.DodgeBonus;
 				this.meleeBlock /= item.BlockBonus;
 			}
