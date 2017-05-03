@@ -18,7 +18,7 @@ namespace Completed
 		public int baseSneak = 3;
 		public float sightRange = 12f;
 
-        private int totalTime = 0;
+		private int totalTime = 0;
         
 		// Sprites
 		public Sprite werewolfFront;
@@ -64,14 +64,14 @@ namespace Completed
 
 		// Healthbar object
 		public GameObject hpBar;
-        //UI element storage
-        public GameObject playerUI;
-        public GameObject Clock;
-        public GameObject skillsContainer;
-        public TabManager tabScript;
+		//UI element storage
+		public GameObject playerUI;
+		public GameObject Clock;
+		public GameObject skillsContainer;
+		public TabManager tabScript;
 
-        //transformation variables
-        private float transformationCounter;
+		//transformation variables
+		private float transformationCounter;
 		public Boolean isTransforming;
 
 		//checks if range is currently higlighted
@@ -85,8 +85,8 @@ namespace Completed
 			orientation = Orientation.North;
 			original = this.gameObject.GetComponent<SpriteRenderer> ().color;
 			timeLeft = "Time Left: " + GameManager.instance.timeLeft;
-            totalTime = GameManager.instance.timeLeft;
-            goldText = "Silver: " + GameManager.instance.playerGoldPoints;
+			totalTime = GameManager.instance.timeLeft;
+			goldText = "Silver: " + GameManager.instance.playerGoldPoints;
 			hpText = "HP: " + this.CurrentHP;
 			levelText = "Level: " + GameManager.instance.level;
 			UpdateText ();
@@ -99,27 +99,27 @@ namespace Completed
 
 
 			//Equip a crossbow
-			if(equippedItems.Weapon == null){
-				ItemSpace.Weapon w = new ItemSpace.Weapon(ItemSpace.WeaponType.Crossbow,ItemSpace.WeaponWeight.Medium,ItemSpace.WeaponPrefix.None,ItemSpace.WeaponInfix.None,ItemSpace.WeaponSuffix.None);
-				equippedItems.Equip(w);
-                InventoryManagerAlt.instance.RefreshEquippedItems();
-            }
+			if (equippedItems.Weapon == null) {
+				ItemSpace.Weapon w = new ItemSpace.Weapon (ItemSpace.WeaponType.Crossbow, ItemSpace.WeaponWeight.Medium, ItemSpace.WeaponPrefix.None, ItemSpace.WeaponInfix.None, ItemSpace.WeaponSuffix.None);
+				equippedItems.Equip (w);
+				InventoryManagerAlt.instance.RefreshEquippedItems ();
+			}
 
 			hitbox = GetComponent<BoxCollider2D> ();
 
 //initialize skill levels if they weren't loaded
-			if(this.shoot == 0){
-        this.shoot = 1;
-        this.sneak = 1;
-        this.charm = 1;
-        this.dodge = 1;
-        this.bite = 1;
-        this.lunge = 1;
-        this.growl = 1;
-        this.fortify = 1;
+			if (this.shoot == 0) {
+				this.shoot = 1;
+				this.sneak = 1;
+				this.charm = 1;
+				this.dodge = 1;
+				this.bite = 1;
+				this.lunge = 1;
+				this.growl = 1;
+				this.fortify = 1;
 
 			}
-			Debug.Log("setVals");
+			Debug.Log ("setVals");
 
 			this.lungeCooldown = 0;
 
@@ -153,7 +153,7 @@ namespace Completed
 				TotalSpeed /= (0.4);
 			}
 		}
-			
+
 			
 
 		public void UpdateText (String message = "")
@@ -223,7 +223,7 @@ namespace Completed
 				EndTurn ();
 
 			}
-			 if (Input.GetMouseButtonDown (0)) {
+			if (Input.GetMouseButtonDown (0)) {
 				if (this.willLunge) {
 					Lunge ();
 				} else if (GameManager.instance.enemyClicked) {
@@ -253,27 +253,27 @@ namespace Completed
 			 // Activate Ability
 			else if (Input.GetKeyDown (KeyCode.Keypad1) || Input.GetKeyDown (KeyCode.Alpha1)) {
 				//shoot
-				toggleHighlightRange();
+				toggleHighlightRange ();
 			} else if (Input.GetKeyDown (KeyCode.Keypad2) || Input.GetKeyDown (KeyCode.Alpha2)) {
-				if(!GameManager.instance.isWerewolf) {
-				 ToggleSneak (); //sneak
+				if (!GameManager.instance.isWerewolf) {
+					ToggleSneak (); //sneak
 				}
-				Debug.Log(sneaking ? "sneaky and slow" : "stompy and fast"); 
+				Debug.Log (sneaking ? "sneaky and slow" : "stompy and fast"); 
 			} else if (Input.GetKeyDown (KeyCode.Keypad3) || Input.GetKeyDown (KeyCode.Alpha3)) {
-				 //charm
+				//charm
 			} else if (Input.GetKeyDown (KeyCode.Keypad4) || Input.GetKeyDown (KeyCode.Alpha4)) {
-				 //dodge
+				//dodge
 			} else if (Input.GetKeyDown (KeyCode.Keypad5) || Input.GetKeyDown (KeyCode.Alpha5)) {
-				 //bite
+				//bite
 			} else if (Input.GetKeyDown (KeyCode.Keypad6) || Input.GetKeyDown (KeyCode.Alpha6)) {
 				EnableLunge (); //lunge
 			} else if (Input.GetKeyDown (KeyCode.Keypad7) || Input.GetKeyDown (KeyCode.Alpha7)) {
-				 //growl
+				//growl
 			} else if (Input.GetKeyDown (KeyCode.Keypad8) || Input.GetKeyDown (KeyCode.Alpha8)) {
 				//fortify
-			} else if (Input.GetKeyDown (KeyCode.H) ) {
+			} else if (Input.GetKeyDown (KeyCode.H)) {
 				//check speed
-				Debug.Log(this.totalSpeed);
+				Debug.Log (this.totalSpeed);
 			}
 				
 			int horizontal = 0;
@@ -290,12 +290,14 @@ namespace Completed
 			}
 		}
 
-		private void refreshHighlightRange() {
+		private void refreshHighlightRange ()
+		{
 			disableHighlightRange ();
 			enableHighlightRange ();
 		}
 
-		private void toggleHighlightRange() {
+		private void toggleHighlightRange ()
+		{
 			if (!GameManager.instance.rangeHighlighted) {
 				enableHighlightRange ();
 			} else {
@@ -303,11 +305,12 @@ namespace Completed
 			}
 		}
 
-		private void enableHighlightRange() {
+		private void enableHighlightRange ()
+		{
 			GameManager.instance.rangeHighlighted = true;
 			//because range is a float for some reason...
-			int intRange = GameManager.instance.isWerewolf ? 1: (int)range;
-			for (int x = -1 * (intRange + 1) ; x <= intRange + 1; x++) {
+			int intRange = GameManager.instance.isWerewolf ? 1 : (int)range;
+			for (int x = -1 * (intRange + 1); x <= intRange + 1; x++) {
 				for (int y = -1 * (intRange + 1); y <= intRange + 1; y++) {
 					double distance = Math.Sqrt (Math.Pow (x, 2) + Math.Pow (y, 2));
 					if (distance > intRange + 1)
@@ -328,15 +331,17 @@ namespace Completed
 			}
 		}
 
-		private void disableHighlightRange() {
+		private void disableHighlightRange ()
+		{
 			GameManager.instance.rangeHighlighted = false;
 			GameObject[] highlights = GameObject.FindGameObjectsWithTag ("rangehighlight");
-			for(int i = 0; i < highlights.Length; i++) {
+			for (int i = 0; i < highlights.Length; i++) {
 				Destroy (highlights [i]);
 			}
 		}
 
-		private void EnableLunge() {
+		private void EnableLunge ()
+		{
 			if (!this.willLunge && this.lungeCooldown < 1) {
 				GameManager.instance.print ("Click a tile to lunge to");
 				this.willLunge = true;
@@ -345,11 +350,12 @@ namespace Completed
 			}
 		}
 
-		private void Lunge() {
-			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		private void Lunge ()
+		{
+			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 
-			int xDir = (int)Math.Round(ray.origin.x - this.transform.position.x);
-			int yDir = (int)Math.Round(ray.origin.y - this.transform.position.y);
+			int xDir = (int)Math.Round (ray.origin.x - this.transform.position.x);
+			int yDir = (int)Math.Round (ray.origin.y - this.transform.position.y);
 
 			bool canLunge = base.AttemptMove (xDir, yDir);
 			if (canLunge) {
@@ -382,11 +388,11 @@ namespace Completed
 				}
 
 				// Attack everyone within one tile
-				Collider2D[] enemyColliders = Physics2D.OverlapBoxAll(new Vector2(ray.origin.x, ray.origin.y), new Vector2(2.9f, 2.9f), 0);
+				Collider2D[] enemyColliders = Physics2D.OverlapBoxAll (new Vector2 (ray.origin.x, ray.origin.y), new Vector2 (2.9f, 2.9f), 0);
 				int i = 0;
 				while (i < enemyColliders.Length) {
 					// If collider found is an enemy, attack for 
-					if (enemyColliders[i].tag.Equals("Enemy")) {
+					if (enemyColliders [i].tag.Equals ("Enemy")) {
 						foundEnemy = true;
 						enemyColliders [i].gameObject.transform.GetComponent<Character> ().LoseHp (damage);
 					}
@@ -402,7 +408,7 @@ namespace Completed
 				GameManager.instance.print ("You cannot lunge there.");
 			}
 		}
-			
+
 		private int skillCost (int skill)
 		{
 			/* 100 base
@@ -437,18 +443,18 @@ namespace Completed
 				skillLevel = this.fortify;
 				break;
 			}
-			double rawcost = 100.0 * Math.Pow (1.25, GameManager.instance.level - 1) * Math.Pow (2, skillLevel-1);
-			return (int)((Math.Round(rawcost/100 * 4)) / 4 * 100.0);
-				//GameManager.instance.print ("You don't have enough silver to level up");
-			}
-	
+			double rawcost = 100.0 * Math.Pow (1.25, GameManager.instance.level - 1) * Math.Pow (2, skillLevel - 1);
+			return (int)((Math.Round (rawcost / 100 * 4)) / 4 * 100.0);
+			//GameManager.instance.print ("You don't have enough silver to level up");
+		}
+
 
 		public void IncreaseSkill (int skill)
 		{
-				bool upgradedSkill = false;
+			bool upgradedSkill = false;
 			int cost = skillCost (skill);
 			if (cost > GameManager.instance.playerGoldPoints) {
-				GameManager.instance.print ("You need " + (skillCost (skill) - GameManager.instance.playerGoldPoints) + " more silver for that! " + GameManager.instance.playerGoldPoints + " "+ cost);
+				GameManager.instance.print ("You need " + (skillCost (skill) - GameManager.instance.playerGoldPoints) + " more silver for that! " + GameManager.instance.playerGoldPoints + " " + cost);
 			} else {
 				switch (skill) {
 				case 1:
@@ -458,7 +464,7 @@ namespace Completed
 						this.rangedAccuracy *= 1.05;
 						GameManager.instance.print ("Upgraded shoot to level " + this.shoot + "!");
 						upgradedSkill = true;
-                        }
+					}
 					break;
 				case 2:
 					if (this.sneak < 5) {
@@ -466,7 +472,7 @@ namespace Completed
 						//this.baseSneak += 1;     base sneak stays the same, is the starting value -Bryan
 						GameManager.instance.print ("Upgraded sneak to level " + this.sneak + "!");
 						upgradedSkill = true;
-                        }
+					}
 					break;
 				case 3:
 					if (this.charm < 5) {
@@ -474,7 +480,7 @@ namespace Completed
 						// TODO
 						GameManager.instance.print ("Upgraded charm to level " + this.charm + "!");
 						upgradedSkill = true;
-                        }
+					}
 					break;
 				case 4:
 					if (this.dodge < 5) {
@@ -482,7 +488,7 @@ namespace Completed
 						this.rangedBlock += dodge == 4 ? 16.5 : 4.5;
 						GameManager.instance.print ("Upgraded dodge to level " + this.dodge + "!");
 						upgradedSkill = true;
-                        }
+					}
 					break;
 				case 5:
 					if (this.bite < 5) {
@@ -491,14 +497,14 @@ namespace Completed
 						this.meleeDamage *= 1.1;
 						GameManager.instance.print ("Upgraded bite to level " + this.bite + "!");
 						upgradedSkill = true;
-                        }
+					}
 					break;
 				case 6:
 					if (this.lunge < 5) {
 						this.lunge += 1;
 						GameManager.instance.print ("Upgraded lunge to level " + this.lunge + "!");
 						upgradedSkill = true;
-                        }
+					}
 					break;
 				case 7:
 					if (this.growl < 5) {
@@ -506,7 +512,7 @@ namespace Completed
 						// TODO
 						GameManager.instance.print ("Upgraded growl to level " + this.growl + "!");
 						upgradedSkill = true;
-                        }
+					}
 					break;
 				case 8:
 					if (this.fortify < 5) {
@@ -514,7 +520,7 @@ namespace Completed
 						this.meleeBlock += fortify == 7 ? 16.5 : 4.5;
 						GameManager.instance.print ("Upgraded fortify to level " + this.fortify + "!");
 						upgradedSkill = true;
-                        }
+					}
 					break;
 				}
 				if (!upgradedSkill) {
@@ -528,7 +534,7 @@ namespace Completed
 
 					this.CurrentHP = this.TotalHP - currentHealthLoss;
 					AlterGold (-cost);
-                    SkillUIUpdate();
+					SkillUIUpdate ();
 					EndTurn ();
 				}
 			}
@@ -578,7 +584,7 @@ namespace Completed
 				OnCantMove (hit.transform);
 
 			return false;
-        }
+		}
 
 		protected void Attack ()
 		{
@@ -593,7 +599,7 @@ namespace Completed
 			this.lungeCooldown--;
 			timeLeft = "Time Left: " + GameManager.instance.timeLeft;
 			UpdateText ();
-            UpdateClock();
+			UpdateClock ();
 
 			CheckIfGameOver ();
 			GameManager.instance.playersTurn = false;
@@ -603,18 +609,15 @@ namespace Completed
 		private void OnTriggerEnter2D (Collider2D other)
 		{
 			//Debug.Log("#TRIGGERED");
-            if (other.tag == "Exit")
-            {
-				Debug.Log("Exit");
-				GameManager.instance.Save();
+			if (other.tag == "Exit") {
+				Debug.Log ("Exit");
+				GameManager.instance.Save ();
 				dataSlave.instance.newGame = false;
-				SceneManager.LoadScene(((ExitPos)(other.GetComponent<ExitPos>())).getTarget());
-                InventoryManagerAlt.instance.reload();
-                //Invoke("Restart", restartLevelDelay);
-                enabled = false;
-            }
-            else if (other.tag == "Item")
-            {
+				SceneManager.LoadScene (((ExitPos)(other.GetComponent<ExitPos> ())).getTarget ());
+				InventoryManagerAlt.instance.reload ();
+				//Invoke("Restart", restartLevelDelay);
+				enabled = false;
+			} else if (other.tag == "Item") {
 				int chance = UnityEngine.Random.Range (0, 2);
 				String message = "";
 				switch (other.name) {
@@ -659,8 +662,8 @@ namespace Completed
 				Chest chest = (Chest)character;
 				AddItem (chest.item);
 				GameManager.instance.print ("A " + chest.item.Name + " was added to inventory");
-                GameObject.Find("Map").GetComponent<MapLoader>().cleanPixel((int)chest.transform.position.x,(int)chest.transform.position.y);
-                Destroy (chest.gameObject);
+				GameObject.Find ("Map").GetComponent<MapLoader> ().cleanPixel ((int)chest.transform.position.x, (int)chest.transform.position.y);
+				Destroy (chest.gameObject);
 			}
 		}
 
@@ -675,8 +678,8 @@ namespace Completed
 			this.CurrentHP -= loss;
 			if (this.currentHP < 0) {
 				this.currentHP = 0;
-			} else if (this.currentHP > this.baseHP*(GameManager.instance.isWerewolf?2:1)) {
-				this.currentHP = this.baseHP*(GameManager.instance.isWerewolf?2:1);
+			} else if (this.currentHP > this.baseHP * (GameManager.instance.isWerewolf ? 2 : 1)) {
+				this.currentHP = this.baseHP * (GameManager.instance.isWerewolf ? 2 : 1);
 			}
 			/*String message;
 			if (loss > 0) {
@@ -765,7 +768,7 @@ namespace Completed
 			
 			GameManager.instance.isWerewolf = !GameManager.instance.isWerewolf;
 			if (GameManager.instance.isWerewolf) {
-				if(sneaking) {
+				if (sneaking) {
 					ToggleSneak ();
 				}
 				this.TotalHP *= 2;
@@ -785,163 +788,145 @@ namespace Completed
 			hpText = "HP: " + this.CurrentHP;
 			UpdateText ();
 			UpdateSprite ();
-            UpdateIndicator();
+			UpdateIndicator ();
 		}
 
-        /// <summary>
-        /// Updates the indicators on the HUD for what state the player is in.
-        /// </summary>
-        private void UpdateIndicator()
-        {
-            //This is designed for a text-based interaction. Replacing the FindChild("Text") onward with GetComponent<Image>().sprite and setting the sprite that way
-            //TODO Switch this to images
-            if (GameManager.instance.isWerewolf)
-            {
-                skillsContainer.transform.FindChild("FormIndicator").GetComponent<Image>().sprite = tabScript.indicator[1];
+		/// <summary>
+		/// Updates the indicators on the HUD for what state the player is in.
+		/// </summary>
+		private void UpdateIndicator ()
+		{
+			//This is designed for a text-based interaction. Replacing the FindChild("Text") onward with GetComponent<Image>().sprite and setting the sprite that way
+			//TODO Switch this to images
+			if (GameManager.instance.isWerewolf) {
+				skillsContainer.transform.FindChild ("FormIndicator").GetComponent<Image> ().sprite = tabScript.indicator [1];
 
-                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill1").GetComponent<Image>().sprite = tabScript.skillImages[4];
-                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill2").GetComponent<Image>().sprite = tabScript.skillImages[5];
-                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill3").GetComponent<Image>().sprite = tabScript.skillImages[6];
-                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill4").GetComponent<Image>().sprite = tabScript.skillImages[7];
+				skillsContainer.transform.FindChild ("CharacterSkills").FindChild ("Skill1").GetComponent<Image> ().sprite = tabScript.skillImages [4];
+				skillsContainer.transform.FindChild ("CharacterSkills").FindChild ("Skill2").GetComponent<Image> ().sprite = tabScript.skillImages [5];
+				skillsContainer.transform.FindChild ("CharacterSkills").FindChild ("Skill3").GetComponent<Image> ().sprite = tabScript.skillImages [6];
+				skillsContainer.transform.FindChild ("CharacterSkills").FindChild ("Skill4").GetComponent<Image> ().sprite = tabScript.skillImages [7];
 
-            }
-            else
-            {
-                skillsContainer.transform.FindChild("FormIndicator").GetComponent<Image>().sprite = tabScript.indicator[0];
+			} else {
+				skillsContainer.transform.FindChild ("FormIndicator").GetComponent<Image> ().sprite = tabScript.indicator [0];
 
-                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill1").GetComponent<Image>().sprite = tabScript.skillImages[0];
-                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill2").GetComponent<Image>().sprite = tabScript.skillImages[1];
-                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill3").GetComponent<Image>().sprite = tabScript.skillImages[2];
-                skillsContainer.transform.FindChild("CharacterSkills").FindChild("Skill4").GetComponent<Image>().sprite = tabScript.skillImages[3];
-            }
-        }
-        /// <summary>
-        /// Adjusts the player's skills in the Character tab
-        /// </summary>
-        /// <param name="skill">The skill as an int. See the levelup method.</param>
-        /// <param name="level">What level is the stat going to?</param>
-        /// <param name="cost">What is the cost of the stat?</param>
-        private void SkillUIUpdate()
-        {
-            GameObject skillBox;
-            skillBox = playerUI.transform.FindChild("Expand").FindChild("HumanContainer").FindChild("Skill1").FindChild("Desc").gameObject;
-            skillBox.GetComponent<Text>().text = "Shoot | Cost to level: " + skillCost(1);
-            skillBox = playerUI.transform.FindChild("Expand").FindChild("HumanContainer").FindChild("Skill2").FindChild("Desc").gameObject;
-            skillBox.GetComponent<Text>().text = "Sneak | Cost to level: " + skillCost(2);
-            skillBox = playerUI.transform.FindChild("Expand").FindChild("HumanContainer").FindChild("Skill3").FindChild("Desc").gameObject;
-            skillBox.GetComponent<Text>().text = "Charm | Cost to level: " + skillCost(3);
-            skillBox = playerUI.transform.FindChild("Expand").FindChild("HumanContainer").FindChild("Skill4").FindChild("Desc").gameObject;
-            skillBox.GetComponent<Text>().text = "Dodge | Cost to level: " + skillCost(4);
+				skillsContainer.transform.FindChild ("CharacterSkills").FindChild ("Skill1").GetComponent<Image> ().sprite = tabScript.skillImages [0];
+				skillsContainer.transform.FindChild ("CharacterSkills").FindChild ("Skill2").GetComponent<Image> ().sprite = tabScript.skillImages [1];
+				skillsContainer.transform.FindChild ("CharacterSkills").FindChild ("Skill3").GetComponent<Image> ().sprite = tabScript.skillImages [2];
+				skillsContainer.transform.FindChild ("CharacterSkills").FindChild ("Skill4").GetComponent<Image> ().sprite = tabScript.skillImages [3];
+			}
+		}
 
-            skillBox = playerUI.transform.FindChild("Expand").FindChild("WereWolfContainer").FindChild("Skill1").FindChild("Desc").gameObject;
-            skillBox.GetComponent<Text>().text = "Bite | Cost to level: " + skillCost(5);
-            skillBox = playerUI.transform.FindChild("Expand").FindChild("WereWolfContainer").FindChild("Skill2").FindChild("Desc").gameObject;
-            skillBox.GetComponent<Text>().text = "Lunge | Cost to level: " + skillCost(6);
-            skillBox = playerUI.transform.FindChild("Expand").FindChild("WereWolfContainer").FindChild("Skill3").FindChild("Desc").gameObject;
-            skillBox.GetComponent<Text>().text = "Growl | Cost to level: " + skillCost(7);
-            skillBox = playerUI.transform.FindChild("Expand").FindChild("WereWolfContainer").FindChild("Skill4").FindChild("Desc").gameObject;
-            skillBox.GetComponent<Text>().text = "Fortify | Cost to level: " + skillCost(8);
+		/// <summary>
+		/// Adjusts the player's skills in the Character tab
+		/// </summary>
+		/// <param name="skill">The skill as an int. See the levelup method.</param>
+		/// <param name="level">What level is the stat going to?</param>
+		/// <param name="cost">What is the cost of the stat?</param>
+		private void SkillUIUpdate ()
+		{
+			GameObject skillBox;
+			skillBox = playerUI.transform.FindChild ("Expand").FindChild ("HumanContainer").FindChild ("Skill1").FindChild ("Desc").gameObject;
+			skillBox.GetComponent<Text> ().text = "Shoot | Cost to level: " + skillCost (1);
+			skillBox = playerUI.transform.FindChild ("Expand").FindChild ("HumanContainer").FindChild ("Skill2").FindChild ("Desc").gameObject;
+			skillBox.GetComponent<Text> ().text = "Sneak | Cost to level: " + skillCost (2);
+			skillBox = playerUI.transform.FindChild ("Expand").FindChild ("HumanContainer").FindChild ("Skill3").FindChild ("Desc").gameObject;
+			skillBox.GetComponent<Text> ().text = "Charm | Cost to level: " + skillCost (3);
+			skillBox = playerUI.transform.FindChild ("Expand").FindChild ("HumanContainer").FindChild ("Skill4").FindChild ("Desc").gameObject;
+			skillBox.GetComponent<Text> ().text = "Dodge | Cost to level: " + skillCost (4);
 
-            GameObject currencyBox = playerUI.transform.FindChild("Expand").FindChild("Currency").gameObject;
-            currencyBox.GetComponent<Text>().text = "Total Level: " + GameManager.instance.level;
+			skillBox = playerUI.transform.FindChild ("Expand").FindChild ("WereWolfContainer").FindChild ("Skill1").FindChild ("Desc").gameObject;
+			skillBox.GetComponent<Text> ().text = "Bite | Cost to level: " + skillCost (5);
+			skillBox = playerUI.transform.FindChild ("Expand").FindChild ("WereWolfContainer").FindChild ("Skill2").FindChild ("Desc").gameObject;
+			skillBox.GetComponent<Text> ().text = "Lunge | Cost to level: " + skillCost (6);
+			skillBox = playerUI.transform.FindChild ("Expand").FindChild ("WereWolfContainer").FindChild ("Skill3").FindChild ("Desc").gameObject;
+			skillBox.GetComponent<Text> ().text = "Growl | Cost to level: " + skillCost (7);
+			skillBox = playerUI.transform.FindChild ("Expand").FindChild ("WereWolfContainer").FindChild ("Skill4").FindChild ("Desc").gameObject;
+			skillBox.GetComponent<Text> ().text = "Fortify | Cost to level: " + skillCost (8);
 
-            playerUI.transform.FindChild("Contents").FindChild("H").FindChild("HumanSkills").GetComponent<Text>().text = "Shoot: " + shoot + "\nSneak: " + sneak + "\nCharm: " + charm + "\nDodge: " + dodge;
-            playerUI.transform.FindChild("Contents").FindChild("W").FindChild("WerewolfSkills").GetComponent<Text>().text = "Bite: " + bite + "\nLunge: " + lunge + "\nGrowl: " + growl + "\nFortify: " + fortify;
+			GameObject currencyBox = playerUI.transform.FindChild ("Expand").FindChild ("Currency").gameObject;
+			currencyBox.GetComponent<Text> ().text = "Total Level: " + GameManager.instance.level;
+
+			playerUI.transform.FindChild ("Contents").FindChild ("H").FindChild ("HumanSkills").GetComponent<Text> ().text = "Shoot: " + shoot + "\nSneak: " + sneak + "\nCharm: " + charm + "\nDodge: " + dodge;
+			playerUI.transform.FindChild ("Contents").FindChild ("W").FindChild ("WerewolfSkills").GetComponent<Text> ().text = "Bite: " + bite + "\nLunge: " + lunge + "\nGrowl: " + growl + "\nFortify: " + fortify;
 
 
-        }
-        /// <summary>
-        /// Updates the HUD clock to reflect time left. Works on text at the moment
-        /// </summary>
-        private void UpdateClock()
-        {
-            //TODO: Switch this to images
-            //Clock if set
-            float timeCheck = (float)GameManager.instance.timeLeft / (float)totalTime;
-            if (timeCheck > 0.88)
-            {
-                Clock.GetComponent<Image>().sprite = tabScript.moon[0];
-            }
-            else if (timeCheck <= 0.88 && timeCheck > 0.77)
-            {
-                Clock.GetComponent<Image>().sprite = tabScript.moon[7];
-            }
-            else if (timeCheck <= 0.77 && timeCheck > 0.66)
-            {
-                Clock.GetComponent<Image>().sprite = tabScript.moon[6];
-            }
-            else if (timeCheck <= 0.66 && timeCheck > 0.55)
-            {
-                Clock.GetComponent<Image>().sprite = tabScript.moon[5];
-            }
-            else if (timeCheck <= 0.55 && timeCheck > 0.44)
-            {
-                Clock.GetComponent<Image>().sprite = tabScript.moon[4];
-            }
-            else if (timeCheck <= 0.44 && timeCheck > 0.33)
-            {
-                Clock.GetComponent<Image>().sprite = tabScript.moon[3];
-            }
-            else if (timeCheck <= 0.33 && timeCheck > 0.22)
-            {
-                Clock.GetComponent<Image>().sprite = tabScript.moon[2];
-            }
-            else if (timeCheck <= 0.22 && timeCheck > 0.11)
-            {
-                Clock.GetComponent<Image>().sprite = tabScript.moon[1];
-            }
-            else if (timeCheck <= 0.11)
-            {
-                Clock.GetComponent<Image>().sprite = tabScript.moon[0];
-            }
-        }
+		}
 
-        #region serialization
+		/// <summary>
+		/// Updates the HUD clock to reflect time left. Works on text at the moment
+		/// </summary>
+		private void UpdateClock ()
+		{
+			//TODO: Switch this to images
+			//Clock if set
+			float timeCheck = (float)GameManager.instance.timeLeft / (float)totalTime;
+			if (timeCheck > 0.88) {
+				Clock.GetComponent<Image> ().sprite = tabScript.moon [0];
+			} else if (timeCheck <= 0.88 && timeCheck > 0.77) {
+				Clock.GetComponent<Image> ().sprite = tabScript.moon [7];
+			} else if (timeCheck <= 0.77 && timeCheck > 0.66) {
+				Clock.GetComponent<Image> ().sprite = tabScript.moon [6];
+			} else if (timeCheck <= 0.66 && timeCheck > 0.55) {
+				Clock.GetComponent<Image> ().sprite = tabScript.moon [5];
+			} else if (timeCheck <= 0.55 && timeCheck > 0.44) {
+				Clock.GetComponent<Image> ().sprite = tabScript.moon [4];
+			} else if (timeCheck <= 0.44 && timeCheck > 0.33) {
+				Clock.GetComponent<Image> ().sprite = tabScript.moon [3];
+			} else if (timeCheck <= 0.33 && timeCheck > 0.22) {
+				Clock.GetComponent<Image> ().sprite = tabScript.moon [2];
+			} else if (timeCheck <= 0.22 && timeCheck > 0.11) {
+				Clock.GetComponent<Image> ().sprite = tabScript.moon [1];
+			} else if (timeCheck <= 0.11) {
+				Clock.GetComponent<Image> ().sprite = tabScript.moon [0];
+			}
+		}
 
-        //Serialization methods
-        public override XElement serialize ()
+		#region serialization
+
+		//Serialization methods
+		public override XElement serialize ()
 		{
 			XElement node = new XElement ("player",
-                new XElement ("locationX", this.transform.localPosition.x),
-                new XElement ("locationY", this.transform.localPosition.y),
-                new XElement ("werewolf", GameManager.instance.isWerewolf),
-                base.serialize (),
-				new XElement ("shoot", shoot),
-				new XElement ("sneak", sneak),
-				new XElement ("charm", charm),
-				new XElement ("dodge", dodge),
-				new XElement ("bite", bite),
-				new XElement ("lunge", lunge),
-				new XElement ("growl", growl),
-				new XElement ("fortify", fortify),
-				new XElement ("level", GameManager.instance.level),
-				new XElement ("time", GameManager.instance.timeLeft)
+				                new XElement ("locationX", this.transform.localPosition.x),
+				                new XElement ("locationY", this.transform.localPosition.y),
+				                new XElement ("werewolf", GameManager.instance.isWerewolf),
+				                base.serialize (),
+				                new XElement ("shoot", shoot),
+				                new XElement ("sneak", sneak),
+				                new XElement ("charm", charm),
+				                new XElement ("dodge", dodge),
+				                new XElement ("bite", bite),
+				                new XElement ("lunge", lunge),
+				                new XElement ("growl", growl),
+				                new XElement ("fortify", fortify),
+				                new XElement ("level", GameManager.instance.level),
+				                new XElement ("time", GameManager.instance.timeLeft)
 
 
-			);
+			                );
 
-			XElement inventoryNode = new XElement("inventory");
-			for(int i = 0; i < this.inventory.Items.Count; i ++){
-				XElement item = new XElement("Item");
-				if(this.inventory.Items[i].GetType() == typeof(ItemSpace.Weapon))
-					item = ((ItemSpace.Weapon)this.inventory.Items[i]).serialize();
-				inventoryNode.Add(item);
+			XElement inventoryNode = new XElement ("inventory");
+			for (int i = 0; i < this.inventory.Items.Count; i++) {
+				XElement item = new XElement ("Item");
+				if (this.inventory.Items [i].GetType () == typeof(ItemSpace.Weapon))
+					item = ((ItemSpace.Weapon)this.inventory.Items [i]).serialize ();
+				inventoryNode.Add (item);
 			}
 
-			node.Add(inventoryNode);
+			node.Add (inventoryNode);
 
-			XElement equipNode = new XElement("equipment");
-			if(this.equippedItems.Weapon != null){
-				XElement weapon = ((ItemSpace.Weapon)(this.equippedItems.Weapon)).serialize();
-				equipNode.Add(weapon);
+			XElement equipNode = new XElement ("equipment");
+			if (this.equippedItems.Weapon != null) {
+				XElement weapon = ((ItemSpace.Weapon)(this.equippedItems.Weapon)).serialize ();
+				equipNode.Add (weapon);
 			}
-			if(this.equippedItems.Armor != null){
-				XElement armor = new XElement("armor",this.equippedItems.Armor.serialize());
-				equipNode.Add(armor);
+			if (this.equippedItems.Armor != null) {
+				XElement armor = new XElement ("armor", this.equippedItems.Armor.serialize ());
+				equipNode.Add (armor);
 			}
-			node.Add(equipNode);
+			node.Add (equipNode);
 
-			node.Add(new XElement("gold", GameManager.instance.playerGoldPoints));
+			node.Add (new XElement ("gold", GameManager.instance.playerGoldPoints));
 			return node;
 		}
 
@@ -956,36 +941,36 @@ namespace Completed
 			GameManager.instance.isWerewolf = Convert.ToBoolean (info [2].Value);
 			base.deserialize (new XElement (info [3]));
 
-			shoot = Convert.ToInt32(info[4].Value);
-			sneak = Convert.ToInt32(info[5].Value);
-			charm = Convert.ToInt32(info[6].Value);
-			dodge = Convert.ToInt32(info[7].Value);
-			bite = Convert.ToInt32(info[8].Value);
-			lunge = Convert.ToInt32(info[9].Value);
-			growl = Convert.ToInt32(info[10].Value);
-			fortify = Convert.ToInt32(info[11].Value);
-			GameManager.instance.level = Convert.ToInt32(info[12].Value);
-			GameManager.instance.timeLeft = Convert.ToInt32(info[13].Value);
-			GameManager.instance.playerGoldPoints = Convert.ToInt32(info[16].Value);
+			shoot = Convert.ToInt32 (info [4].Value);
+			sneak = Convert.ToInt32 (info [5].Value);
+			charm = Convert.ToInt32 (info [6].Value);
+			dodge = Convert.ToInt32 (info [7].Value);
+			bite = Convert.ToInt32 (info [8].Value);
+			lunge = Convert.ToInt32 (info [9].Value);
+			growl = Convert.ToInt32 (info [10].Value);
+			fortify = Convert.ToInt32 (info [11].Value);
+			GameManager.instance.level = Convert.ToInt32 (info [12].Value);
+			GameManager.instance.timeLeft = Convert.ToInt32 (info [13].Value);
+			GameManager.instance.playerGoldPoints = Convert.ToInt32 (info [16].Value);
 
-			XElement inventoryEle = info[14];
-			Debug.Log(info[14].Value);
-			foreach(XElement i in inventoryEle.Elements()){
-				if(i.Name.ToString().Equals("weapon")){
-					ItemSpace.Weapon w = new ItemSpace.Weapon();
-					w.deserialize(i);
-					inventory.AddItem(w);
+			XElement inventoryEle = info [14];
+			Debug.Log (info [14].Value);
+			foreach (XElement i in inventoryEle.Elements()) {
+				if (i.Name.ToString ().Equals ("weapon")) {
+					ItemSpace.Weapon w = new ItemSpace.Weapon ();
+					w.deserialize (i);
+					inventory.AddItem (w);
 				}
 			}
-			XElement equippedEle = info[15];
-			foreach(XElement i in equippedEle.Elements()){
-				Debug.Log(i.Name.ToString());
-				if(i.Name.ToString().Equals("weapon")){
-					ItemSpace.Weapon w = new ItemSpace.Weapon();
-					w.deserialize(i);
-					Debug.Log(w.Name);
-					equippedItems.Equip(w);
-                    InventoryManagerAlt.instance.RefreshEquippedItems();
+			XElement equippedEle = info [15];
+			foreach (XElement i in equippedEle.Elements()) {
+				Debug.Log (i.Name.ToString ());
+				if (i.Name.ToString ().Equals ("weapon")) {
+					ItemSpace.Weapon w = new ItemSpace.Weapon ();
+					w.deserialize (i);
+					Debug.Log (w.Name);
+					equippedItems.Equip (w);
+					InventoryManagerAlt.instance.RefreshEquippedItems ();
 				}
 			}
 			return true;

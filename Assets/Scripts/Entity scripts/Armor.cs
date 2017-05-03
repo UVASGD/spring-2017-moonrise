@@ -9,7 +9,7 @@ namespace ItemSpace
 		private ArmorInfix infix;
 		private ArmorSuffix suffix;
 
-		private int dodgeBonus, blockBonus;
+
 
 		public Armor(ItemClass ic, ArmorWeight weight, ArmorPrefix prefix, ArmorInfix infix, ArmorSuffix suffix)
 		{

@@ -11,14 +11,52 @@ namespace ItemSpace
 	{
 		private TalismanType type;
 		private TalismanWeight weight;
-		private TalismanPrefix prefix;
-		private TalismanInfix infix;
-		private TalismanSuffix suffix;
+		private string prefix;
+		private string infix;
+		private string suffix;
 
-		private int range;
+		//private int range;
 
-		private int attackBonus, hpBonus;
-		private double attackMult, speedMult;
+
+		private double [,] bonuses = new double[,]
+		
+		{
+			{3,		6,		12,		25	}, //0: attack bonus
+			{1.1,	1.25,	1.5,	2.0	}, //1: attack multiplier
+			{1.1,	1.25,	1.5,	2.0	}, //2: speed multiplier
+			{2,		5,		10,		15	}, //3: hp bonus
+			{1.1,	1.25,	1.5,	2.0	}, //4: dodge
+			{1.1,	1.25,	1.5,	2.0	}  //5: block
+		};
+
+		private string[,,] labels = new string[,,] {
+			{//prefix
+				{"Chilling", 	"Fiery", 		"Shocking", 	"Toxic"},
+				{"Bewitched", 	"Sacrilegious", "Murderous", 	"Splendid"},
+				{"Shimmering", 	"Glimmering", 	"Flashing", 	"Radiant"},
+				{"Mysterious", 	"Mystical", 	"Sacred", 		"Ancient"},
+				{"Restoring", 	"Healing", 		"Rejuvenating", "Holy"},
+				{"Energetic", 	"Striking", 	"Bombastic", 	"Enchanted"}
+			},
+			{//infix
+				{"Hunter\'s",  "Soldier\'s",  "Barbarian\'s",  "Champion\'s"},
+				{"Murderer\'s",  "Captain\'s",  "Mystic\'s",  "Shaman\'s"},
+				{"Coward\'s",  "Bandit\'s",  "Herald\'s",  "Spy\'s"},
+				{"Defender\'s",  "Poet\'s",  "Mother\'s",  "Ancient\'s"},
+				{"Child\'s",  "Lover\'s",  "Doctor\'s",  "Priest\'s"},
+				{"Thief\'s",  "Athlete\'s",  "Sprinter\'s",  "Clairvoyant\'s"}
+			},
+			{//suffix
+				{"of Bruising",  "of Anger",  "of Murder",  "of Power"},
+				{"of Destruction",  "of Maiming",  "of the Inferno",  "of Hell"},
+				{"of the Lizard",  "of the Shark",  "of the Gorilla",  "of Lamentation"},
+				{"of the Panther",  "of the Cockroach",  "of the Beetle",  "of the Rhino"},
+				{"of the Fox",  "of the Wolf",  "of the Turtle",  "of Light"},
+				{"of Far-Sight",  "of the Falcon",  "of the Cheetah",  "of Lightning"}
+			}
+			};
+
+
 
 		private static List<int> weightProbs = new List<int> (new[] {
 			30, 40, 30
@@ -56,10 +94,45 @@ namespace ItemSpace
 			TalismanSuffix.Sight, TalismanSuffix.Strength, TalismanSuffix.Might, TalismanSuffix.Power, TalismanSuffix.Destruction
 		});
 
-		public Talisman(TalismanType type, TalismanWeight weight, TalismanPrefix prefix, TalismanInfix infix, TalismanSuffix suffix)
+		public Talisman(TalismanWeight weight, int[] prefix, int[] infix, int[] suffix)
 		{
-			//if(this.type == null)	
-			setup(type,  weight,  prefix,  infix,  suffix);
+			this.itemClass = ItemClass.Talisman;
+			this.type = TalismanType.Talisman;
+
+			this.weight = weight;
+			this.prefix = labels[1, prefix[0], prefix[1]];
+			this.infix = labels[2, infix[0], infix[1]];
+			this.suffix = labels[3, suffix[0], suffix[1]];
+
+			attackBonus = 0;
+			attackMult = 1;
+			speedMult = 1;
+			hpBonus = 0;
+			dodgeBonus = 0;
+			blockBonus = 0;
+
+
+			int[][] fixes = { prefix, infix, suffix };
+
+			foreach (int [] fix in fixes) {
+				if (fix [0] == 0)
+					attackBonus += (int)bonuses [0, fix [1]];
+				else if (fix [0] == 1)
+					attackMult *= bonuses [1, fix [1]];
+				else if (fix [0] == 2)
+					speedMult *= bonuses [2, fix [1]];
+				else if (fix [0] == 3)
+					hpBonus += (int)bonuses [3, fix [1]];
+				else if (fix [0] == 4)
+					dodgeBonus += (int)bonuses [4, fix [1]];
+				else if (fix [0] == 5)
+					blockBonus += (int)bonuses [5, fix [1]];
+			}
+
+			name = this.prefix + " " + this.infix + " Talisman " + this.suffix;
+				
+				
+			//setup(type,  weight,  prefix,  infix,  suffix);
 		}
 
 		public Talisman(){
@@ -70,9 +143,9 @@ namespace ItemSpace
 			this.itemClass = ItemClass.Talisman;
 			this.type = type;
 			this.weight = weight;
-			this.prefix = prefix;
-			this.infix = infix;
-			this.suffix = suffix;
+			this.prefix = prefix.ToString();
+			this.infix = infix.ToString();
+			this.suffix = suffix.ToString();
 
 			attackBonus = 5;
 			attackMult = 1;
@@ -154,7 +227,7 @@ namespace ItemSpace
 				break;
 			}
 
-			name = CreateName (type, weight, prefix, infix, suffix);
+
 		}
 
 		public static string CreateName(TalismanType type, TalismanWeight weight, TalismanPrefix prefix, TalismanInfix infix, TalismanSuffix suffix) {
@@ -198,25 +271,31 @@ namespace ItemSpace
 			return weightStr + prefixStr + infixStr + typeStr + suffixStr;
 		}
 
-		public static new Item RandomTalisman() {
-			TalismanType type = TalismanType.Talisman;
+		public static Item RandomTalisman() {
 			TalismanWeight weight = (TalismanWeight)RandomEnum (weightProbs);
-			List<int> prefixProbs, suffixProbs;
-			if (weight == TalismanWeight.Light) {
-				prefixProbs = lightPrefixProbs;
-				suffixProbs = lightSuffixProbs;
-			} else if (weight == TalismanWeight.Medium) {
-				prefixProbs = mediumPrefixProbs;
-				suffixProbs = mediumSuffixProbs;
-			} else {
-				prefixProbs = heavyPrefixProbs;
-				suffixProbs = heavySuffixProbs;
-			}
-			TalismanPrefix prefix = (TalismanPrefix)RandomEnum (prefixProbs);
-			TalismanInfix infix = (TalismanInfix)RandomEnum (infixProbs);
-			TalismanSuffix suffix = (TalismanSuffix)RandomEnum (suffixProbs);
 
-			return new Talisman (type, weight, prefix, infix, suffix);
+			int currentLevel = GameManager.instance.level;
+			double fractionTimeLeft = GameManager.instance.timeLeft / GameManager.instance.initialTime;
+
+			double determiner = Math.Floor (currentLevel + (1 / fractionTimeLeft) * 2);
+			int tier = 0;
+			int[] prefix, infix, suffix;
+
+			if (determiner <= 5)
+				tier = 0;
+			else if (determiner <= 12)
+				tier = 1;
+			else if (determiner <= 19)
+				tier = 2;
+			else if (determiner > 19)
+				tier = 3;
+
+			prefix = new int[] { UnityEngine.Random.Range (0, 4), tier };
+			infix = new int[] { UnityEngine.Random.Range (0, 4), tier };
+			suffix = new int[] { UnityEngine.Random.Range (0, 4), tier };
+
+
+			return new Talisman (weight, prefix, infix, suffix);
 		}
 
 		private static int RandomEnum(List<int> probs) {
@@ -228,18 +307,6 @@ namespace ItemSpace
 					rand -= probs [i];
 			}
 			return -1; // this point should not be reached
-		}
-
-		public int AttackBonus {
-			get {
-				return attackBonus;
-			}
-		}
-
-		public double AttackMult {
-			get {
-				return attackMult;
-			}
 		}
 
 		public int[] AttackMinMax {
@@ -255,26 +322,15 @@ namespace ItemSpace
 				return new int[] {(int)(attackMult * attackBonus * mult), (int)(attackMult*attackBonus)};
 			}
 		}
-
-		public int HpBonus {
-			get {
-				return hpBonus;
-			}
-		}
-
-		public double SpeedMult {
-			get {
-				return speedMult;
-			}
-		}
+			
 
 		virtual public XElement serialize(){
 			XElement node = new XElement("weapon",
 				new XElement("type", (int)this.type),
-				new XElement("weight", (int)this.weight),
-				new XElement("prefix", (int)this.prefix),
-				new XElement("infix", (int)this.infix),
-				new XElement("suffix", (int)this.suffix));
+				new XElement("weight", weight),
+				new XElement("prefix", prefix),
+				new XElement("infix", infix),
+				new XElement("suffix", suffix));
 
 			return node;
 		}
