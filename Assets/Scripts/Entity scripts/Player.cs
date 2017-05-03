@@ -18,6 +18,10 @@ namespace Completed
 		public int baseSneak = 3;
 		public float sightRange = 12f;
 
+		public int healPerCycle = 0;
+		public int healCycle = 3;
+		public int healTurn = 0;
+
         private int totalTime = 0;
         
 		// Sprites
@@ -84,11 +88,8 @@ namespace Completed
 			speed = 1;
 			orientation = Orientation.North;
 			original = this.gameObject.GetComponent<SpriteRenderer> ().color;
-			timeLeft = "Time Left: " + GameManager.instance.timeLeft;
+
             totalTime = GameManager.instance.timeLeft;
-            goldText = "Silver: " + GameManager.instance.playerGoldPoints;
-			hpText = "HP: " + this.CurrentHP;
-			levelText = "Level: " + GameManager.instance.level;
 			UpdateText ();
 		
 			animator = GetComponent<Animator> ();
@@ -160,6 +161,8 @@ namespace Completed
 		{
 			levelText = "Level: " + GameManager.instance.level;
 			hpText = "HP: " + CurrentHP;
+			goldText = "Silver: " + GameManager.instance.playerGoldPoints;
+			timeLeft = "Time Left: " + GameManager.instance.timeLeft;
 			displayText.text = timeLeft + " | " + goldText + " | " + hpText + " | " + levelText;
 			Vector3 scale = hpBar.transform.localScale;
 			scale.x = ((float)currentHP / (float)totalHP);
@@ -587,11 +590,27 @@ namespace Completed
 			EndTurn ();
 		}
 
+		protected void Heal ()
+		{
+			healTurn++;
+			if (currentHP >= totalHP) {
+				healTurn = 0;
+			} else if (healTurn >= healCycle) {
+				this.CurrentHP += healPerCycle;
+				if (currentHP > totalHP) {
+					currentHP = totalHP;
+				}
+				healTurn -= healCycle;
+				GameManager.instance.print ("passive heal");
+			}
+		}
+
 		protected void EndTurn ()
 		{
 			GameManager.instance.timeLeft--;
 			this.lungeCooldown--;
-			timeLeft = "Time Left: " + GameManager.instance.timeLeft;
+			this.Heal ();
+
 			UpdateText ();
             UpdateClock();
 
@@ -621,7 +640,6 @@ namespace Completed
 				case "Gold1":
 					GameManager.instance.print ("Picked up " + pointsPerGold + " silver");
 					GameManager.instance.playerGoldPoints += pointsPerGold;
-					goldText = "Silver: " + GameManager.instance.playerGoldPoints;
 					message = "+" + pointsPerGold + " Silver";
 					UpdateText ();
 					other.gameObject.SetActive (false);
@@ -636,7 +654,6 @@ namespace Completed
 				default:
 					GameManager.instance.print ("Picked up " + pointsPerGold + " silver");
 					GameManager.instance.playerGoldPoints += pointsPerGold;
-					goldText = "Silver: " + GameManager.instance.playerGoldPoints;
 					message = "+" + pointsPerGold + " Silver";
 					UpdateText ();
 					other.gameObject.SetActive (false);
@@ -684,7 +701,6 @@ namespace Completed
 			} else {
 				message = "+" + loss + " HP";
 			}*/
-			hpText = "HP: " + this.CurrentHP;
 			UpdateText ();
 			CheckIfGameOver ();
 		}
@@ -697,7 +713,6 @@ namespace Completed
 			} else if (gain > 0) {
 				GameManager.instance.print ("Picked up " + gain + " gold");
 			}
-			goldText = "Silver: " + GameManager.instance.playerGoldPoints;
 			UpdateText ();
 		}
 
@@ -782,7 +797,6 @@ namespace Completed
 			isTransforming = true;
 			animator.enabled = true;
 			transformationCounter = Time.time + 5.25f;
-			hpText = "HP: " + this.CurrentHP;
 			UpdateText ();
 			UpdateSprite ();
             UpdateIndicator();
