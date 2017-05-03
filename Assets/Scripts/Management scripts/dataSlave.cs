@@ -48,11 +48,15 @@ public class dataSlave : MonoBehaviour {
 	public void updateEles(){
 		market = areas["Market"];
 		slums = areas["Slums"];
+		manor = areas["Manor"];
+		government = areas["Government"];
 	}
 
 
 	public void updateDicts(){
 		areas["Market"] = market;
 		areas["Slums"] = slums;
+		areas["Manor"] = manor;
+		areas["Government"] = government;
 	}
 }

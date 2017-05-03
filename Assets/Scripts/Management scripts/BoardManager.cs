@@ -35,7 +35,6 @@ public class BoardManager : MonoBehaviour, SerialOb {
 	public Dictionary<string,areas> areaLookup = new Dictionary<string, areas>{
 		{"Market", areas.Market},
 		{"Slums", areas.Slums},
-		{"University", areas.University},
 		{"Government", areas.Government},
 		{"Manor", areas.Manor}
 	};
@@ -52,13 +51,14 @@ public class BoardManager : MonoBehaviour, SerialOb {
 	private GenerateMarket marketGen;
 	private UniversityGenerator universityGen;
 	private GovernmentGenerator governmentGen;
+	private ManorGenerator manorGen;
 	private Dictionary<areas,mapGenerator> generators = new Dictionary<areas,mapGenerator>();
 	public areas area = areas.Market;
 	private Dictionary<areas,int[]> startLocs = new Dictionary<areas,int[]>{
 		{areas.Market, new int[2]{60,60}},
-		{areas.University, new int[2]{60,20}},
 		{areas.Slums, new int[2]{4,4}},
-		{areas.Government, new int[2]{1,50}}
+		{areas.Government, new int[2]{1,50}},
+		{areas.Manor, new int[2]{1,50}}
 	};
 
 	public Dictionary<areas,int[]> entries = new Dictionary<areas,int[]>{
@@ -68,8 +68,8 @@ public class BoardManager : MonoBehaviour, SerialOb {
 	[SerializeField]
 	private LayerMask blockingLayer;
 
-    private int columns = 100;                       //Columns on the board
-    private int rows = 100;                          //Rows on the board
+    public int columns = 100;                       //Columns on the board
+    public int rows = 100;                          //Rows on the board
     public Count wallCount = new Count(20, 40 );    //Number of wall tiles
     public Count goldCount = new Count(10, 30);     //Number of gold tiles
 
@@ -115,11 +115,13 @@ public class BoardManager : MonoBehaviour, SerialOb {
 		marketGen = GetComponent<GenerateMarket>();
 		universityGen = GetComponent<UniversityGenerator> ();
 		governmentGen = GetComponent<GovernmentGenerator> ();
+		manorGen = GetComponent<ManorGenerator> ();
 
 		generators.Add(areas.Market, marketGen);
 		generators.Add(areas.Slums, slumGen);
 		generators.Add (areas.University, universityGen);
 		generators.Add (areas.Government, governmentGen);
+		generators.Add (areas.Manor, manorGen);
 
 		mapGenerator generator = generators[area];
 
@@ -207,10 +209,23 @@ public class BoardManager : MonoBehaviour, SerialOb {
 			}
 			break;
 		case areas.Slums:
-			
+			for (int y = 0; y < boardMap.GetLength (1); y++) {
+				int[] start = new int[2];
+				start [0] = 1;
+				if (boardMap [0, y] == 0) {
+					entry++;
+					if (entry == 1) {
+						start [1] = y;
+						entries [areas.Manor] = start;
+					}
+					GameObject ob = (GameObject)Instantiate (door1, new Vector2 (0, y), Quaternion.identity);//Create the floor exit
+					((ExitPos)ob.GetComponent<ExitPos> ()).setTarget ("Manor");
+				}
+			}
+			entry = 0;
 			for(int y = 0; y < boardMap.GetLength(1); y++){
 				int[] start = new int[2];
-				start[0] = boardMap.GetLength(0)-2;
+				start [0] = boardMap.GetLength(0)-2;
 				if(boardMap[boardMap.GetLength(0)-1,y] == 0){
 					entry++;
 					if(entry == 1){
@@ -254,7 +269,36 @@ public class BoardManager : MonoBehaviour, SerialOb {
 				}
 			}
 			break;
-
+		case areas.Manor:
+			for (int y = 0; y < boardMap.GetLength (1); y++) {
+				int[] start = new int[2];
+				start [0] = 1;
+				if (boardMap [0, y] == 0) {
+					entry++;
+					if (entry == 1) {
+						start [1] = y;
+						entries [areas.Government] = start;
+					}
+					GameObject ob = (GameObject)Instantiate (door1, new Vector2 (0, y), Quaternion.identity);//Create the floor exit
+					((ExitPos)ob.GetComponent<ExitPos> ()).setTarget ("Government");
+				}
+			}
+			entry = 0;
+			for(int y = 0; y < boardMap.GetLength(1); y++){
+				int[] start = new int[2];
+				start[0] = boardMap.GetLength(0)-2;
+				if(boardMap[boardMap.GetLength(0)-1,y] == 0){
+					entry++;
+					if(entry == 1){
+						start[1] = y;
+						entries[areas.Slums] = start;
+					}
+					GameObject ob = (GameObject)Instantiate(door1, new Vector2(boardMap.GetLength(1)-1, y), Quaternion.identity);//Create the floor exit
+					((ExitPos)ob.GetComponent<ExitPos>()).setTarget("Slums");
+				}
+			}
+			break;
+			break;
 		}
 	}
 
@@ -267,9 +311,9 @@ public class BoardManager : MonoBehaviour, SerialOb {
 		bool repeat = true;
 		Vector2 randomPosition = Vector2.zero;
 		while (repeat) {
-			randomPosition = new Vector2 (Random.Range (0, rows), Random.Range (0, columns));
+			randomPosition = new Vector2 (Random.Range (0, rows-1), Random.Range (0, columns-1));
 			//RaycastHit2D hit = Physics2D.Raycast (randomPosition, Vector2.up, 0.1f, blockingLayer);
-
+			Debug.Log(randomPosition);
 			if (boardMap[(int)randomPosition.x,(int)randomPosition.y] == 0) {
 				repeat = false;
 			} else {
