@@ -51,8 +51,8 @@ public static class ActualMarketGeneration {
 			}
 		}
 
-        RoadBuilder r = new RoadBuilder(new int[,] { { bigGridSizeX - 1, bigGridSizeY/2 }, { 0, bigGridSizeY/2 } }, new char[] { 'i', 'x', 'b', 'g', 'c' });
-        RoadBuilder r2 = new RoadBuilder(new int[,] { { bigGridSizeX/2, bigGridSizeY - 1 }, { bigGridSizeX/2, 0 } }, new char[] { 'i', 'x', 'b', 'g', 'c' });
+        RoadBuilder centRoad = new RoadBuilder(new int[,] { { bigGridSizeX - 1, bigGridSizeY/2 }, { 0, bigGridSizeY/2 } }, new char[] { 'i', 'x', 'b', 'g', 'c' });
+        RoadBuilder centRoad2 = new RoadBuilder(new int[,] { { bigGridSizeX/2, bigGridSizeY - 1 }, { bigGridSizeX/2, 0 } }, new char[] { 'i', 'x', 'b', 'g', 'c' });
 
         cMarket = new CenterMarket();
 
