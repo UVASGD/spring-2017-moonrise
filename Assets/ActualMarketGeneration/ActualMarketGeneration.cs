@@ -51,7 +51,10 @@ public static class ActualMarketGeneration {
 			}
 		}
 
-		cMarket = new CenterMarket();
+        RoadBuilder r = new RoadBuilder(new int[,] { { bigGridSizeX - 1, bigGridSizeY/2 }, { 0, bigGridSizeY/2 } }, new char[] { 'i', 'x', 'b', 'g', 'c' });
+        RoadBuilder r2 = new RoadBuilder(new int[,] { { bigGridSizeX/2, bigGridSizeY - 1 }, { bigGridSizeX/2, 0 } }, new char[] { 'i', 'x', 'b', 'g', 'c' });
+
+        cMarket = new CenterMarket();
 
 		for (int i = 0; i < zoneBounds.GetLength(0); i++) {
 			makeMarkets(2, i);
