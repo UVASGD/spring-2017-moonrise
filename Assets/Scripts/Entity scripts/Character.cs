@@ -187,14 +187,17 @@ namespace Completed
 			if (item is EquipItem) {
 				equippable = (EquipItem)item;
 				if (RemoveItem (equippable)) {
+					Debug.Log ("successfully removed item during equip");
+					UpdateStats (equipped: false, item: equippable);
 					Item unequipped = equippedItems.Unequip (equippable.ItemClass);
 					if (equippable != null) {
 						if(unequipped != null)
-						UpdateStats (equipped: false, item: (EquipItem)unequipped);
 						inventory.AddItem (unequipped);
 					}
 					equippedItems.Equip (equippable);
 					UpdateStats (equipped: true, item: equippable);
+				} else {
+					Debug.Log ("failed to remove item during equip");
 				}
 			}
 		}
@@ -215,6 +218,7 @@ namespace Completed
 				this.meleeBlock *= item.BlockBonus;
 			}
 			else { //unequipped
+				Debug.Log("in else of updatestats");
 				if (!(item is Weapon)) {
 					this.meleeDamage -= item.AttackBonus;
 					this.meleeMult /= item.AttackMult;
