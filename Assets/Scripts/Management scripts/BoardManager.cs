@@ -254,7 +254,7 @@ public class BoardManager : MonoBehaviour, SerialOb {
 				}
 			}
 			break;
-			break;
+
 		}
 	}
 
