@@ -555,7 +555,7 @@ public class EntertainmentGenerator : mapGenerator
 
     //PLACE PRETTY BUILDINGS
     void placeBuilding(int w, int h) {
-        int r = Random.Range(50, 58);
+        int r = Random.Range(49, 58);
         char c = (char)r;
         gridKey[h, w] = c;
     } 
@@ -630,7 +630,7 @@ public class EntertainmentGenerator : mapGenerator
                     case '6': currentTile = b6; break;
                     case '7': currentTile = b7; break;
                     case '8': currentTile = b8; break;
-                    case '0': currentTile = b1; break;
+                    case '0': currentTile = null; break;
                 }
 
                 if (currentTile == floor && (h == 0 || w == 0 || h == gridSize - 1 || w == gridSize - 1)) {

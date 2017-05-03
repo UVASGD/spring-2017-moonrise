@@ -128,6 +128,14 @@ MonoBehaviour:
     type: 2}
   asylumWall: {fileID: 1569115055495668, guid: 154f8f97bf52fbf48b1d976b563d9ee5, type: 2}
   door: {fileID: 166078, guid: 82394ce74612ab245aebfb3f6781624f, type: 2}
+  b1: {fileID: 1750628924062586, guid: 673d3c1204a48f84fa95734301ec7771, type: 2}
+  b2: {fileID: 1213456947690236, guid: 57bda5a75e9be3041915be756ef9a4fc, type: 2}
+  b3: {fileID: 1863809011751824, guid: cd4e55d84cb088d48a93e25b76a6c2c3, type: 2}
+  b4: {fileID: 1879561762473832, guid: 834be900b993d204d857e0ea48c8e804, type: 2}
+  b5: {fileID: 1525546355181080, guid: b9701b8b7b855504d927041a5d4da405, type: 2}
+  b6: {fileID: 1182641324646884, guid: 543cafaa07b28c94f86c283eaa133c66, type: 2}
+  b7: {fileID: 1270855225581324, guid: 744f135f243a0bf43b4099f3568b93bd, type: 2}
+  b8: {fileID: 1306386113535008, guid: 6fcfd6ffca44d754eb29c1fe50614913, type: 2}
   debugging: 0
   gridSize: 120
 --- !u!4 &609305118
