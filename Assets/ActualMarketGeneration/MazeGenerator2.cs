@@ -321,7 +321,7 @@ public class MazeGenerator2 : mapGenerator {
 			}
 		}
 		for (int x = 58; x <= 61; x++) {
-			grid [x, 2] = 'e';
+			tileMap [x, 2] = 'e';
 			grid[x,2].obj = Instantiate (exitDoor, new Vector3 (x, 0f, 0f), Quaternion.identity) as GameObject;
 			grid[x,2].obj.GetComponent<ExitPos> ().setTarget ("Central");
 		}
