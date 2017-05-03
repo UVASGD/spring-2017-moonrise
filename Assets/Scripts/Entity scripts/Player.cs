@@ -199,6 +199,8 @@ namespace Completed
 		// Update is called once per frame
 		void Update ()
 		{
+			int statOffset = GameManager.instance.isWerewolf ? 4 : 0; // TODO: fix stupid hack
+
 			if (GameManager.instance.rangeHighlighted && refreshHighlight) {
 				refreshHighlightRange ();
 				refreshHighlight = false;
@@ -219,12 +221,14 @@ namespace Completed
 				}
 				return;
 			}
+
 			if (Input.GetKeyDown (KeyCode.T)) {
 				actionText.text = "";
 				switchForm ();
 				EndTurn ();
-
+				return;
 			}
+
 			if (Input.GetMouseButtonDown (0)) {
 				if (this.willLunge) {
 					Lunge ();
@@ -235,21 +239,13 @@ namespace Completed
 				 
 				// Upgrade Skills
 			else if ((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && (Input.GetKeyDown (KeyCode.Keypad1) || Input.GetKeyDown (KeyCode.Alpha1))) {
-				IncreaseSkill (1); //shoot
+				IncreaseSkill (1 + statOffset); //shoot or bite
 			} else if ((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && (Input.GetKeyDown (KeyCode.Keypad2) || Input.GetKeyDown (KeyCode.Alpha2))) {
-				IncreaseSkill (2); //sneak
+				IncreaseSkill (2 + statOffset); //sneak or lunge
 			} else if ((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && (Input.GetKeyDown (KeyCode.Keypad3) || Input.GetKeyDown (KeyCode.Alpha3))) {
-				IncreaseSkill (3); //charm
+				IncreaseSkill (3 + statOffset); //charm or growl
 			} else if ((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && (Input.GetKeyDown (KeyCode.Keypad4) || Input.GetKeyDown (KeyCode.Alpha4))) {
-				IncreaseSkill (4); //dodge	
-			} else if ((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && (Input.GetKeyDown (KeyCode.Keypad5) || Input.GetKeyDown (KeyCode.Alpha5))) {
-				IncreaseSkill (5); //bite
-			} else if ((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && (Input.GetKeyDown (KeyCode.Keypad6) || Input.GetKeyDown (KeyCode.Alpha6))) {
-				IncreaseSkill (6); //lunge	
-			} else if ((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && (Input.GetKeyDown (KeyCode.Keypad7) || Input.GetKeyDown (KeyCode.Alpha7))) {
-				IncreaseSkill (7); //growl
-			} else if ((Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) && (Input.GetKeyDown (KeyCode.Keypad8) || Input.GetKeyDown (KeyCode.Alpha8))) {
-				IncreaseSkill (8); //fortify
+				IncreaseSkill (4 + statOffset); //dodge or fortify
 			}
 
 			 // Activate Ability
