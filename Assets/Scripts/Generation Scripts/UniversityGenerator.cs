@@ -8,13 +8,14 @@ public class UniversityGenerator : mapGenerator {
 	public GameObject wall;
 	public GameObject[] buildings;
 	public GameObject mainBuilding;
+	public GameObject exitDoor;
 
 	public bool debugging = false;
 
 	private List<Rect> regions = new List<Rect>();
 
 	[Range(0,200)]
-	public int gridSize = 40;
+	public int gridSize = 120;
 	private char[,] gridKey;
 	private int radius = 22;
 
@@ -77,8 +78,7 @@ public class UniversityGenerator : mapGenerator {
                 for (int h = 0; h < building.GetComponent<BuildingPrefab>().height - 1; h++)
                 {
                     for (int w = 0; w < building.GetComponent<BuildingPrefab>().width - 1; w++)
-                    {
-                        //print ("[" + (int)(position.x + w) + ", " + (int)(position.y + h) + "]");
+                    {                   
                         gridKey[(int)(position.x + w), (int)(position.y + h)] = '0';
 						boardMap [(int)(position.x + w), (int)(position.y + h)] = 1;
                     }
@@ -89,6 +89,25 @@ public class UniversityGenerator : mapGenerator {
 
 		if (mainBuilding != null) {
 			Instantiate (mainBuilding, new Vector3 (gridSize / 2, gridSize / 2, 0f), Quaternion.identity);
+		}
+
+		//Add Doors
+		for (int x = 0; x < gridSize; x += gridSize-1) {
+			for (int y = 58; y <= 61; y++) {
+				gridKey [x, y] = 'e';
+				GameObject currentDoor = Instantiate (exitDoor, new Vector3 (x, y, 0f), Quaternion.identity) as GameObject;
+				if (x == 0) {
+					currentDoor.GetComponent<ExitPos> ().setTarget ("Slums");
+				} else {
+					currentDoor.GetComponent<ExitPos> ().setTarget ("Entertainment");
+				}
+
+			}
+		}
+		for (int x = 58; x <= 61; x++) {
+			gridKey [x, 0] = 'e';
+			GameObject currentDoor = Instantiate (exitDoor, new Vector3 (x, 0f, 0f), Quaternion.identity) as GameObject;
+			currentDoor.GetComponent<ExitPos> ().setTarget ("Central");
 		}
 
 		GenerateGridFromKey(gridKey); //generate initial grid (keep at bottom of function)
@@ -131,10 +150,13 @@ public class UniversityGenerator : mapGenerator {
 				GameObject currentTile = null;
 				if (gridKey [w, h] == 'g') {
 					currentTile = floor;
+					boardMap [w, h] = 0;
 				} else if (gridKey [w, h] == 'w') {
 					currentTile = wall;
+					boardMap [w, h] = 1;
 				} else if (gridKey [w, h] == '0') {
 					currentTile = null;
+					boardMap [w, h] = 1;
 				}
 				if (currentTile != null) {
 					Instantiate (currentTile, new Vector3 (w, h, 0f), Quaternion.identity);
