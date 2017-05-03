@@ -91,87 +91,19 @@ NavMeshSettings:
     cellSize: 0.16666667
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &609305116
+--- !u!1 &209425852
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 609305118}
-  - component: {fileID: 609305117}
-  - component: {fileID: 609305119}
-  m_Layer: 0
-  m_Name: entertainmentGenerator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &609305117
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 609305116}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17e55bdabba6a4e408c59939d964f43d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  floor: {fileID: 1076556290550182, guid: 48af6109c0327e44789d4f5ce7b5d48e, type: 2}
-  wall: {fileID: 1812297932148458, guid: 12534291b65535146ac6aabc3836027e, type: 2}
-  casinoFloor: {fileID: 1853646107865114, guid: a80aed762b08da04586867318ba8450a,
-    type: 2}
-  casinoWall: {fileID: 1951758545711250, guid: 61c51a5028ee6e64cbb9e855a32f6998, type: 2}
-  asylumFloor: {fileID: 1296084814113496, guid: 07d0015a7db3918468942c87e8e64c8d,
-    type: 2}
-  asylumWall: {fileID: 1569115055495668, guid: 154f8f97bf52fbf48b1d976b563d9ee5, type: 2}
-  door: {fileID: 166078, guid: 82394ce74612ab245aebfb3f6781624f, type: 2}
-  b1: {fileID: 1750628924062586, guid: 673d3c1204a48f84fa95734301ec7771, type: 2}
-  b5: {fileID: 1525546355181080, guid: b9701b8b7b855504d927041a5d4da405, type: 2}
-  b6: {fileID: 1182641324646884, guid: 543cafaa07b28c94f86c283eaa133c66, type: 2}
-  b7: {fileID: 1270855225581324, guid: 744f135f243a0bf43b4099f3568b93bd, type: 2}
-  b8: {fileID: 1306386113535008, guid: 6fcfd6ffca44d754eb29c1fe50614913, type: 2}
-  debugging: 0
-  gridSize: 120
---- !u!4 &609305118
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 609305116}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &609305119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 609305116}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bc3f0df58519974291d2b10d7929f73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eG: {fileID: 609305117}
---- !u!1 &2015060071
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 2015060076}
-  - component: {fileID: 2015060075}
-  - component: {fileID: 2015060074}
-  - component: {fileID: 2015060073}
-  - component: {fileID: 2015060072}
+  - component: {fileID: 209425857}
+  - component: {fileID: 209425856}
+  - component: {fileID: 209425855}
+  - component: {fileID: 209425854}
+  - component: {fileID: 209425853}
+  - component: {fileID: 209425858}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -179,33 +111,33 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &2015060072
+--- !u!81 &209425853
 AudioListener:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2015060071}
+  m_GameObject: {fileID: 209425852}
   m_Enabled: 1
---- !u!124 &2015060073
+--- !u!124 &209425854
 Behaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2015060071}
+  m_GameObject: {fileID: 209425852}
   m_Enabled: 1
---- !u!92 &2015060074
+--- !u!92 &209425855
 Behaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2015060071}
+  m_GameObject: {fileID: 209425852}
   m_Enabled: 1
---- !u!20 &2015060075
+--- !u!20 &209425856
 Camera:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2015060071}
+  m_GameObject: {fileID: 209425852}
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
@@ -220,7 +152,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 140
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -234,16 +166,38 @@ Camera:
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
   m_StereoMirrorMode: 0
---- !u!4 &2015060076
+--- !u!4 &209425857
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2015060071}
+  m_GameObject: {fileID: 209425852}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 100, y: 80, z: -10}
+  m_LocalPosition: {x: 60, y: 60, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &209425858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 209425852}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15242a9ff550545fe9113259bbb3a88d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  road: {fileID: 170992, guid: b021cef5c367b884387065f8bae5ef1e, type: 2}
+  grass: {fileID: 1000011018570536, guid: 4f7d8814b3aa6462aa09e23bfeb7d9b8, type: 2}
+  sidewalk: {fileID: 1000013810770954, guid: b8f2a1a7139bf4450a84b3a11048584e, type: 2}
+  wall: {fileID: 109970, guid: 613875cbea9433f4a999e6cb714a11d1, type: 2}
+  buildingWall: {fileID: 141938, guid: 65923a9620d79894d8a5cbd1ecaceba7, type: 2}
+  buildingFloor: {fileID: 1000010340017046, guid: 417786bae87d641b69409c0496ce833d,
+    type: 2}
+  buildingDoor: {fileID: 166078, guid: 82394ce74612ab245aebfb3f6781624f, type: 2}
+  exitDoor: {fileID: 166078, guid: 82394ce74612ab245aebfb3f6781624f, type: 2}
+  debugging: 0
+  gridSize: 122
